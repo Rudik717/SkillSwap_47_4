@@ -1,0 +1,47 @@
+:root {
+  --text: black;
+  --bg: #fff;
+  --sans: system-ui, 'Segoe UI', roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', roboto, sans-serif;
+  --mono: ui-monospace, consolas, monospace;
+
+  font: 18px / 145% var(--sans);
+  font-synthesis: none;
+  color: var(--text);
+  letter-spacing: 0.18px;
+  color-scheme: light dark;
+  background: var(--bg);
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #9ca3af;
+    --bg: #16171d;
+  }
+
+  #social .button-icon {
+    filter: invert(1) brightness(2);
+  }
+}
+
+#root {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 1126px;
+  max-width: 100%;
+  min-height: 100svh;
+  margin: 0 auto;
+  text-align: center;
+}
+
+body {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
