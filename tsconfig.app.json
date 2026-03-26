@@ -30,15 +30,16 @@
       "@app/*": ["src/app/*"],
       "@pages/*": ["src/pages/*"],
       "@ui-kit/*": ["src/ui-kit/*"],
-      "@utils/*": ["src/utils/*"],
+      "@utils/*": ["src/utils/*"]
     }
   },
   "include": [
-    "src/**/*", 
-    "./eslint.config.js", 
-    "./stylelint.config.js", 
+    "src/**/*",
+    "./eslint.config.js",
+    "./stylelint.config.js",
     "./vite.config.ts",
     "./vitest.shims.d.ts",
-    "./.storybook/*.ts"
-  ],
+    "./.storybook/*.ts",
+    "./commitlint.config.js"
+  ]
 }
