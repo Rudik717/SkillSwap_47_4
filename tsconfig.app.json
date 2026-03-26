@@ -33,5 +33,12 @@
       "@utils/*": ["src/utils/*"],
     }
   },
-  "include": ["src/**/*", "./eslint.config.js", "./stylelint.config.js", "./vite.config.ts"],
+  "include": [
+    "src/**/*", 
+    "./eslint.config.js", 
+    "./stylelint.config.js", 
+    "./vite.config.ts",
+    "./vitest.shims.d.ts",
+    "./.storybook/*.ts"
+  ],
 }

@@ -1,3 +1,4 @@
+// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
 import js from '@eslint/js'
 import typescript from '@typescript-eslint/eslint-plugin'
 import typescriptParser from '@typescript-eslint/parser'
@@ -6,6 +7,7 @@ import importPlugin from 'eslint-plugin-import'
 import prettier from 'eslint-plugin-prettier'
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
+import storybook from 'eslint-plugin-storybook'
 
 export default [
   js.configs.recommended,
@@ -76,21 +78,22 @@ export default [
       'react-hooks/exhaustive-deps': 'warn',
 
       /*
-      // Import
-      'import/order': [
-        'error',
-        {
-          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-          'newlines-between': 'always',
-          alphabetize: { order: 'asc', caseInsensitive: true },
-        },
-      ],
-      'import/no-duplicates': 'error',
-      */
+    // Import
+    'import/order': [
+      'error',
+      {
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+        'newlines-between': 'always',
+        alphabetize: { order: 'asc', caseInsensitive: true },
+      },
+    ],
+    'import/no-duplicates': 'error',
+    */
 
       // Prettier
       'prettier/prettier': 'error',
     },
   },
   eslintConfigPrettier,
+  ...storybook.configs['flat/recommended'],
 ]
