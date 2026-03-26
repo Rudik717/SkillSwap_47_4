@@ -1,6 +1,6 @@
 :root {
-  --text: black;
-  --bg: #fff;
+  --text: rgb(37, 48, 23);
+  --bg: rgb(249, 250, 247);
   --sans: system-ui, 'Segoe UI', roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', roboto, sans-serif;
   --mono: ui-monospace, consolas, monospace;
