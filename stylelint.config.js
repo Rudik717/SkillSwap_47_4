@@ -6,7 +6,7 @@ export default {
   ],
   plugins: ['stylelint-order'],
   rules: {
-    // 'selector-class-pattern': '^[a-z][a-zA-Z0-9]*$',
+    'selector-class-pattern': null,
     'max-nesting-depth': 3,
     'no-descending-specificity': null,
     'selector-pseudo-class-no-unknown': [

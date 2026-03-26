@@ -1,5 +1,5 @@
 .icon {
-  stroke: var(--text);
   width: 24px;
   height: 24px;
+  stroke: var(--text);
 }
