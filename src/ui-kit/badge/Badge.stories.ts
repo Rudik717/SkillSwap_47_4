@@ -5,6 +5,7 @@ import { Badge } from './Badge'
 const meta = {
   title: 'UI-Kit/Badge',
   component: Badge,
+  tags: ['autodocs'],
   argTypes: {
     label: { control: 'text' },
     backgroundColor: { control: 'color' },
