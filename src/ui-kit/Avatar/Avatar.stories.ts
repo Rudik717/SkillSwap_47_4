@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { Avatar } from './Avatar'
-import exampleUser from './userImageExample.jpg'
 
 const meta = {
   title: 'UI-Kit/Avatar',
@@ -9,11 +8,10 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     size: {
-      control: 'select',
-      options: ['sm', 'md', 'lg'],
-      description: 'Размер аватара',
+      control: { type: 'number', min: 24, max: 300, step: 8 },
+      description: 'Размер аватара в пикселях',
       table: {
-        defaultValue: { summary: 'md' },
+        defaultValue: { summary: '100' },
       },
     },
     url: {
@@ -33,9 +31,9 @@ type Story = StoryObj<typeof Avatar>
 
 export const Small: Story = {
   args: {
-    url: exampleUser,
+    url: 'https://i.pinimg.com/736x/b0/c7/18/b0c718ecc29d686e05d5f858f9ef79bb.jpg',
     alt: 'User avatar',
-    size: 'sm',
+    size: 48,
   },
   parameters: {
     docs: {
@@ -48,9 +46,9 @@ export const Small: Story = {
 
 export const Medium: Story = {
   args: {
-    url: exampleUser,
+    url: 'https://i.pinimg.com/736x/b0/c7/18/b0c718ecc29d686e05d5f858f9ef79bb.jpg',
     alt: 'User avatar',
-    size: 'md',
+    size: 100,
   },
   parameters: {
     docs: {
@@ -63,9 +61,9 @@ export const Medium: Story = {
 
 export const Large: Story = {
   args: {
-    url: exampleUser,
+    url: 'https://i.pinimg.com/736x/b0/c7/18/b0c718ecc29d686e05d5f858f9ef79bb.jpg',
     alt: 'User avatar',
-    size: 'lg',
+    size: 244,
   },
   parameters: {
     docs: {

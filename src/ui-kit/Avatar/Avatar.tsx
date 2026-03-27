@@ -1,24 +1,14 @@
 import styles from './Avatar.module.css'
 
-type AvatarSize = 'sm' | 'md' | 'lg'
-
-type Props = {
+type AvatarProps = {
   url: string
   alt?: string
-  size?: AvatarSize
+  size?: number
 }
 
-const sizeMap = {
-  sm: 48, // для хедера
-  md: 100, // для карточек навыков (по умолчанию)
-  lg: 244, // для личного кабинета
-}
-
-export const Avatar = ({ url, alt = 'User avatar', size = 'md' }: Props) => {
-  const pixelSize = sizeMap[size]
-
+export const Avatar = ({ url, alt = 'User avatar', size = 100 }: AvatarProps) => {
   return (
-    <div className={styles.avatar} style={{ width: pixelSize, height: pixelSize }}>
+    <div className={styles.avatar} style={{ width: size, height: size }}>
       <img src={url} alt={alt} className={styles.image} />
     </div>
   )
