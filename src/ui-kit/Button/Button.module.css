@@ -1,0 +1,98 @@
+.button {
+    /* width: 100%; — раскомментировать, если нужно растягивать кнопку по ширине родителя */
+    height: 48px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: none;
+}
+
+.button:disabled {
+    cursor: not-allowed;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+/* Primary */
+.primary {
+    /* width: 100%; — если нужна адаптивная ширина, раскомментировать и убрать фиксированную */
+    width: 284px;
+    background-color: rgba(171, 210, 122, 1);
+    color: rgba(37, 48, 23, 1);
+}
+
+.primary:hover:not(:disabled) {
+    background-color: rgba(222, 235, 197, 1);
+    color: rgba(37, 48, 23, 1);
+}
+
+.primary:active:not(:disabled) {
+    background-color: rgba(80, 136, 38, 1);
+    color: rgba(255, 255, 255, 1);
+}
+
+.primary:disabled {
+    background-color: rgba(228, 232, 223, 1);
+    color: rgba(105, 115, 93, 1);
+}
+
+/* Secondary */
+.secondary {
+    /* width: 100%; — если нужна адаптивная ширина, раскомментировать и убрать фиксированную */
+    width: 200px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(171, 210, 122, 1);
+    color: rgba(12, 12, 12, 1);
+}
+
+.secondary:hover:not(:disabled) {
+    border-color: rgba(222, 235, 197, 1);
+    color: rgba(105, 115, 93, 1);
+}
+
+.secondary:active:not(:disabled) {
+    border-color: rgba(80, 136, 38, 1);
+    color: rgba(37, 48, 23, 1);
+}
+
+.secondary:disabled {
+    border-color: rgba(228, 232, 223, 1);
+    color: rgba(156, 161, 151, 1);
+}
+
+/* Tertiary */
+.tertiary {
+    /* width: 100%; — если нужна адаптивная ширина, раскомментировать и убрать фиксированную */
+    width: 200px;
+    background-color: transparent;
+    color: rgba(0, 0, 0, 1);
+}
+
+.tertiary:hover:not(:disabled) {
+    color: rgba(37, 48, 23, 1);
+}
+
+.tertiary:active:not(:disabled) {
+    color: rgba(80, 136, 38, 1);
+}
+
+.tertiary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
