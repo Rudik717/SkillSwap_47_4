@@ -59,7 +59,7 @@ export const TextInput = ({
   // Конфигурация для иконок
   const iconConfig = {
     eye: {
-      ariaLabel: isPasswordVisible ? 'Скрыть пароль' : 'Показать пароль',
+      ariaLabel: isPasswordVisible ? 'Показать пароль' : 'Скрыть пароль',
       iconName: isPasswordVisible ? 'eye' : 'eye-slash',
     },
     edit: {
