@@ -32,6 +32,7 @@
   --sans: 'Jost', system-ui, 'Segoe UI', roboto, sans-serif;
   --heading: 'Jost', system-ui, 'Segoe UI', roboto, sans-serif;
   --mono: ui-monospace, consolas, monospace;
+  --border-input-main: rgb(105 115 93);
 
   font: 18px / 145% var(--sans);
   font-synthesis: none;
