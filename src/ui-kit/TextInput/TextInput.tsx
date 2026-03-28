@@ -9,7 +9,7 @@ interface TextInputProps {
   value?: string
   label?: string
   icon?: 'eye' | 'edit' | 'calendar'
-  info?: string //Подпись под инпутом после ввода, если данные валидны
+  info?: string //Подпись под инпутом после ввода, например, если данные валидны
   error?: string //Подпись под данными с ошибками
   maxLength?: number
   placeholder?: string
@@ -54,7 +54,13 @@ export const TextInput = ({
   }
 
   //Сборка всех классов стилей, приходящих из пропсов
-  const inputClasses = [styles.input, error ? styles.error : ''].filter(Boolean).join(' ')
+  const inputClasses: string = [
+    styles.input,
+    disabled ? styles.disabled : '',
+    error ? styles.error : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   // Конфигурация для иконок
   const iconConfig = {
@@ -73,16 +79,19 @@ export const TextInput = ({
   } as const
 
   // Рендеринг иконки, если она указана
-  const renderIcon = () => {
+  const renderIcon = (): React.ReactNode => {
     if (!icon || !iconConfig[icon]) return null
 
     const { ariaLabel, iconName } = iconConfig[icon]
+
+    const styleButton = (): string => (disabled ? styles.disabled : '')
 
     return (
       /*TODO: Заменить тег button на компонент Button и перепроверить стили*/
       <button
         type="button"
-        className={styles.button}
+        disabled={disabled}
+        className={`${styles.button} ${styleButton()}`}
         onClick={icon === 'eye' ? handleEyeClick : onIconClick}
         aria-label={ariaLabel}
       >

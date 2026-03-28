@@ -34,6 +34,7 @@
   --mono: ui-monospace, consolas, monospace;
   --border-input-main: rgb(105 115 93);
   --color-placeholder: rgb(105 115 93);
+  --color-input-disabled: rgb(225 225 225);
   --color-error: rgb(191 57 32);
   --color-caret: rgb(80 136 38);
 

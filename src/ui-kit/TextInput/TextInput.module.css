@@ -28,7 +28,7 @@
 }
 
 input::placeholder {
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;
@@ -38,6 +38,7 @@ input::placeholder {
 
 .input:focus,
 .button:focus {
+  outline: none;
   border-width: 2px;
 }
 
@@ -75,4 +76,16 @@ input::placeholder {
 
 .error {
   color: var(--color-error);
+}
+
+.disabled {
+  cursor: not-allowed;
+  background-color: var(--color-input-disabled);
+  opacity: 0.7;
+}
+
+.button__disabled {
+  cursor: not-allowed;
+  background-color: var(--color-input-disabled);
+  opacity: 0.7;
 }

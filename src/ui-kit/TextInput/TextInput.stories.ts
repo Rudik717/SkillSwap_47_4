@@ -41,17 +41,6 @@ export const Default: Story = {
   },
 }
 
-// С ошибкой
-export const WithError: Story = {
-  args: {
-    name: 'error-input',
-    type: 'text',
-    placeholder: 'Поле с ошибкой',
-    label: 'Поле с ошибкой',
-    error: 'Это поле обязательно для заполнения',
-  },
-}
-
 // Отключённое поле
 export const Disabled: Story = {
   args: {
