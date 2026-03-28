@@ -2,11 +2,11 @@ import ArrowDown from '@/assets/svg/arrow-down.svg?react'
 import ArrowRight from '@/assets/svg/arrow-right.svg?react'
 import Bell from '@/assets/svg/bell.svg?react'
 import Book from '@/assets/svg/book.svg?react'
-import BriefcaseCircle from '@/assets/svg/briefcase-circle.svg?react'
+import Briefcase from '@/assets/svg/briefcase.svg?react'
 import Calendar from '@/assets/svg/calendar.svg?react'
 import Clock from '@/assets/svg/clock.svg?react'
 import Cross from '@/assets/svg/cross.svg?react'
-import EarthCircle from '@/assets/svg/earth-circle.svg?react'
+import Earth from '@/assets/svg/earth.svg?react'
 import Edit from '@/assets/svg/edit.svg?react'
 import Eye from '@/assets/svg/eye.svg?react'
 import GalleryAdd from '@/assets/svg/gallery-add.svg?react'
@@ -48,8 +48,8 @@ type IconName =
   | 'share'
   | 'sort'
   | 'user'
-  | 'briefcase-circle'
-  | 'earth-circle'
+  | 'briefcase'
+  | 'earth'
   | 'home'
   | 'palette'
   | 'book'
@@ -82,8 +82,8 @@ const icons = {
   share: Share,
   sort: Sort,
   user: User,
-  'briefcase-circle': BriefcaseCircle,
-  'earth-circle': EarthCircle,
+  briefcase: Briefcase,
+  earth: Earth,
   home: Home,
   palette: Palette,
   book: Book,
@@ -99,8 +99,8 @@ type IconParams = Partial<Record<IconName, IconParam>>
 
 const iconParams: IconParams = {
   bell: { disableFill: true },
-  'briefcase-circle': { disableFill: true, disableStroke: true },
-  'earth-circle': { disableFill: true, disableStroke: true },
+  briefcase: { disableFill: true, disableStroke: true },
+  earth: { disableFill: true, disableStroke: true },
   home: { disableFill: true, disableStroke: true },
   palette: { disableFill: true, disableStroke: true },
   book: { disableFill: true, disableStroke: true },
