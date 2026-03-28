@@ -1,10 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
+// было @storybook/react
+import { action } from 'storybook/actions'
 
+// добавил action для onPress
 import { Checkbox } from './Checkbox'
 
 const meta = {
   title: 'UI-Kit/Checkbox',
   component: Checkbox,
+  tags: ['autodocs'], // добавил autodocs
 } satisfies Meta<typeof Checkbox>
 
 export default meta
@@ -13,7 +17,7 @@ export const Unchecked: StoryObj = {
   args: {
     state: 'unchecked',
     children: 'Бизнес и карьера',
-    onPress: () => console.log('unchecked pressed'),
+    onPress: action('unchecked pressed'), // было console.log
   },
 }
 
@@ -21,7 +25,7 @@ export const Checked: StoryObj = {
   args: {
     state: 'checked',
     children: 'Творчество и искусство',
-    onPress: () => console.log('checked pressed'),
+    onPress: action('checked pressed'), // было console.log
   },
 }
 
@@ -29,6 +33,6 @@ export const Indeterminate: StoryObj = {
   args: {
     state: 'indeterminate',
     children: 'Образование и развитие',
-    onPress: () => console.log('indeterminate pressed'),
+    onPress: action('indeterminate pressed'), // было console.log
   },
 }
