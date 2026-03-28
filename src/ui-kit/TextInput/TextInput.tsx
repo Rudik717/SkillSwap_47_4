@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 
+import { Icon } from '../Icon/Icon'
 import styles from './TextInput.module.css'
 
 interface TextInputProps {
+  name: string
+  type: string
   value?: string
-  type?: string // Отдельные типы лоя текста и пароля
   label?: string
-  icon?: React.ReactNode
-  // info?: string;
-  error?: string
+  icon?: 'eye' | 'edit' | 'calendar'
+  info?: string //Подпись под инпутом после ввода, если данные валидны
+  error?: string //Подпись под данными с ошибками
   maxLength?: number
   placeholder?: string
   disabled?: boolean
@@ -17,11 +19,12 @@ interface TextInputProps {
 }
 
 export const TextInput = ({
+  name,
   value,
   type = 'text',
   label,
   icon,
-  //info,
+  info,
   error,
   maxLength,
   placeholder = '',
@@ -30,23 +33,76 @@ export const TextInput = ({
   onIconClick,
   ...other
 }: TextInputProps) => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  const [currentType, setCurrentType] = useState(type)
+
   const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value
     onChange(inputValue)
   }
 
+  // Обработчик клика по иконке «eye»
+  const handleEyeClick = () => {
+    const newVisibility = !isPasswordVisible
+    setIsPasswordVisible(newVisibility)
+    setCurrentType(newVisibility ? 'text' : 'password')
+
+    // Вызываем внешний обработчик, если он передан
+    if (onIconClick) {
+      onIconClick()
+    }
+  }
+
   //Сборка всех классов стилей, приходящих из пропсов
   const inputClasses = [styles.input, error ? styles.error : ''].filter(Boolean).join(' ')
+
+  // Конфигурация для иконок
+  const iconConfig = {
+    eye: {
+      ariaLabel: isPasswordVisible ? 'Скрыть пароль' : 'Показать пароль',
+      iconName: isPasswordVisible ? 'eye' : 'eye-slash',
+    },
+    edit: {
+      ariaLabel: 'Редактировать',
+      iconName: 'edit',
+    },
+    calendar: {
+      ariaLabel: 'Календарь',
+      iconName: 'calendar',
+    },
+  } as const
+
+  // Рендеринг иконки, если она указана
+  const renderIcon = () => {
+    if (!icon || !iconConfig[icon]) return null
+
+    const { ariaLabel, iconName } = iconConfig[icon]
+
+    return (
+      /*TODO: Заменить тег button на компонент Button и перепроверить стили*/
+      <button
+        type="button"
+        className={styles.button}
+        onClick={icon === 'eye' ? handleEyeClick : onIconClick}
+        aria-label={ariaLabel}
+      >
+        <Icon size={24} name={iconName} />
+      </button>
+    )
+  }
 
   return (
     <div className={styles.container}>
       {label && (
-        // Пока оставляем так, но потом нужно будет заменить на компонент Text
-        <label className={styles.label}>{label}</label>
+        <label className={styles.label} htmlFor={`${type}-${name}`}>
+          {label}
+        </label>
       )}
-      <div>
+      <div className={styles.input__container}>
         <input
-          type={type}
+          type={currentType}
+          name={name}
+          id={name}
           value={value}
           placeholder={placeholder}
           disabled={disabled}
@@ -55,13 +111,11 @@ export const TextInput = ({
           onChange={handleChangeInput}
           {...other}
         />
-        {icon && (
-          <div className={styles.icon} onClick={onIconClick}>
-            {icon}
-          </div>
-        )}
+        {renderIcon()}
       </div>
-      {error && <span className={styles.error}>{error}</span>}
+      {/*TODO: Заменить тег span на компонент Text*/}
+      {error && <span className={`${styles.span} ${styles.error}`}>{error}</span>}
+      {info && <span className={styles.span}>{info}</span>}
     </div>
   )
 }

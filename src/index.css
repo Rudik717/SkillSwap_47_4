@@ -33,6 +33,9 @@
   --heading: 'Jost', system-ui, 'Segoe UI', roboto, sans-serif;
   --mono: ui-monospace, consolas, monospace;
   --border-input-main: rgb(105 115 93);
+  --color-placeholder: rgb(105 115 93);
+  --color-error: rgb(191 57 32);
+  --color-caret: rgb(80 136 38);
 
   font: 18px / 145% var(--sans);
   font-synthesis: none;

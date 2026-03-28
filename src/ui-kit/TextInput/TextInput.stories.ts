@@ -2,118 +2,152 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { TextInput } from './TextInput'
 
+type Story = StoryObj<typeof TextInput>
+
 const meta: Meta<typeof TextInput> = {
-  title: 'UI/TextInput',
+  title: 'UI-Kit/TextInput',
   component: TextInput,
   tags: ['autodocs'],
   argTypes: {
-    onChange: { action: 'changed' },
-    onIconClick: { action: 'icon clicked' },
+    type: {
+      control: 'select',
+      options: ['text', 'password', 'email'],
+    },
+    icon: {
+      control: 'select',
+      options: [undefined, 'eye', 'edit', 'calendar'],
+    },
+    disabled: {
+      control: 'boolean',
+    },
+    onChange: {
+      action: 'changed',
+    },
+    onIconClick: {
+      action: 'icon clicked',
+    },
   },
 }
 
 export default meta
-type Story = StoryObj<typeof TextInput>
 
-// Базовый вариант
+// Базовое использование
 export const Default: Story = {
   args: {
-    label: 'Текстовое поле',
+    name: 'default-input',
+    type: 'text',
     placeholder: 'Введите текст',
-    value: '',
-    onChange: () => {},
+    label: 'Текстовое поле',
   },
 }
 
-// С меткой
-export const WithLabel: Story = {
+// С ошибкой
+export const WithError: Story = {
   args: {
-    ...Default.args,
-    label: 'Email',
+    name: 'error-input',
+    type: 'text',
+    placeholder: 'Поле с ошибкой',
+    label: 'Поле с ошибкой',
+    error: 'Это поле обязательно для заполнения',
   },
 }
 
-// С placeholder
-export const WithPlaceholder: Story = {
+// Отключённое поле
+export const Disabled: Story = {
   args: {
-    ...Default.args,
-    placeholder: 'example@mail.com',
+    name: 'disabled-input',
+    type: 'text',
+    placeholder: 'Отключённое поле',
+    label: 'Отключённое поле',
+    disabled: true,
+    value: 'Неизменяемый текст',
+  },
+}
+
+// Поле с иконкой «глаз» (для пароля)
+export const WithEyeIcon: Story = {
+  args: {
+    name: 'password-input',
+    type: 'password',
+    placeholder: 'Введите пароль',
+    label: 'Пароль',
+    icon: 'eye',
+  },
+}
+
+// Поле с иконкой «редактировать»
+export const WithEditIcon: Story = {
+  args: {
+    name: 'edit-input',
+    type: 'text',
+    placeholder: 'Редактируемое поле',
+    label: 'Редактируемое поле',
+    icon: 'edit',
+  },
+}
+
+// Пароль с возможностью показать/скрыть
+export const PasswordWithToggle: Story = {
+  args: {
+    name: 'password-toggle',
+    type: 'password',
+    placeholder: '••••••••',
+    label: 'Пароль',
+    icon: 'eye',
+    value: 'mysecretpassword',
+  },
+}
+
+// Длинный текст с ограничением длины
+export const WithMaxLength: Story = {
+  args: {
+    name: 'max-length-input',
+    type: 'text',
+    placeholder: 'Максимум 10 символов',
+    label: 'Ограниченная длина',
+    maxLength: 10,
+  },
+}
+
+// Без лейбла
+export const WithoutLabel: Story = {
+  args: {
+    name: 'no-label-input',
+    type: 'text',
+    placeholder: 'Без лейбла',
   },
 }
 
 // Заполненное поле
 export const Filled: Story = {
   args: {
-    ...Default.args,
+    name: 'filled-input',
+    type: 'text',
+    label: 'Заполненное поле',
     value: 'Уже введённый текст',
   },
 }
 
-// Отключённое состояние
-export const Disabled: Story = {
+// Email‑поле
+export const EmailField: Story = {
   args: {
-    ...Default.args,
-    disabled: true,
-    value: 'Недоступно для редактирования',
+    name: 'email-input',
+    type: 'email',
+    placeholder: 'user@example.com',
+    label: 'Email',
   },
 }
 
-// Состояние ошибки
-export const ErrorState: Story = {
+// Полный набор свойств
+export const FullProps: Story = {
   args: {
-    ...Default.args,
-    error: 'Пожалуйста, заполните это поле',
-  },
-}
-
-// Поле с иконкой
-export const WithIcon: Story = {
-  args: {
-    ...Default.args,
-    //icon: <EyeIcon />,
-    onIconClick: () => console.log('Иконка нажата'),
-  },
-}
-
-// Поле пароля с переключателем видимости
-export const PasswordWithToggle: Story = {
-  args: {
-    ...Default.args,
-    type: 'password',
-    label: 'Пароль',
-    placeholder: 'Введите пароль',
-    // icon: <EyeIcon />,
-    onIconClick: () => console.log('Переключить видимость пароля'),
-  },
-}
-
-// Поле с ограничением длины
-export const WithMaxLength: Story = {
-  args: {
-    ...Default.args,
-    maxLength: 10,
-    placeholder: 'Максимум 10 символов',
-  },
-}
-
-// Комплексный пример со всеми возможностями
-export const FullFeatured: Story = {
-  args: {
-    label: 'Комплексное поле',
-    value: 'Предварительный текст',
-    placeholder: 'Заполните это поле',
-    error: 'Ошибка валидации',
-    maxLength: 20,
-    // icon: <EyeIcon />,
-    onIconClick: () => console.log('Иконка нажата'),
-    onChange: () => {},
-  },
-}
-
-// Без метки и placeholder
-export const Minimal: Story = {
-  args: {
-    value: '',
-    onChange: () => {},
+    name: 'full-props-input',
+    type: 'text',
+    placeholder: 'Заполните все поля',
+    label: 'Полное поле ввода',
+    icon: 'edit',
+    error: 'Проверьте правильность ввода',
+    maxLength: 50,
+    value: 'Предварительно заполненный текст',
   },
 }
