@@ -1,5 +1,16 @@
+import { Catalog, NotFound } from '@/pages'
+import { Route, Routes } from 'react-router-dom'
+
 import './App.css'
+import { AppLayout } from './AppLayout'
 
 export const App = () => {
-  return <h1>Skill Swap App.tsx</h1>
+  return (
+    <Routes>
+      <Route path="/" element={<AppLayout />}>
+        <Route path="*" element={<NotFound />} />
+        <Route index element={<Catalog />} />
+      </Route>
+    </Routes>
+  )
 }
