@@ -9,9 +9,18 @@ interface TextProps {
   variant?: TextVariant
   color?: string
   as?: ElementType
+  style?: React.CSSProperties // Дополнительные CSS-свойства
+  className?: string // Дополнительные классы CSS
 }
 
-export const Text = ({ children, variant = 'Body', color, as }: TextProps) => {
+export const Text = ({
+  children,
+  variant = 'Body',
+  color,
+  as,
+  style: customStyle,
+  className,
+}: TextProps) => {
   // Определяем тег, который будет использоваться для рендеринга
   const getTagVariant = (tag: TextVariant): ElementType => {
     switch (tag) {
@@ -32,16 +41,19 @@ export const Text = ({ children, variant = 'Body', color, as }: TextProps) => {
 
   const TagElement = as ?? getTagVariant(variant)
 
+  // Корректное объединение классов: берём базовый класс из CSS-модулей, добавляем пользовательский className
   const baseClassName = styles[variant] || ''
+  const mergedClassName = [baseClassName, className].filter(Boolean).join(' ')
 
-  const colorType = (): React.CSSProperties => {
-    return { color: color }
+  // Объединение стилей: приоритет — цвет (если задан), затем кастомные стили
+  const colorStyle: React.CSSProperties | undefined = color ? { color } : undefined
+  const mergedStyles = {
+    ...colorStyle,
+    ...customStyle,
   }
 
-  const colorStyle: React.CSSProperties | undefined = color ? colorType() : undefined
-
   return (
-    <TagElement className={baseClassName} style={colorStyle}>
+    <TagElement className={mergedClassName} style={mergedStyles}>
       {children}
     </TagElement>
   )

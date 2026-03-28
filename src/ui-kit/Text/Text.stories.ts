@@ -29,6 +29,14 @@ const meta = {
       control: 'text',
       description: 'Любой строковый тег, помимо h1-h4 и p',
     },
+    style: {
+      control: 'text',
+      description: 'Добавление дополнительных CSS-свойств',
+    },
+    className: {
+      control: 'text',
+      description: 'Добавление дополнительных классов',
+    },
   },
 } satisfies Meta<typeof Text>
 
@@ -130,12 +138,13 @@ export const MixedVariant: Story = {
     as: 'span',
     variant: 'Body',
     color: 'var(--bg)',
+    style: { fontSize: '24px' },
   },
   parameters: {
     docs: {
       description: {
         story:
-          'Пример, когда создается тег "span" со стилями из variant="Body" и новым цветом текста',
+          'Пример, когда создается тег "span" со стилями из variant="Body", новым цветом текста и новымы размером шрифта',
       },
     },
   },
