@@ -1,5 +1,17 @@
+import { TextArea } from '@/ui-kit'
+
 import './App.css'
 
 export const App = () => {
-  return <h1>Skill Swap App.tsx</h1>
+  return (
+    <TextArea
+      onChange={() => {}}
+      disabled={true}
+      label={'Описание'}
+      error={'Прекрасная история'}
+      placeholder={'Введите описание'}
+      icon={'edit'}
+    />
+  )
+  /*<h1>Skill Swap App.tsx</h1>*/
 }

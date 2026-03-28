@@ -1,0 +1,92 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.label {
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.textContainer {
+  position: relative;
+  display: inline-block;
+  width: 460px;
+  height: 120px;
+}
+
+.textArea {
+  width: 100%;
+  height: 100%;
+  padding: 12px 20px;
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 24px;
+  resize: vertical;
+  border: 1px solid var(--border-input-main);
+  border-radius: 12px;
+}
+
+.textArea:focus,
+.button:focus {
+  outline: none;
+  border-width: 2px;
+}
+
+.textArea.error {
+  border-color: var(--color-error);
+}
+
+.textArea::placeholder {
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--color-placeholder);
+  letter-spacing: 0.32px;
+}
+
+.disabled {
+  cursor: not-allowed;
+  background-color: var(--color-input-disabled);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.button {
+  position: absolute;
+  top: 23.5px;
+  right: 20px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  cursor: pointer;
+  background: var(--bg);
+  border: 0;
+  transition: opacity 0.2s ease;
+}
+
+.button:active {
+  opacity: 0.7;
+  transform: scale(0.95);
+}
+
+.span {
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+}
+
+.error {
+  color: var(--color-error);
+}
