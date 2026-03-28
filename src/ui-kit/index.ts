@@ -1,4 +1,5 @@
 export * from './Icon/Icon'
 export { Logo } from './Logo/Logo'
 export { Badge } from './Badge/Badge'
+export { Checkbox } from './Checkbox/Checkbox'
 export { Avatar } from './Avatar/Avatar'
