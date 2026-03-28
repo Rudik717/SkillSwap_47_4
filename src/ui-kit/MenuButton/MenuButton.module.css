@@ -8,9 +8,15 @@
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     line-height: 24px;
-    color: #000000;
+    letter-spacing: 0.02em;
 }
 
 .text {
     white-space: nowrap;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    display: block;
 }

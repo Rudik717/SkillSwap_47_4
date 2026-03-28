@@ -1,18 +1,31 @@
-import { Icon } from '@/ui-kit'
+import arrowIcon from '@/assets/svg/arrow-down.svg'
 
 import styles from './MenuButton.module.css'
 
 interface MenuButtonProps {
   children: string
   onPress?: () => void
+  color?: string // цвет текста
+  iconColor?: 'original' | 'black' | 'text' // управление цветом иконки
 }
 
-export const MenuButton = ({ children, onPress }: MenuButtonProps) => {
+export const MenuButton = ({
+  children,
+  onPress,
+  color = '#000000',
+  iconColor = 'black',
+}: MenuButtonProps) => {
+  const iconClass =
+    iconColor === 'black'
+      ? styles.iconBlack
+      : iconColor === 'original'
+        ? styles.iconOriginal
+        : styles.iconText
+
   return (
-    <button className={styles.button} onClick={onPress}>
+    <button className={styles.button} onClick={onPress} style={{ color }}>
       <span className={styles.text}>{children}</span>
-      {/* FIXME: иконка arrow-down имеет серую обводку, которая не меняется через color. Если нужно чёрную — требуется заменить SVG на версию с currentColor */}
-      <Icon name="arrow-down" size={24} color="black" />
+      <img src={arrowIcon} alt="" className={`${styles.icon} ${iconClass}`} />
     </button>
   )
 }
