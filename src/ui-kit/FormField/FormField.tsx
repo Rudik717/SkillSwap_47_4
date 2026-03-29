@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Text } from '../Text/Text'
-import styles from './FormInput.module.css'
+import styles from './FormField.module.css'
 
 type Props = {
   id?: string

@@ -4,7 +4,7 @@ import React from 'react'
 import { FormField } from './FormField'
 
 const meta: Meta<typeof FormField> = {
-  title: 'UI-Kit/FormInput',
+  title: 'UI-Kit/FormField',
   component: FormField,
   tags: ['autodocs'],
 }
