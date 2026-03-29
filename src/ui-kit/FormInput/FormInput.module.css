@@ -1,8 +1,8 @@
 .wrapper {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 4px;
-  width: 100%;
 }
 
 .label {
@@ -12,17 +12,9 @@
 }
 
 .field {
-  width: 100%;
+  display: flex;
 }
 
 .error {
-  font-size: 12px;
-  line-height: 16px;
-  color: #bf3920;
-}
-
-.info {
-  font-size: 12px;
-  line-height: 16px;
-  color: #253017;
+  color: var(--text-error);
 }

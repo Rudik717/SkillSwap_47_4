@@ -1,25 +1,33 @@
 import React from 'react'
 
+import { Text } from '../Text/Text'
 import styles from './FormInput.module.css'
 
 type FormInputProps = {
+  id?: string
   label?: string
   error?: string
   info?: string
   children: React.ReactNode
 }
 
-export const FormInput = ({ label, error, info, children }: FormInputProps) => {
+export const FormInput = ({ id, label, error, info, children }: FormInputProps) => {
   return (
     <div className={styles.wrapper}>
-      {label && <label className={styles.label}>{label}</label>}
+      {label && (
+        <label className={styles.label} htmlFor={id}>
+          {label}
+        </label>
+      )}
 
       <div className={styles.field}>{children}</div>
 
       {error ? (
-        <span className={styles.error}>{error}</span>
+        <Text variant="Caption" className={styles.error} as="span">
+          {error}
+        </Text>
       ) : (
-        info && <span className={styles.info}>{info}</span>
+        info && <Text variant="Caption">{info}</Text>
       )}
     </div>
   )

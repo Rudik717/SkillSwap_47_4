@@ -4,8 +4,9 @@ import React from 'react'
 import { FormInput } from './FormInput'
 
 const meta: Meta<typeof FormInput> = {
-  title: 'UI/FormInput',
+  title: 'UI-Kit/FormInput',
   component: FormInput,
+  tags: ['autodocs'],
 }
 
 export default meta
@@ -30,5 +31,21 @@ export const WithError: Story = {
     children: React.createElement('input', {
       type: 'text',
     }),
+  },
+}
+
+export const TwoFields: Story = {
+  args: {},
+  render: () => {
+    return (
+      <div style={{ display: 'flex', gap: 20 }}>
+        <FormInput label="Эл. почта" error="Это поле не может быть пустым">
+          <input style={{ display: 'flex', flex: 1 }} />
+        </FormInput>
+        <FormInput label="Пароль" info="Пароль должен содержать не менее 8 символов">
+          <input style={{ display: 'flex', flex: 1 }} />
+        </FormInput>
+      </div>
+    )
   },
 }
