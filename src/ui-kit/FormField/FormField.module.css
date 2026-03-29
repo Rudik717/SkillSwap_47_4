@@ -1,11 +1,13 @@
 .wrapper {
   display: flex;
-  flex: 1;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
+  min-width: 206px;
+  max-width: 460px;
 }
 
 .label {
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;

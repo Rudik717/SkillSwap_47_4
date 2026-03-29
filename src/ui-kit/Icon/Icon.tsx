@@ -5,6 +5,7 @@ import Calendar from '@/assets/svg/calendar.svg?react'
 import Clock from '@/assets/svg/clock.svg?react'
 import Cross from '@/assets/svg/cross.svg?react'
 import Edit from '@/assets/svg/edit.svg?react'
+import EyeSlash from '@/assets/svg/eye-slash.svg?react'
 import Eye from '@/assets/svg/eye.svg?react'
 import GalleryAdd from '@/assets/svg/gallery-add.svg?react'
 import Idea from '@/assets/svg/idea.svg?react'
@@ -43,6 +44,7 @@ type Props = {
     | 'share'
     | 'sort'
     | 'user'
+    | 'eye-slash'
   color?: string
   size?: number
 }
@@ -68,6 +70,7 @@ const icons = {
   share: Share,
   sort: Sort,
   user: User,
+  'eye-slash': EyeSlash,
 }
 
 type IconParam = {

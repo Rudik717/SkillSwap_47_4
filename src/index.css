@@ -48,11 +48,15 @@
 
 :root {
   --text: rgb(37 48 23);
-  --text-error: #bf3920;
+  --text-error: rgb(191 57 32);
   --bg: rgb(249 250 247);
   --sans: 'Jost', system-ui, 'Segoe UI', 'Roboto', sans-serif;
   --heading: 'Jost', system-ui, 'Segoe UI', 'Roboto', sans-serif;
   --mono: ui-monospace, consolas, monospace;
+  --border-input-main: rgb(105 115 93);
+  --color-placeholder: rgb(105 115 93);
+  --color-input-disabled: rgb(225 225 225);
+  --color-caret: rgb(80 136 38);
 
   font: 18px / 145% var(--sans);
   font-synthesis: none;
