@@ -5,6 +5,7 @@ import { Button } from './Button'
 const meta = {
   title: 'UI-Kit/Button',
   component: Button,
+  tags: ['autodocs'], // добавлено для авто-документации в Storybook
 } satisfies Meta<typeof Button>
 
 export default meta
