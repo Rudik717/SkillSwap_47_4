@@ -1,16 +1,15 @@
 import { Icon } from '@/ui-kit'
+import type { ComponentProps, ReactNode } from 'react'
 
 import styles from './Button.module.css'
-
-// импорт компонента Icon
 
 interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'tertiary'
   disabled?: boolean
   onClick?: () => void
-  iconLeft?: React.ComponentProps<typeof Icon>['name'] // тип — название иконки из Icon
-  iconRight?: React.ComponentProps<typeof Icon>['name'] // тип — название иконки из Icon
-  children: React.ReactNode
+  iconLeft?: ComponentProps<typeof Icon>['name'] // тип — название иконки из Icon
+  iconRight?: ComponentProps<typeof Icon>['name'] // тип — название иконки из Icon
+  children: ReactNode
 }
 
 export const Button = ({
