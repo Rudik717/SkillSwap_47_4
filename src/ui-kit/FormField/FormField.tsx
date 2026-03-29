@@ -3,7 +3,7 @@ import React from 'react'
 import { Text } from '../Text/Text'
 import styles from './FormInput.module.css'
 
-type FormInputProps = {
+type Props = {
   id?: string
   label?: string
   error?: string
@@ -11,7 +11,7 @@ type FormInputProps = {
   children: React.ReactNode
 }
 
-export const FormInput = ({ id, label, error, info, children }: FormInputProps) => {
+export const FormField = ({ id, label, error, info, children }: Props) => {
   return (
     <div className={styles.wrapper}>
       {label && (

@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import React from 'react'
 
-import { FormInput } from './FormInput'
+import { FormField } from './FormField'
 
-const meta: Meta<typeof FormInput> = {
+const meta: Meta<typeof FormField> = {
   title: 'UI-Kit/FormInput',
-  component: FormInput,
+  component: FormField,
   tags: ['autodocs'],
 }
 
 export default meta
 
-type Story = StoryObj<typeof FormInput>
+type Story = StoryObj<typeof FormField>
 
 export const Default: Story = {
   args: {
@@ -39,12 +39,12 @@ export const TwoFields: Story = {
   render: () => {
     return (
       <div style={{ display: 'flex', gap: 20 }}>
-        <FormInput label="Эл. почта" error="Это поле не может быть пустым">
+        <FormField label="Эл. почта" error="Это поле не может быть пустым">
           <input style={{ display: 'flex', flex: 1 }} />
-        </FormInput>
-        <FormInput label="Пароль" info="Пароль должен содержать не менее 8 символов">
+        </FormField>
+        <FormField label="Пароль" info="Пароль должен содержать не менее 8 символов">
           <input style={{ display: 'flex', flex: 1 }} />
-        </FormInput>
+        </FormField>
       </div>
     )
   },
