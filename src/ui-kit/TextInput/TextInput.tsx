@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Icon } from '../Icon/Icon'
 import styles from './TextInput.module.css'
@@ -33,8 +33,21 @@ export const TextInput = ({
   onIconClick,
   ...other
 }: TextInputProps) => {
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false)
   const [currentType, setCurrentType] = useState(type)
+
+  // Состояние для управления доступностью поля ввода
+  const [isInputDisabled, setIsInputDisabled] = useState<boolean>(false)
+
+  useEffect(() => {
+    setIsPasswordVisible(true)
+
+    if (!icon) {
+      setIsInputDisabled(false)
+    } else if (icon !== 'eye') {
+      setIsInputDisabled(true)
+    }
+  }, [icon])
 
   const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value
@@ -47,7 +60,14 @@ export const TextInput = ({
     setIsPasswordVisible(newVisibility)
     setCurrentType(newVisibility ? 'text' : 'password')
 
-    // Вызываем внешний обработчик, если он передан
+    if (onIconClick) {
+      onIconClick()
+    }
+  }
+
+  const handleIconClick = () => {
+    setIsInputDisabled(false)
+
     if (onIconClick) {
       onIconClick()
     }
@@ -73,10 +93,13 @@ export const TextInput = ({
       iconName: 'edit',
     },
     calendar: {
+      //Пока не уверена, что календарь тут нужен
       ariaLabel: 'Календарь',
       iconName: 'calendar',
     },
   } as const
+
+  const styleButton = (): string => (disabled ? styles.disabled : '')
 
   // Рендеринг иконки, если она указана
   const renderIcon = (): React.ReactNode => {
@@ -84,15 +107,13 @@ export const TextInput = ({
 
     const { ariaLabel, iconName } = iconConfig[icon]
 
-    const styleButton = (): string => (disabled ? styles.disabled : '')
-
     return (
       /*TODO: Заменить тег button на компонент Button и перепроверить стили*/
       <button
         type="button"
         disabled={disabled}
         className={`${styles.button} ${styleButton()}`}
-        onClick={icon === 'eye' ? handleEyeClick : onIconClick}
+        onClick={icon === 'eye' ? handleEyeClick : handleIconClick}
         aria-label={ariaLabel}
       >
         <Icon size={24} name={iconName} />
@@ -114,7 +135,7 @@ export const TextInput = ({
           id={name}
           value={value}
           placeholder={placeholder}
-          disabled={disabled}
+          disabled={disabled || isInputDisabled}
           maxLength={maxLength}
           className={inputClasses}
           onChange={handleChangeInput}

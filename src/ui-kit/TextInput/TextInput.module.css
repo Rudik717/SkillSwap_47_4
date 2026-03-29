@@ -16,9 +16,12 @@
 
 .input {
   width: 100%;
-  padding: 12px 20px;
+  padding: 12px 44px 12px 20px;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: inherit;
   caret-color: var(--color-caret);
-  outline: none;
   border: 1px solid var(--border-input-main);
   border-radius: 12px;
 }
@@ -58,11 +61,12 @@ input::placeholder {
   cursor: pointer;
   background: var(--bg);
   border: 0;
+  opacity: 0.7;
   transition: opacity 0.2s ease;
 }
 
 .button:active {
-  opacity: 0.7;
+  opacity: 0.5;
   transform: scale(0.95);
 }
 
@@ -79,13 +83,6 @@ input::placeholder {
 }
 
 .disabled {
-  cursor: not-allowed;
-  background-color: var(--color-input-disabled);
-  opacity: 0.7;
-}
-
-.button__disabled {
-  cursor: not-allowed;
   background-color: var(--color-input-disabled);
   opacity: 0.7;
 }

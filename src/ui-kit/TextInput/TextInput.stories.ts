@@ -53,17 +53,6 @@ export const Disabled: Story = {
   },
 }
 
-// Поле с иконкой «глаз» (для пароля)
-export const WithEyeIcon: Story = {
-  args: {
-    name: 'password-input',
-    type: 'password',
-    placeholder: 'Введите пароль',
-    label: 'Пароль',
-    icon: 'eye',
-  },
-}
-
 // Поле с иконкой «редактировать»
 export const WithEditIcon: Story = {
   args: {
@@ -72,18 +61,6 @@ export const WithEditIcon: Story = {
     placeholder: 'Редактируемое поле',
     label: 'Редактируемое поле',
     icon: 'edit',
-  },
-}
-
-// Пароль с возможностью показать/скрыть
-export const PasswordWithToggle: Story = {
-  args: {
-    name: 'password-toggle',
-    type: 'password',
-    placeholder: '••••••••',
-    label: 'Пароль',
-    icon: 'eye',
-    value: 'mysecretpassword',
   },
 }
 
