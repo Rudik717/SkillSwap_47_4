@@ -1,17 +1,16 @@
-import { TextArea } from '@/ui-kit'
+import { Catalog, NotFound } from '@/pages'
+import { Route, Routes } from 'react-router-dom'
 
 import './App.css'
+import { AppLayout } from './AppLayout'
 
 export const App = () => {
   return (
-    <TextArea
-      onChange={() => {}}
-      disabled={false}
-      label={'Описание'}
-      //error={'Прекрасная история'}
-      placeholder={'Введите описание'}
-      icon={'edit'}
-    />
+    <Routes>
+      <Route path="/" element={<AppLayout />}>
+        <Route path="*" element={<NotFound />} />
+        <Route index element={<Catalog />} />
+      </Route>
+    </Routes>
   )
-  /*<h1>Skill Swap App.tsx</h1>*/
 }
