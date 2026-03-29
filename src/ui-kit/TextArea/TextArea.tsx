@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 
+import { FormField } from '../FormField/FormField'
 import { Icon } from '../Icon/Icon'
 import styles from './TextArea.module.css'
 
 interface TextAreaProps {
+  id?: string
   name?: string
   value?: string
   label?: string
@@ -18,6 +20,7 @@ interface TextAreaProps {
 }
 
 export const TextArea = ({
+  id,
   value,
   label,
   icon,
@@ -68,27 +71,17 @@ export const TextArea = ({
   }
 
   return (
-    <div className={styles.container}>
-      {label && (
-        <label className={styles.label} htmlFor={`textarea-${label}`}>
-          {label}
-        </label>
-      )}
-      <div className={styles.textContainer}>
-        <textarea
-          id={`textarea-${label}`}
-          value={value}
-          placeholder={placeholder}
-          //disabled={disabled}
-          disabled={isTextAreaDisabled}
-          maxLength={maxLength}
-          className={`${textAreaClasses} ${styleButton()}`}
-          onChange={handleChange}
-        />
-        {renderIcon()}
-      </div>
-      {error && <span className={`${styles.span} ${styles.error}`}>{error}</span>}
-      {info && <span className={styles.span}>{info}</span>}
-    </div>
+    <FormField label={label} error={error} info={info}>
+      <textarea
+        id={id}
+        value={value}
+        placeholder={placeholder}
+        disabled={isTextAreaDisabled}
+        maxLength={maxLength}
+        className={`${textAreaClasses} ${styleButton()}`}
+        onChange={handleChange}
+      />
+      {renderIcon()}
+    </FormField>
   )
 }

@@ -17,11 +17,6 @@ const meta: Meta<typeof TextArea> = {
       control: 'text',
       description: 'Текущее значение textarea',
     },
-    icon: {
-      control: 'select',
-      options: [undefined, 'edit', 'clear', 'copy', 'emoji'],
-      description: 'Имя иконки для отображения справа',
-    },
     error: {
       control: 'text',
       description: 'Сообщение об ошибке (отображается красным)',
