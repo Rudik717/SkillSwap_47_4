@@ -1,0 +1,35 @@
+/* Стили для компонента Option */
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-color);
+}
+
+.label {
+  margin-left: 8px;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--text);
+  transition: color 0.3s ease;
+}
+
+.label:hover {
+  color: var(--accent-color);
+  cursor: pointer;
+}
+
+/* Стили для компонента RadioGroup */
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
