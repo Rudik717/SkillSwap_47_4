@@ -1,0 +1,74 @@
+/* Группа радио-кнопок — вертикальный список */
+.group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Строка: радио + текст */
+.label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+/* Скрываем нативный input */
+.radio {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Внешний контейнер для кастомной радиокнопки 24×24 */
+.radioCustom {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* Внешний круг 20×20, рамка чёрная */
+.radioOuter {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(0, 0, 0, 1);
+    background-color: transparent;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    box-sizing: border-box;
+}
+
+/* Внутренний зелёный кружок 10×10 (появляется при checked) */
+.radioInner {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: transparent;
+    position: absolute;
+    top: 7px;
+    left: 7px;
+}
+
+/* Стили для выбранного состояния */
+.radio:checked+.radioCustom .radioOuter {
+    border-color: rgba(80, 136, 38, 1);
+}
+
+.radio:checked+.radioCustom .radioInner {
+    background-color: rgba(80, 136, 38, 1);
+}
+
+/* Текст радиокнопки */
+.labelText {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #000000;
+}
