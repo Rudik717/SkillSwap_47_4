@@ -1,5 +1,6 @@
 /* Контейнер для всей строки чекбокса: иконка + текст */
 .label {
+
     display: inline-flex;
     /* выстраиваем иконку и текст в строку */
     align-items: center;
@@ -12,15 +13,25 @@
     font-size: 16px;
     line-height: 24px;
     color: #000000;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: #000;
+  cursor: pointer;
+
 }
 
 /* Скрываем нативный чекбокс, оставляем только кастомную иконку */
 .input {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
 }
+
 
 /* Иконка чекбокса — 24×24, как в макете */
 .icon {
@@ -32,4 +43,75 @@
 /* Текст чекбокса — запрещаем перенос на новую строку */
 .text {
     white-space: nowrap;
+}
+
+.checkbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.inner {
+  position: relative;
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+}
+
+.unchecked {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  border: 1px solid #000;
+  border-radius: 6px;
+}
+
+.checked {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: rgb(171 210 122 / 100%);
+  border-radius: 6px;
+}
+
+.checked::after {
+  font-size: 14px;
+  line-height: 1;
+  color: white;
+  content: '✓';
+}
+
+.indeterminate {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: rgb(171 210 122 / 100%);
+  border-radius: 6px;
+}
+
+.indeterminate::after {
+  position: absolute;
+  width: 9.5px;
+  height: 1.5px;
+  content: '';
+  background-color: white;
+  border-radius: 1px;
 }

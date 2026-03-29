@@ -1,22 +1,22 @@
 .button {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: 0.02em;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  background: none;
+  border: none;
 }
 
 .text {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 .icon {
-    width: 24px;
-    height: 24px;
-    display: block;
+  display: block;
+  width: 24px;
+  height: 24px;
 }
