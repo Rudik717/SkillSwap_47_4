@@ -1,6 +1,5 @@
 export * from './Icon/Icon'
 export { Logo } from './Logo/Logo'
-export { Badge } from './Badge/Badge'
 export { Avatar } from './Avatar/Avatar'
 export { MenuButton } from './MenuButton/MenuButton'
 export { Text } from './Text/Text'
