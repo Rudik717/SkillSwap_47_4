@@ -39,7 +39,7 @@ export const Focus: Story = {
 
 export const Typing: Story = {
   render: () => {
-    const [value, setValue] = useState('Rea')
+    const [value, setValue] = useState('')
     const inputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
@@ -55,7 +55,7 @@ export const Typing: Story = {
 
 export const Filled: Story = {
   render: () => {
-    const [value, setValue] = useState('React Developer')
+    const [value, setValue] = useState('')
     return <SearchInput value={value} onChange={setValue} />
   },
 }
