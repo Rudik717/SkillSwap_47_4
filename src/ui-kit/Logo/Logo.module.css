@@ -1,30 +1,30 @@
 .logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 
 .circle {
-    width: 40px;
-    height: 40px;
-    background-color: rgba(171, 210, 122, 1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: rgb(171 210 122 / 100%);
+  border-radius: 50%;
 }
 
 .star {
-    width: 20px;
-    height: 20px;
-    display: block;
+  display: block;
+  width: 20px;
+  height: 20px;
 }
 
 .text {
-    font-family: 'Jost', sans-serif;
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 32px;
-    letter-spacing: -0.264px;
-    color: #1a1a1a;
+  font-family: Jost, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  color: #1a1a1a;
+  letter-spacing: -0.264px;
 }

@@ -1,3 +1,7 @@
 export * from './Icon/Icon'
 export { Logo } from './Logo/Logo'
 export { Button } from './Button/Button'
+export { Badge } from './Badge/Badge'
+export { Avatar } from './Avatar/Avatar'
+export { Text } from './Text/Text'
+export { Checkbox } from './Checkbox/Checkbox'
