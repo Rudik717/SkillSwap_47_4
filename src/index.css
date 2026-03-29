@@ -77,13 +77,20 @@
 
 #root {
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  width: 1126px;
-  max-width: 100%;
-  min-height: 100svh;
-  margin: 0 auto;
-  text-align: center;
+
+  /* display: flex; */
+
+  /* flex-direction: column; */
+
+  /* width: 1126px; */
+
+  /* max-width: 100%; */
+
+  /* min-height: 100svh; */
+
+  /* margin: 0 auto; */
+
+  /* text-align: center; */
 }
 
 body,
