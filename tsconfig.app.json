@@ -40,6 +40,7 @@
     "./vite.config.ts",
     "./vitest.shims.d.ts",
     "./.storybook/*.ts",
-    "./commitlint.config.js"
+    "./commitlint.config.js",
+    "./.prettierrc.js"
   ]
 }
