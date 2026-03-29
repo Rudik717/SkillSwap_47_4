@@ -2,8 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { TextArea } from './TextArea'
 
-type Story = StoryObj<typeof TextArea>
-
 const meta: Meta<typeof TextArea> = {
   title: 'UI-Kit/TextArea',
   component: TextArea,
@@ -23,7 +21,7 @@ const meta: Meta<typeof TextArea> = {
     },
     info: {
       control: 'text',
-      description: 'Информационная подсказка (отображается серым)',
+      description: 'Информационная подсказка',
     },
     placeholder: {
       control: 'text',
@@ -45,25 +43,23 @@ const meta: Meta<typeof TextArea> = {
       action: 'icon clicked',
       description: 'Обработчик клика по иконке',
     },
+    icon: {
+      control: 'select',
+      options: ['edit'],
+      description: 'Кнопка для редактирования',
+    },
   },
 }
 
 export default meta
+
+type Story = StoryObj<typeof TextArea>
 
 // Базовое использование без дополнительных опций
 export const Default: Story = {
   args: {
     label: 'Описание',
     placeholder: 'Введите текст описания...',
-  },
-}
-
-// С иконкой «edit»
-export const WithEditIcon: Story = {
-  args: {
-    label: 'Редактировать заметку',
-    placeholder: 'Начните вводить текст...',
-    icon: 'edit',
   },
 }
 
@@ -110,21 +106,9 @@ export const LongText: Story = {
   args: {
     label: 'Длинный текст',
     value: `Это пример длинного текста в textarea.
-Он содержит несколько строк и демонстрирует, как компонент обрабатывает многострочный ввод.
-Вы можете прокручивать содержимое внутри поля ввода.
-Попробуйте изменить текст или нажать на иконку, если она будет добавлена.`,
+    Он содержит несколько строк и демонстрирует, как компонент обрабатывает многострочный ввод.
+    Вы можете прокручивать содержимое внутри поля ввода.
+    Попробуйте изменить текст или нажать на иконку, если она будет добавлена.`,
     placeholder: 'Многострочный ввод...',
-  },
-}
-
-// Полный набор свойств
-export const FullProps: Story = {
-  args: {
-    label: 'Полное поле ввода',
-    value: 'Предварительно заполненный текст',
-    placeholder: 'Заполните все поля формы',
-    error: 'Нарушены правила ввода',
-    icon: 'edit',
-    maxLength: 300,
   },
 }

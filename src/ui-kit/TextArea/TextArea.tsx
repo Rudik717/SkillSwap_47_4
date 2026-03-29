@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { FormField } from '../FormField/FormField'
 import { Icon } from '../Icon/Icon'
@@ -20,7 +20,6 @@ interface TextAreaProps {
 }
 
 export const TextArea = ({
-  id,
   value,
   label,
   icon,
@@ -34,6 +33,16 @@ export const TextArea = ({
 }: TextAreaProps) => {
   // Состояние для управления доступностью поля ввода
   const [isTextAreaDisabled, setIsTextAreaDisabled] = useState(true)
+
+  useEffect(() => {
+    setIsTextAreaDisabled(true)
+
+    if (!icon) {
+      setIsTextAreaDisabled(false)
+    } else if (icon !== 'eye') {
+      setIsTextAreaDisabled(true)
+    }
+  }, [icon])
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = event.target.value
@@ -49,7 +58,7 @@ export const TextArea = ({
 
   // Сборка классов для textarea
   const textAreaClasses = [styles.textArea, error ? styles.error : ''].filter(Boolean).join(' ')
-
+  const textareaStyle = { height: icon ? '120px' : 'auto' }
   const styleButton = (): string => (disabled ? styles.disabled : '')
 
   // Рендеринг иконки, если она указана
@@ -72,16 +81,19 @@ export const TextArea = ({
 
   return (
     <FormField label={label} error={error} info={info}>
-      <textarea
-        id={id}
-        value={value}
-        placeholder={placeholder}
-        disabled={isTextAreaDisabled}
-        maxLength={maxLength}
-        className={`${textAreaClasses} ${styleButton()}`}
-        onChange={handleChange}
-      />
-      {renderIcon()}
+      <div className={styles.textContainer} style={textareaStyle}>
+        <textarea
+          name={value}
+          value={value}
+          placeholder={placeholder}
+          disabled={disabled || isTextAreaDisabled}
+          maxLength={maxLength}
+          className={`${textAreaClasses} ${styleButton()}`}
+          onChange={handleChange}
+          style={textareaStyle}
+        />
+        {renderIcon()}
+      </div>
     </FormField>
   )
 }
