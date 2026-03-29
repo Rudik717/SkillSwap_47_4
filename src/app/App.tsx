@@ -6,9 +6,9 @@ export const App = () => {
   return (
     <TextArea
       onChange={() => {}}
-      disabled={true}
+      disabled={false}
       label={'Описание'}
-      error={'Прекрасная история'}
+      //error={'Прекрасная история'}
       placeholder={'Введите описание'}
       icon={'edit'}
     />

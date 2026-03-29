@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Icon } from '../Icon/Icon'
 import styles from './TextArea.module.css'
@@ -29,25 +29,25 @@ export const TextArea = ({
   onChange,
   onIconClick,
 }: TextAreaProps) => {
+  // Состояние для управления доступностью поля ввода
+  const [isTextAreaDisabled, setIsTextAreaDisabled] = useState(true)
+
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = event.target.value
     onChange(newValue)
   }
 
   const handleIconClick = () => {
+    setIsTextAreaDisabled(false)
     if (onIconClick) {
       onIconClick()
     }
   }
 
   // Сборка классов для textarea
-  const textAreaClasses = [
-    styles.textArea,
-    disabled ? styles.disabled : '',
-    error ? styles.error : '',
-  ]
-    .filter(Boolean)
-    .join(' ')
+  const textAreaClasses = [styles.textArea, error ? styles.error : ''].filter(Boolean).join(' ')
+
+  const styleButton = (): string => (disabled ? styles.disabled : '')
 
   // Рендеринг иконки, если она указана
   const renderIcon = (): React.ReactNode => {
@@ -57,7 +57,7 @@ export const TextArea = ({
       /*TODO: Заменить тег button на компонент Button и перепроверить стили*/
       <button
         type="button"
-        className={styles.button}
+        className={`${styles.button} ${styleButton()}`}
         onClick={handleIconClick}
         aria-label={`Иконка ${icon}`}
         disabled={disabled}
@@ -79,9 +79,10 @@ export const TextArea = ({
           id={`textarea-${label}`}
           value={value}
           placeholder={placeholder}
-          disabled={disabled}
+          //disabled={disabled}
+          disabled={isTextAreaDisabled}
           maxLength={maxLength}
-          className={textAreaClasses}
+          className={`${textAreaClasses} ${styleButton()}`}
           onChange={handleChange}
         />
         {renderIcon()}
