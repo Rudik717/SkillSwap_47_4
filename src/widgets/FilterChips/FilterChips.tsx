@@ -5,24 +5,24 @@ import styles from './FilterChips.module.css'
 interface ChipItem {
   id: string
   label: string
-  width: string
 }
 
 interface FilterChipsProps {
   chips: ChipItem[]
-  onRemove: (id: string) => void
+  onClick: (id: string) => void
 }
 
-export const FilterChips = ({ chips, onRemove }: FilterChipsProps) => {
-  if (chips.length === 0) return null
+export const FilterChips = ({ chips, onClick }: FilterChipsProps) => {
+  if (!chips.length) {
+    return null
+  }
 
   return (
     <div className={styles.container}>
       {chips.map((chip) => (
-        <div key={chip.id} className={styles.chipWrapper} style={{ width: chip.width }}>
-          <Button variant="tertiary" onClick={() => onRemove(chip.id)}>
-            <span className={styles.label}>{chip.label}</span>
-            <img src="/src/assets/svg/cross.svg" alt="cross" className={styles.icon} />
+        <div key={chip.id} className={styles.chipWrapper}>
+          <Button variant="tertiary" iconRight="cross" onClick={() => onClick(chip.id)}>
+            {chip.label}
           </Button>
         </div>
       ))}

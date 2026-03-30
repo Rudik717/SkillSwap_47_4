@@ -4,8 +4,10 @@ import { action } from 'storybook/actions'
 import { FilterChips } from './FilterChips'
 
 const mockChips = [
-  { id: '1', label: 'Хочу научиться', width: '201px' },
-  { id: '2', label: 'Английский', width: '173px' },
+  { id: '1', label: 'Хочу научиться' },
+  { id: '2', label: 'Английский' },
+  { id: '3', label: 'Иностранные языки' },
+  { id: '4', label: 'Дом и уют' },
 ]
 
 const meta: Meta<typeof FilterChips> = {
@@ -19,6 +21,6 @@ export default meta
 export const Default: StoryObj = {
   args: {
     chips: mockChips,
-    onRemove: action('remove chip'),
+    onClick: action('remove chip'),
   },
 }
