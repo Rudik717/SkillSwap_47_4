@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
+import { Button } from '../Button/Button'
 import { FormField } from '../FormField/FormField'
 import { Icon } from '../Icon/Icon'
 import styles from './TextArea.module.css'
@@ -67,15 +68,15 @@ export const TextArea = ({
 
     return (
       /*TODO: Заменить тег button на компонент Button и перепроверить стили*/
-      <button
-        type="button"
+      <Button
         className={`${styles.button} ${styleButton()}`}
         onClick={handleIconClick}
         aria-label={`Иконка ${icon}`}
         disabled={disabled}
+        variant="tertiary"
       >
         <Icon size={24} name={'edit'} />
-      </button>
+      </Button>
     )
   }
 
