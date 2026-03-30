@@ -1,14 +1,13 @@
+/* global setTimeout, clearTimeout */
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import SearchInput from './SearchInput'
 
 const meta: Meta<typeof SearchInput> = {
   title: 'UI-Kit/SearchInput',
   component: SearchInput,
-  parameters: {
-    layout: 'centered',
-  },
+  parameters: {},
   tags: ['autodocs'],
 }
 
@@ -25,31 +24,35 @@ export const Default: Story = {
 export const Focus: Story = {
   render: () => {
     const [value, setValue] = useState('')
-    const inputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
-      if (inputRef.current) {
-        inputRef.current.focus()
-      }
+      const timer = setTimeout(() => {
+        const input = document.querySelector('input')
+        if (input) {
+          input.focus()
+        }
+      }, 100)
+      return () => clearTimeout(timer)
     }, [])
 
-    return <SearchInput ref={inputRef} value={value} onChange={setValue} />
+    return <SearchInput value={value} onChange={setValue} />
   },
 }
 
 export const Typing: Story = {
   render: () => {
     const [value, setValue] = useState('')
-    const inputRef = useRef<HTMLInputElement>(null)
-
     useEffect(() => {
-      if (inputRef.current) {
-        inputRef.current.focus()
-        inputRef.current.setSelectionRange(value.length, value.length)
-      }
-    }, [value])
+      const timer = setTimeout(() => {
+        const input = document.querySelector('input')
+        if (input) {
+          input.focus()
+        }
+      }, 100)
+      return () => clearTimeout(timer)
+    }, [])
 
-    return <SearchInput ref={inputRef} value={value} onChange={setValue} />
+    return <SearchInput value={value} onChange={setValue} />
   },
 }
 
