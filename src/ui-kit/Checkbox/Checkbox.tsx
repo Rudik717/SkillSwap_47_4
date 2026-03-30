@@ -6,6 +6,7 @@ interface CheckboxProps {
   state?: CheckboxState
   onClick?: () => void
   children: string
+  key?: string
 }
 
 const icons = {

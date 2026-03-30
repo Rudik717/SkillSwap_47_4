@@ -53,6 +53,7 @@
   --sans: 'Jost', system-ui, 'Segoe UI', 'Roboto', sans-serif;
   --heading: 'Jost', system-ui, 'Segoe UI', 'Roboto', sans-serif;
   --mono: ui-monospace, consolas, monospace;
+  --skill-box-text-color: rgb(80 136 38);
 
   font: 18px / 145% var(--sans);
   font-synthesis: none;

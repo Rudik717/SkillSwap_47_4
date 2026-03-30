@@ -1,12 +1,12 @@
-import arrowIcon from '@/assets/svg/arrow-down.svg'
-
+//import arrowIcon from '@/assets/svg/arrow-down.svg'
 import styles from './MenuButton.module.css'
 
 interface MenuButtonProps {
-  children: string
+  children?: string
   onPress?: () => void
   color?: string // цвет текста
   iconColor?: 'original' | 'black' | 'text' // управление цветом иконки
+  arrowIcon?: string
 }
 
 export const MenuButton = ({
@@ -14,6 +14,7 @@ export const MenuButton = ({
   onPress,
   color = '#000000',
   iconColor = 'black',
+  arrowIcon,
 }: MenuButtonProps) => {
   const iconClass =
     iconColor === 'black'
