@@ -1,19 +1,22 @@
 import styles from './Checkbox.module.css'
 
+export type CheckboxState = 'unchecked' | 'checked' | 'indeterminate'
+
 interface CheckboxProps {
-  state?: 'unchecked' | 'checked' | 'indeterminate'
-  onPress?: () => void
+  state?: CheckboxState
+  onClick?: () => void
   children: string
 }
 
-export const Checkbox = ({ state = 'unchecked', onPress, children }: CheckboxProps) => {
+const icons = {
+  unchecked: '/src/assets/svg/checkbox-empty.svg',
+  checked: '/src/assets/svg/checkbox-done.svg',
+  indeterminate: '/src/assets/svg/checkbox-remove.svg',
+}
+
+export const Checkbox = ({ state = 'unchecked', onClick, children }: CheckboxProps) => {
   const isChecked = state === 'checked'
   const isIndeterminate = state === 'indeterminate'
-
-  let statusClass = ''
-  if (isChecked) statusClass = styles.checked
-  else if (isIndeterminate) statusClass = styles.indeterminate
-  else statusClass = styles.unchecked
 
   return (
     <label className={styles.label}>
@@ -22,13 +25,11 @@ export const Checkbox = ({ state = 'unchecked', onPress, children }: CheckboxPro
         className={styles.input}
         checked={isChecked}
         ref={(el) => {
-          if (el) el.indeterminate = isIndeterminate
+          if (el) el.indeterminate = isIndeterminate // для состояния indeterminate
         }}
-        onChange={onPress}
+        onChange={onClick}
       />
-      <div className={styles.checkbox}>
-        <div className={`${styles.inner} ${statusClass}`} />
-      </div>
+      <img src={icons[state]} alt="" className={styles.icon} />
       <span className={styles.text}>{children}</span>
     </label>
   )

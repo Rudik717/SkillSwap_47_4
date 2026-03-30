@@ -1,28 +1,22 @@
-.label {
+.button {
   display: inline-flex;
   gap: 8px;
   align-items: center;
   font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 24px;
-  color: #000;
+  letter-spacing: 0.02em;
   cursor: pointer;
-  user-select: none;
+  background: none;
+  border: none;
 }
 
-.input {
-  position: absolute;
-  width: 0;
-  height: 0;
-  opacity: 0;
+.text {
+  white-space: nowrap;
 }
 
 .icon {
   display: block;
   width: 24px;
   height: 24px;
-}
-
-.text {
-  white-space: nowrap;
 }

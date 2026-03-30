@@ -4,8 +4,9 @@ export default {
     'stylelint-config-standard-scss',
     'stylelint-config-recess-order',
   ],
-  plugins: ['stylelint-order'],
+  plugins: ['stylelint-order', '@stylistic/stylelint-plugin'],
   rules: {
+    '@stylistic/indentation': 2,
     'selector-class-pattern': null,
     'max-nesting-depth': 3,
     'no-descending-specificity': null,
