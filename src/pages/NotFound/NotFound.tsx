@@ -8,7 +8,7 @@ import { Button } from '@ui-kit/index'
 
 import styles from './NotFound.module.css'
 
-export const NotFound404: FC = () => {
+export const NotFound: FC = () => {
   const navigate = useNavigate()
 
   const handleClickButton = () => {

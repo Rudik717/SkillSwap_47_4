@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { MemoryRouter } from 'react-router-dom'
 
-import { NotFound404 } from './NotFound'
+import { NotFound } from './NotFound'
 
-const meta: Meta<typeof NotFound404> = {
-  title: 'Pages/NotFound404',
-  component: NotFound404,
+const meta: Meta<typeof NotFound> = {
+  title: 'Pages/NotFound',
+  component: NotFound,
   tags: ['autodocs'],
   decorators: [
     (Story) => (
