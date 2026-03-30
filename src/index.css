@@ -47,12 +47,17 @@
 }
 
 :root {
-  --text: rgb(37 48 23);
-  --text-error: #bf3920;
-  --bg: rgb(249 250 247);
   --sans: 'Jost', system-ui, 'Segoe UI', 'Roboto', sans-serif;
   --heading: 'Jost', system-ui, 'Segoe UI', 'Roboto', sans-serif;
   --mono: ui-monospace, consolas, monospace;
+  --text: rgb(37 48 23);
+  --text-error: #bf3920;
+  --bg: rgb(249 250 247);
+  --border-input-main: rgb(105 115 93);
+  --color-placeholder: rgb(105 115 93);
+  --color-input-disabled: rgb(225 225 225);
+  --color-error: rgb(191 57 32);
+  --color-caret: rgb(80 136 38);
   --accent-color: rgb(80 136 38);
   --category-business: #eee7f7;
   --category-business-hover: #e5ddf0;
@@ -94,20 +99,6 @@
 
 #root {
   box-sizing: border-box;
-
-  /* display: flex; */
-
-  /* flex-direction: column; */
-
-  /* width: 1126px; */
-
-  /* max-width: 100%; */
-
-  /* min-height: 100svh; */
-
-  /* margin: 0 auto; */
-
-  /* text-align: center; */
 }
 
 body,
