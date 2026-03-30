@@ -1,0 +1,49 @@
+import { type TCategory, type TSubcategory, getCategoriesApi } from '@/utils'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+
+type CategoriesState = {
+  categories: TCategory[]
+  subcategories: TSubcategory[]
+  loading: boolean
+  error: string | null
+}
+
+type RootState = {
+  categories: CategoriesState
+}
+
+const initialState: CategoriesState = {
+  categories: [],
+  subcategories: [],
+  loading: false,
+  error: null,
+}
+
+export const getCategories = createAsyncThunk('categories/getAll', async () => getCategoriesApi())
+
+const categoriesSlice = createSlice({
+  name: 'categories',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCategories.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(getCategories.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message || 'Unknown error'
+      })
+      .addCase(getCategories.fulfilled, (state, action) => {
+        state.loading = false
+        state.categories = action.payload.categories
+        state.subcategories = action.payload.subcategories
+      })
+  },
+})
+
+export const getAllCategories = (state: RootState) => state.categories.categories
+export const getAllSubcategories = (state: RootState) => state.categories.subcategories
+
+export const categoriesReducer = categoriesSlice.reducer

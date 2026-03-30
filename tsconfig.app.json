@@ -30,11 +30,14 @@
       "@app/*": ["src/app/*"],
       "@pages/*": ["src/pages/*"],
       "@ui-kit/*": ["src/ui-kit/*"],
+      "@widgets/*": ["src/widgets/*"],
+      "@store/*": ["src/store/*"],
       "@utils/*": ["src/utils/*"]
     }
   },
   "include": [
     "src/**/*",
+    "mock/**/*",
     "./eslint.config.js",
     "./stylelint.config.js",
     "./vite.config.ts",
