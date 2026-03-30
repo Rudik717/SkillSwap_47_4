@@ -1,4 +1,4 @@
-import { Catalog, NotFound } from '@/pages'
+import { Catalog, NotFound, ServerError } from '@/pages'
 import { Route, Routes } from 'react-router-dom'
 
 import './App.css'
@@ -10,6 +10,7 @@ export const App = () => {
       <Route path="/" element={<AppLayout />}>
         <Route path="*" element={<NotFound />} />
         <Route index element={<Catalog />} />
+        <Route path="server-error" element={<ServerError />} />
       </Route>
     </Routes>
   )
