@@ -1,0 +1,12 @@
+.userAvatar {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+}
+
+.userName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
