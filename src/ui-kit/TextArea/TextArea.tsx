@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
 
 import { Button } from '../Button/Button'
@@ -57,19 +58,16 @@ export const TextArea = ({
     }
   }
 
-  // Сборка классов для textarea
-  const textAreaClasses = [styles.textArea, error ? styles.error : ''].filter(Boolean).join(' ')
+  const buttonIconClass = clsx(styles.button, disabled && styles.disabled)
+  const textareaClass = clsx(styles.textArea, error && styles.error, disabled && styles.disabled)
   const textareaStyle = { height: icon ? '120px' : 'auto' }
-  const styleButton = (): string => (disabled ? styles.disabled : '')
 
-  // Рендеринг иконки, если она указана
   const renderIcon = (): React.ReactNode => {
     if (!icon) return null
 
     return (
-      /*TODO: Заменить тег button на компонент Button и перепроверить стили*/
       <Button
-        className={`${styles.button} ${styleButton()}`}
+        className={buttonIconClass}
         onClick={handleIconClick}
         aria-label={`Иконка ${icon}`}
         disabled={disabled}
@@ -89,7 +87,7 @@ export const TextArea = ({
           placeholder={placeholder}
           disabled={disabled || isTextAreaDisabled}
           maxLength={maxLength}
-          className={`${textAreaClasses} ${styleButton()}`}
+          className={textareaClass}
           onChange={handleChange}
           style={textareaStyle}
         />

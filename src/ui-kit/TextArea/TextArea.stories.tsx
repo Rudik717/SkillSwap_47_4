@@ -6,6 +6,13 @@ const meta: Meta<typeof TextArea> = {
   title: 'UI-Kit/TextArea',
   component: TextArea,
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <div style={{ width: '310px', padding: '8px', display: 'flex' }}>
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     label: {
       control: 'text',
