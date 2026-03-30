@@ -1,7 +1,0 @@
-.icon {
-  stroke: var(--text);
-}
-
-.icon[stroke='none'] {
-  stroke: none;
-}
