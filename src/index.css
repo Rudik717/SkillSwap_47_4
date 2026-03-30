@@ -53,6 +53,7 @@
   --sans: 'Jost', system-ui, 'Segoe UI', 'Roboto', sans-serif;
   --heading: 'Jost', system-ui, 'Segoe UI', 'Roboto', sans-serif;
   --mono: ui-monospace, consolas, monospace;
+  --accent-color: rgb(80 136 38);
   --category-business: #eee7f7;
   --category-business-hover: #e5ddf0;
   --category-creative: #f7e7f2;
