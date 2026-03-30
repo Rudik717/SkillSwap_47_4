@@ -98,3 +98,24 @@ export const FullProps: Story = {
     value: 'Предварительно заполненный текст',
   },
 }
+/*
+export const TwoButtons: Story = {
+  args: {
+    name: 'password',
+    type: 'password',
+    label: 'Пароль',
+    value: 'Введите пароль',
+    icon: 'eye',
+  },
+  render: () => {
+    return (
+        <TextInput onChange={() => {}}
+          type='text'
+          name='edit'
+          label='Описание'
+          placeholder='Введите текст'
+          disabled={false}
+          icon='edit' />
+    )
+  },
+}*/
