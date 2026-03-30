@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import styles from './RadioGroup.module.css'
 
 /**TODO: Перенести константы в отдельный файл */
-/*
-const OPTIONS_GENDER = [
+
+export const OPTIONS_GENDER = [
   {
     label: 'Не имеет значения',
     value: 'default',
@@ -19,7 +19,7 @@ const OPTIONS_GENDER = [
   },
 ]
 
-const OPTIONS_ROLE = [
+export const OPTIONS_ROLE = [
   {
     label: 'Всё',
     value: 'default',
@@ -33,7 +33,7 @@ const OPTIONS_ROLE = [
     value: 'can-teach',
   },
 ]
-*/
+
 type OptionType = {
   label: string
   value: string
