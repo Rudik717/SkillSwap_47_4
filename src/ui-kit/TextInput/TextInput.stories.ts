@@ -4,7 +4,7 @@ import { TextInput } from './TextInput'
 
 type Story = StoryObj<typeof TextInput>
 
-const meta: Meta<typeof TextInput> = {
+const meta = {
   title: 'UI-Kit/TextInput',
   component: TextInput,
   tags: ['autodocs'],
@@ -15,7 +15,7 @@ const meta: Meta<typeof TextInput> = {
     },
     icon: {
       control: 'select',
-      options: [undefined, 'eye', 'edit', 'calendar'],
+      options: ['eye', 'edit', 'calendar'],
     },
     disabled: {
       control: 'boolean',
@@ -27,7 +27,7 @@ const meta: Meta<typeof TextInput> = {
       action: 'icon clicked',
     },
   },
-}
+} satisfies Meta<typeof TextInput>
 
 export default meta
 
@@ -53,17 +53,6 @@ export const Disabled: Story = {
   },
 }
 
-// Поле с иконкой «редактировать»
-export const WithEditIcon: Story = {
-  args: {
-    name: 'edit-input',
-    type: 'text',
-    placeholder: 'Расскажите о себе',
-    label: 'Описание',
-    icon: 'edit',
-  },
-}
-
 // Длинный текст с ограничением длины
 export const WithMaxLength: Story = {
   args: {
@@ -79,7 +68,7 @@ export const WithMaxLength: Story = {
 export const WithPassord: Story = {
   args: {
     name: 'password',
-    type: 'text',
+    type: 'password',
     label: 'Пароль',
     value: 'Введите пароль',
     icon: 'eye',

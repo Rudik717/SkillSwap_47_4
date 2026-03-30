@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
+import { Button } from '../Button/Button'
 import { FormField } from '../FormField/FormField'
-import { Icon } from '../Icon/Icon'
 import styles from './TextInput.module.css'
 
 interface TextInputProps {
@@ -111,14 +111,14 @@ export const TextInput = ({
     const { ariaLabel, iconName } = iconConfig[icon]
 
     return (
-      <button
+      <Button
         disabled={disabled}
+        variant="tertiary"
+        iconLeft={iconName}
         className={`${styles.button} ${styleButton()}`}
         onClick={icon === 'eye' ? handleEyeClick : handleIconClick}
         aria-label={ariaLabel}
-      >
-        <Icon size={24} name={iconName} />
-      </button>
+      ></Button>
     )
   }
 
