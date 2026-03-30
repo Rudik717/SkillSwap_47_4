@@ -11,6 +11,7 @@ interface ButtonProps {
   iconRight?: ComponentProps<typeof Icon>['name'] // тип — название иконки из Icon
   children?: ReactNode
   className?: string
+  areaLabel?: string
 }
 
 export const Button = ({
@@ -21,12 +22,14 @@ export const Button = ({
   iconRight,
   children,
   className,
+  areaLabel,
 }: ButtonProps) => {
   return (
     <button
       className={`${styles.button} ${styles[variant]} ${className}`}
       disabled={disabled}
       onClick={onClick}
+      area-label={areaLabel}
     >
       {iconLeft && <Icon name={iconLeft} size={24} />}
       {children}
