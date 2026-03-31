@@ -1,12 +1,15 @@
-import arrowIcon from '@/assets/svg/arrow-down.svg'
+//import arrowIcon from '@/assets/svg/arrow-down.svg'
+import React from 'react'
 
 import styles from './MenuButton.module.css'
 
 interface MenuButtonProps {
-  children: string
+  children?: string
   onPress?: () => void
   color?: string // цвет текста
   iconColor?: 'original' | 'black' | 'text' // управление цветом иконки
+  arrowIcon?: string
+  style?: React.CSSProperties
 }
 
 export const MenuButton = ({
@@ -14,6 +17,8 @@ export const MenuButton = ({
   onPress,
   color = '#000000',
   iconColor = 'black',
+  arrowIcon,
+  style,
 }: MenuButtonProps) => {
   const iconClass =
     iconColor === 'black'
@@ -23,7 +28,7 @@ export const MenuButton = ({
         : styles.iconText
 
   return (
-    <button className={styles.button} onClick={onPress} style={{ color }}>
+    <button className={styles.button} onClick={onPress} style={{ color, ...style }}>
       <span className={styles.text}>{children}</span>
       <img src={arrowIcon} alt="" className={`${styles.icon} ${iconClass}`} />
     </button>
