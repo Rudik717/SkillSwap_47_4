@@ -1,0 +1,63 @@
+.header {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 36px;
+  background-color: var(--bg);
+}
+
+/* убрать потом будет SearchInput */
+.div {
+  flex: 1;
+  min-width: 527px;
+  height: 48px;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.header__anauth {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.header__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
+
+.header__nav {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.link {
+  display: flex;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.logo {
+  text-decoration: none;
+}
+
+.header__auth {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.auth__buttons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}

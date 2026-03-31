@@ -36,6 +36,7 @@ export default meta
 
 type Story = StoryObj<typeof UserAvatar>
 
+// С картинкой
 export const Default: Story = {
   args: {
     name: 'Котик',
@@ -91,6 +92,82 @@ export const LargeSize: Story = {
     docs: {
       description: {
         story: 'Увеличенный размер (64px)',
+      },
+    },
+  },
+}
+
+// Без картинки (серый кружок)
+export const WithoutImage: Story = {
+  args: {
+    name: 'Мария',
+    url: undefined,
+    size: 48,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Когда нет аватара — показывается серый кружок (48px)',
+      },
+    },
+  },
+}
+
+export const WithoutImageSmall: Story = {
+  args: {
+    name: 'Мария',
+    url: undefined,
+    size: 32,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Маленький серый кружок (32px)',
+      },
+    },
+  },
+}
+
+export const WithoutImageLarge: Story = {
+  args: {
+    name: 'Мария',
+    url: undefined,
+    size: 64,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Большой серый кружок (64px)',
+      },
+    },
+  },
+}
+
+export const WithoutName: Story = {
+  args: {
+    name: undefined,
+    url: 'https://i.pinimg.com/736x/b0/c7/18/b0c718ecc29d686e05d5f858f9ef79bb.jpg',
+    size: 48,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Если нет имени — показывается "Пользователь"',
+      },
+    },
+  },
+}
+
+export const WithoutNameAndImage: Story = {
+  args: {
+    name: undefined,
+    url: undefined,
+    size: 48,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Нет имени и нет аватарки — серый кружок и "Пользователь"',
       },
     },
   },
