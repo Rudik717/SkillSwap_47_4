@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import ReactSelect, { components } from 'react-select'
 
 import { Checkbox } from '../Checkbox/Checkbox'
@@ -21,6 +22,7 @@ type SelectProps = {
   placeholder?: string
   isSearchable?: boolean
   isMulti?: boolean
+  variant?: 'default' | 'calendar'
 }
 
 // Стрелка вниз
@@ -51,6 +53,7 @@ const CheckboxOption = (props: any) => {
 }
 
 export const Select = ({
+  variant = 'default',
   label,
   value,
   onChange,
@@ -62,9 +65,14 @@ export const Select = ({
   isSearchable = false,
   isMulti = false,
 }: SelectProps) => {
+  const [inputValue, setInputValue] = useState('')
+
   const selectComponents: any = {
     DropdownIndicator: CustomDropdownIndicator,
-    ClearIndicator: CustomClearIndicator,
+  }
+
+  if (!isMulti) {
+    selectComponents.ClearIndicator = CustomClearIndicator
   }
 
   if (isMulti) {
@@ -73,7 +81,7 @@ export const Select = ({
 
   return (
     <FormField label={label} error={error} info={info}>
-      <div className={`${styles.selectWrapper} ${error ? styles.error : ''}`}>
+      <div className={`${styles.selectWrapper} ${styles[variant]} ${error ? styles.error : ''}`}>
         <ReactSelect
           name={name}
           value={value}
@@ -81,10 +89,12 @@ export const Select = ({
           options={options}
           placeholder={placeholder}
           isSearchable={isSearchable}
-          isClearable
+          isClearable={!isMulti && !!inputValue}
           isMulti={isMulti}
           classNamePrefix="select"
           components={selectComponents}
+          inputValue={inputValue}
+          onInputChange={(text) => setInputValue(text)}
         />
       </div>
     </FormField>

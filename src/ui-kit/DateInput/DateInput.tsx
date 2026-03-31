@@ -1,5 +1,5 @@
 import { ru } from 'date-fns/locale'
-import React from 'react'
+import React, { useRef } from 'react'
 import { forwardRef, useEffect, useState } from 'react'
 import ReactDatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -7,7 +7,6 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { Button } from '../Button/Button'
 import { FormField } from '../FormField/FormField'
 import { Icon } from '../Icon/Icon'
-import { Select } from '../Select/Select'
 import styles from './DateInput.module.css'
 
 registerLocale('ru', ru)
@@ -54,37 +53,81 @@ export const DateInput = ({
     changeMonth: (month: number) => void
     changeYear: (year: number) => void
   }) => {
-    const monthOptions = Array.from({ length: 12 }, (_, i) => ({
-      label: new Date(0, i).toLocaleString('ru', { month: 'long' }),
-      value: i.toString(),
-    }))
+    const [openDropdown, setOpenDropdown] = useState<'month' | 'year' | null>(null)
 
-    const yearOptions = Array.from({ length: 10 }, (_, i) => {
-      const year = new Date().getFullYear() - 5 + i
-      return { label: year.toString(), value: year.toString() }
-    })
+    const months = Array.from({ length: 12 }, (_, i) =>
+      new Date(0, i).toLocaleString('ru', { month: 'long' })
+    )
+
+    const currentYear = new Date().getFullYear()
+    const minYear = currentYear - 100
+    const years = Array.from({ length: 101 }, (_, i) => minYear + i)
+
+    const yearListRef = useRef<HTMLDivElement | null>(null)
+
+    useEffect(() => {
+      if (openDropdown === 'year' && yearListRef.current) {
+        const index = years.indexOf(date.getFullYear())
+        const itemHeight = 32
+        yearListRef.current.scrollTop = index * itemHeight - 64
+      }
+    }, [openDropdown])
 
     return (
       <div className={styles.header}>
-        <Select
-          value={monthOptions[date.getMonth()]}
-          onChange={(option) => {
-            if (!option || Array.isArray(option)) return
-            changeMonth(Number(option.value))
-          }}
-          options={monthOptions}
-          isSearchable={false}
-        />
+        <div className={styles.dropdown}>
+          <div
+            className={`${styles.dropdownTrigger} ${openDropdown === 'month' ? styles.open : ''}`}
+            onClick={() => setOpenDropdown(openDropdown === 'month' ? null : 'month')}
+          >
+            {months[date.getMonth()]}
+            <Icon name="arrow-down" size={24} />
+          </div>
 
-        <Select
-          value={yearOptions.find((y) => y.value === date.getFullYear().toString()) ?? null}
-          onChange={(option) => {
-            if (!option || Array.isArray(option)) return
-            changeYear(Number(option.value))
-          }}
-          options={yearOptions}
-          isSearchable={false}
-        />
+          {openDropdown === 'month' && (
+            <div className={styles.dropdownMenu}>
+              {months.map((month, index) => (
+                <div
+                  key={month}
+                  className={`${styles.dropdownItem} ${date.getMonth() === index ? 'selected' : ''}`}
+                  onClick={() => {
+                    changeMonth(index)
+                    setOpenDropdown(null)
+                  }}
+                >
+                  {month}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className={styles.dropdown}>
+          <div
+            className={`${styles.dropdownTrigger} ${openDropdown === 'year' ? styles.open : ''}`}
+            onClick={() => setOpenDropdown(openDropdown === 'year' ? null : 'year')}
+          >
+            {date.getFullYear()}
+            <Icon name="arrow-down" size={24} />
+          </div>
+
+          {openDropdown === 'year' && (
+            <div className={styles.dropdownMenu} ref={yearListRef}>
+              {years.map((year) => (
+                <div
+                  key={year}
+                  className={`${styles.dropdownItem} ${date.getFullYear() === year ? 'selected' : ''}`}
+                  onClick={() => {
+                    changeYear(year)
+                    setOpenDropdown(null)
+                  }}
+                >
+                  {year}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     )
   }
@@ -105,8 +148,8 @@ export const DateInput = ({
         placeholder={placeholder}
         className={styles.input}
         ref={ref}
-        readOnly
         onFocus={onClick}
+        readOnly
       />
 
       <Icon name="calendar" size={24} color={'#253017'} />
@@ -167,7 +210,6 @@ export const DateInput = ({
           customInput={<CalendarInput />}
           open={open}
           onClickOutside={() => setOpen(false)}
-          onSelect={() => {}}
           onInputClick={() => setOpen(true)}
           renderCustomHeader={({ date, changeMonth, changeYear }) => (
             <CustomHeader date={date} changeMonth={changeMonth} changeYear={changeYear} />

@@ -20,12 +20,11 @@
 }
 
 .input {
-  width: 134px;
+  width: 100%;
   padding: 12px 0;
   font-family: Roboto, sans-serif;
   font-size: 16px;
   color: #253017;
-  cursor: pointer;
   outline: none;
   background: transparent;
   border: none;
@@ -57,7 +56,6 @@
 }
 
 /* Header календаря */
-
 :global(.react-datepicker__header) {
   padding: 0;
   background: transparent;
@@ -67,6 +65,62 @@
 .header {
   display: flex;
   text-transform: capitalize;
+}
+
+/* Dropdown месяц и год */
+.dropdown {
+  position: relative;
+  flex: 1;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  max-height: 280px;
+  padding: 4px 0;
+  margin-top: 4px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #69735d;
+  border-radius: 12px;
+}
+
+.dropdownTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  color: #253017;
+  cursor: pointer;
+  border: none;
+}
+
+.dropdownTrigger svg {
+  transition: transform 0.2s ease;
+}
+
+.dropdownTrigger.open svg {
+  transform: rotate(180deg);
+}
+
+.dropdownItem {
+  padding: 8px 14px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.dropdownItem:hover {
+  background: #e4e8df;
+}
+
+:global(.selected) {
+  color: #508826;
 }
 
 /* Дни недели */
@@ -125,7 +179,7 @@
 }
 
 :global(.react-datepicker__day:not([aria-disabled='true']):hover) {
-  background-color: #abd27a;
+  background: #e4e8df;
   border-radius: 100%;
 }
 
