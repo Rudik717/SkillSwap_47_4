@@ -4,7 +4,7 @@ import type { InputHTMLAttributes } from 'react'
 
 import styles from './SearchInput.module.css'
 
-export interface SearchInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+interface SearchInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   value: string
   onChange: (value: string) => void
   placeholder?: string
