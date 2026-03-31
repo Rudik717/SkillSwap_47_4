@@ -1,2 +1,6 @@
+export { FilterChips } from './FilterChips/FilterChips'
 export { Footer } from './Footer/Footer'
+export { GenderFilter } from './GenderFilter/GenderFilter'
 export { Header } from './Header/Header'
+export { RoleFilter } from './RoleFilter/RoleFilter'
+export { SkillFilter } from './SkillFilter/SkillFilter'

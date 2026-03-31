@@ -6,6 +6,7 @@ import path from 'node:path'
 // https://vite.dev/config/
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
+import { mockDevServerPlugin } from 'vite-plugin-mock-dev-server'
 import svgr from 'vite-plugin-svgr'
 
 const dirname =
@@ -13,13 +14,20 @@ const dirname =
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
-  plugins: [react(), svgr()],
+  plugins: [react(), svgr(), mockDevServerPlugin()],
+  server: {
+    proxy: {
+      '^/api': { target: 'http://localhost:5173' }, // Proxy setting triggers the mock
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@app': path.resolve(__dirname, './src/app'),
       '@pages': path.resolve(__dirname, './src/pages'),
       '@ui-kit': path.resolve(__dirname, './src/ui-kit'),
+      '@widgets': path.resolve(__dirname, './src/widgets'),
+      '@store': path.resolve(__dirname, './src/store'),
       '@utils': path.resolve(__dirname, './src/utils'),
     },
   },

@@ -30,6 +30,7 @@ export default [
         module: 'readonly',
         __dirname: true,
         document: true,
+        fetch: false,
       },
     },
     plugins: {

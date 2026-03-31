@@ -1,0 +1,42 @@
+.heading {
+  margin-bottom: 17px;
+}
+
+ul,
+li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  max-width: 284px;
+}
+
+.category {
+  display: flex;
+  justify-content: space-between;
+}
+
+.itemsList {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+.item {
+  min-height: 24px;
+  margin-left: 32px;
+}
+
+.item:first-child {
+  margin-top: 8px;
+}
+
+.item:last-child {
+  margin-bottom: 15px;
+}

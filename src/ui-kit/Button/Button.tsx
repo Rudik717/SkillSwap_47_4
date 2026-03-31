@@ -9,7 +9,9 @@ interface ButtonProps {
   onClick?: () => void
   iconLeft?: ComponentProps<typeof Icon>['name'] // тип — название иконки из Icon
   iconRight?: ComponentProps<typeof Icon>['name'] // тип — название иконки из Icon
-  children: ReactNode
+  children?: ReactNode
+  className?: string
+  areaLabel?: string
 }
 
 export const Button = ({
@@ -19,9 +21,16 @@ export const Button = ({
   iconLeft,
   iconRight,
   children,
+  className,
+  areaLabel,
 }: ButtonProps) => {
   return (
-    <button className={`${styles.button} ${styles[variant]}`} disabled={disabled} onClick={onClick}>
+    <button
+      className={`${styles.button} ${styles[variant]} ${className}`}
+      disabled={disabled}
+      onClick={onClick}
+      area-label={areaLabel}
+    >
       {iconLeft && <Icon name={iconLeft} size={24} />}
       {children}
       {iconRight && <Icon name={iconRight} size={24} />}
