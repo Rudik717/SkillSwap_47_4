@@ -7,22 +7,38 @@ const meta = {
   title: 'UI-Kit/MenuButton',
   component: MenuButton,
   tags: ['autodocs'],
+  argTypes: {
+    iconName: {
+      control: 'select',
+      options: ['arrow-down', 'arrow-up', 'arrow-left', 'arrow-right', 'cross', 'search'],
+      description: 'Название иконки',
+    },
+    iconColor: {
+      control: 'select',
+      options: ['original', 'black', 'text'],
+      description: 'Цвет иконки',
+    },
+  },
 } satisfies Meta<typeof MenuButton>
 
 export default meta
 
 export const Default: StoryObj = {
   args: {
-    children: 'Все навыки', // текст кнопки
-    onPress: action('on press!'), // обработчик нажатия
-    color: '#000000', // цвет текста и иконки (чёрный)
+    children: 'Все навыки',
+    onPress: action('on press!'),
+    color: '#000000',
+    iconName: 'arrow-down',
+    iconColor: 'black',
   },
 }
 
 export const Filter: StoryObj = {
   args: {
-    children: 'Все города', // текст кнопки
-    onPress: action('on press!'), // обработчик нажатия
-    color: 'rgba(80, 136, 38, 1)', // цвет текста и иконки (зелёный для фильтров)
+    children: 'Все города',
+    onPress: action('on press!'),
+    color: 'rgba(80, 136, 38, 1)',
+    iconName: 'arrow-down',
+    iconColor: 'text',
   },
 }
