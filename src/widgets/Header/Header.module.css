@@ -1,0 +1,62 @@
+.header {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 36px 36px 20px;
+  background-color: var(--bg);
+}
+
+.header--registration {
+  align-items: flex-end;
+  padding-bottom: 0;
+}
+
+.header__anauth {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+  align-items: center;
+}
+
+.header__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
+
+.header__nav {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.link {
+  display: flex;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.logo {
+  text-decoration: none;
+}
+
+.header__auth {
+  display: flex;
+  flex-shrink: 0;
+  gap: 24px;
+  align-items: center;
+}
+
+.auth__buttons {
+  display: flex;
+  flex-shrink: 0;
+  gap: 20px;
+  align-items: center;
+}

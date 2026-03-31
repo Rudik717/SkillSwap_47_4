@@ -1,6 +1,5 @@
 .button {
   display: flex;
-  flex: 1;
   gap: 8px;
   align-items: center;
   justify-content: center;
@@ -33,6 +32,11 @@
 .primary {
   color: rgb(37 48 23 / 100%);
   background-color: rgb(171 210 122 / 100%);
+}
+
+.primary,
+.secondary {
+  flex: 1;
 }
 
 .primary:hover:not(:disabled) {
