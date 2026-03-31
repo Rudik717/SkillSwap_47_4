@@ -1,3 +1,66 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+
+import { Logo } from '../../ui-kit/Logo/Logo'
+import { Text } from '../../ui-kit/Text/Text'
+import styles from './Footer.module.css'
+
 export const Footer = () => {
-  return <div>Footer</div>
+  const handlePlaceholderClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+  }
+
+  return (
+    <footer className={styles.footer}>
+      <div className={styles.container}>
+        <div className={styles.logoSection}>
+          <Logo />
+          <Text variant="Caption" className={styles.copyright}>
+            SkillSwap — 2025
+          </Text>
+        </div>
+
+        <div className={styles.linksSection}>
+          <Link to="/about" className={styles.link}>
+            <Text>О проекте</Text>
+          </Link>
+          <Link
+            to="#"
+            className={styles.link}
+            onClick={handlePlaceholderClick}
+            aria-disabled="true"
+          >
+            <Text>Контакты</Text>
+          </Link>
+          <Link
+            to="#"
+            className={styles.link}
+            onClick={handlePlaceholderClick}
+            aria-disabled="true"
+          >
+            <Text>Политика конфиденциальности</Text>
+          </Link>
+          <Link to="/skills" className={styles.link}>
+            <Text>Все навыки</Text>
+          </Link>
+          <Link
+            to="#"
+            className={styles.link}
+            onClick={handlePlaceholderClick}
+            aria-disabled="true"
+          >
+            <Text>Блог</Text>
+          </Link>
+          <Link
+            to="#"
+            className={styles.link}
+            onClick={handlePlaceholderClick}
+            aria-disabled="true"
+          >
+            <Text>Пользовательское соглашение</Text>
+          </Link>
+        </div>
+      </div>
+    </footer>
+  )
 }
