@@ -48,7 +48,7 @@ const mockData: Group[] = [
 ]
 
 const meta: Meta<typeof SkillFilter> = {
-  title: 'Filters/SkillFilter',
+  title: 'Widgets/SkillFilter',
   component: SkillFilter,
   tags: ['autodocs'],
   argTypes: {
