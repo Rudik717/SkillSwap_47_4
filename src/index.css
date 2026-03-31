@@ -47,13 +47,34 @@
 }
 
 :root {
-  --text: rgb(37 48 23);
-  --text-error: #bf3920;
-  --bg: rgb(249 250 247);
   --sans: 'Jost', system-ui, 'Segoe UI', 'Roboto', sans-serif;
   --heading: 'Jost', system-ui, 'Segoe UI', 'Roboto', sans-serif;
   --mono: ui-monospace, consolas, monospace;
   --skill-box-text-color: rgb(80 136 38);
+  --text: rgb(37 48 23);
+  --text-error: #bf3920;
+  --bg: rgb(249 250 247);
+  --border-input-main: rgb(105 115 93);
+  --color-placeholder: rgb(105 115 93);
+  --color-input-disabled: rgb(225 225 225);
+  --color-error: rgb(191 57 32);
+  --color-caret: rgb(80 136 38);
+  --accent-color: rgb(80 136 38);
+  --category-business: #eee7f7;
+  --category-business-hover: #e5ddf0;
+  --category-creative: #f7e7f2;
+  --category-creative-hover: #f0ddeb;
+  --category-languages: #ebe5c5;
+  --category-languages-hover: #e4ddb5;
+  --category-education: #e7f2f6;
+  --category-education-hover: #dceef4;
+  --category-home: #f7ebe5;
+  --category-home-hover: #f0e3da;
+  --category-health: #e9f7e7;
+  --category-health-hover: #e0f3dd;
+  --category-other: #e8ecf7;
+  --category-other-hover: #dfe5f4;
+  --category-other-active: #d5dbed;
 
   font: 18px / 145% var(--sans);
   font-synthesis: none;
@@ -79,20 +100,6 @@
 
 #root {
   box-sizing: border-box;
-
-  /* display: flex; */
-
-  /* flex-direction: column; */
-
-  /* width: 1126px; */
-
-  /* max-width: 100%; */
-
-  /* min-height: 100svh; */
-
-  /* margin: 0 auto; */
-
-  /* text-align: center; */
 }
 
 body,

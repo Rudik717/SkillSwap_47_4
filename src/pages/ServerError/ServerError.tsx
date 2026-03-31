@@ -1,11 +1,11 @@
-import error_404 from '@/assets/svg/error 404.svg'
+import error_500 from '@/assets/svg/error 500.svg'
 import { Button, Text } from '@/ui-kit'
 import type { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import styles from './NotFound.module.css'
+import styles from './ServerError.module.css'
 
-export const NotFound: FC = () => {
+export const ServerError: FC = () => {
   const navigate = useNavigate()
 
   const handleClickButton = () => {
@@ -14,20 +14,20 @@ export const NotFound: FC = () => {
 
   return (
     <main className={styles.main}>
-      <img src={error_404} alt="Страница не найдена" />
+      <img src={error_500} alt="На сервере произошла ошибка" />
       <div className={styles.containerWrap}>
         <div className={styles.textWrap}>
-          <h2 className={styles.errorTitle}>Страница не найдена</h2>
-          <Text>
-            К сожалению, эта страница недоступна. Вернитесь на главную страницу или попробуйте позже
-          </Text>
+          <h2 className={styles.errorTitle}>На сервере произошла ошибка</h2>
+          <Text>Попробуйте позже или вернитесь на главную страницу</Text>
         </div>
+
         <div className={styles.buttonContainer}>
           <div className={styles.buttonWidth}>
             <Button variant="secondary" onClick={handleClickButton}>
               <span>Сообщить об ошибке</span>
             </Button>
           </div>
+
           <div className={styles.buttonWidth}>
             <Button variant="primary" onClick={handleClickButton}>
               <span>На главную</span>
