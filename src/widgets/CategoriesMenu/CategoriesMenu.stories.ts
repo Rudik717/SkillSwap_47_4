@@ -1,10 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { action } from 'storybook/actions'
 
 import { CategoriesMenu } from './CategoriesMenu'
 
-const mockCategories = [
+interface Category {
+  id: string
+  name: string
+  color: string
+  icon: string
+  subcategories: string[]
+}
+
+const mockCategories: Category[] = [
   {
+    id: '1',
     name: 'Бизнес и карьера',
+    color: '--category-business',
+    icon: 'briefcase',
     subcategories: [
       'Управление командой',
       'Маркетинг и реклама',
@@ -15,11 +27,12 @@ const mockCategories = [
       'Проектное управление',
       'Предпринимательство',
     ],
-    iconColor: 'rgba(238, 231, 247, 1)',
-    // iconName: 'business', // удалить эту строку и раскомментировать iconName, когда будут готовы иконки
   },
   {
+    id: '2',
     name: 'Творчество и искусство',
+    color: '--category-creative',
+    icon: 'palette',
     subcategories: [
       'Рисование и иллюстрация',
       'Фотография',
@@ -30,11 +43,12 @@ const mockCategories = [
       'Арт-терапия',
       'Декор и DIY',
     ],
-    iconColor: 'rgba(247, 231, 242, 1)',
-    // iconName: 'art', // удалить эту строку и раскомментировать iconName, когда будут готовы иконки
   },
   {
+    id: '3',
     name: 'Иностранные языки',
+    color: '--category-languages',
+    icon: 'earth',
     subcategories: [
       'Английский',
       'Французский',
@@ -44,11 +58,12 @@ const mockCategories = [
       'Японский',
       'Подготовка к экзаменам (IELTS, TOEFL)',
     ],
-    iconColor: 'rgba(235, 229, 197, 1)',
-    // iconName: 'language', // удалить эту строку и раскомментировать iconName, когда будут готовы иконки
   },
   {
+    id: '4',
     name: 'Образование и развитие',
+    color: '--category-education',
+    icon: 'book',
     subcategories: [
       'Личностное развитие',
       'Навыки обучения',
@@ -57,11 +72,12 @@ const mockCategories = [
       'Навыки преподавания',
       'Коучинг',
     ],
-    iconColor: 'rgba(231, 242, 246, 1)',
-    // iconName: 'education', // удалить эту строку и раскомментировать iconName, когда будут готовы иконки
   },
   {
+    id: '5',
     name: 'Дом и уют',
+    color: '--category-home',
+    icon: 'home',
     subcategories: [
       'Уборка и организация',
       'Домашние финансы',
@@ -70,11 +86,12 @@ const mockCategories = [
       'Ремонт',
       'Хранение вещей',
     ],
-    iconColor: 'rgba(247, 235, 229, 1)',
-    // iconName: 'home', // удалить эту строку и раскомментировать iconName, когда будут готовы иконки
   },
   {
+    id: '6',
     name: 'Здоровье и лайфстайл',
+    color: '--category-health',
+    icon: 'list',
     subcategories: [
       'Йога и медитация',
       'Питание и ЗОЖ',
@@ -84,25 +101,21 @@ const mockCategories = [
       'Сон и восстановление',
       'Баланс жизни и работы',
     ],
-    iconColor: 'rgba(233, 247, 231, 1)',
-    // iconName: 'health', // удалить эту строку и раскомментировать iconName, когда будут готовы иконки
   },
 ]
 
-const meta = {
+const meta: Meta<typeof CategoriesMenu> = {
   title: 'Widgets/CategoriesMenu',
   component: CategoriesMenu,
   tags: ['autodocs'],
-} satisfies Meta<typeof CategoriesMenu>
+}
 
 export default meta
 
 export const Default: StoryObj = {
   args: {
     categories: mockCategories,
-    onCategoryClick: (category: { name: string }) =>
-      console.log('Category clicked:', category.name),
-    onSubcategoryClick: (sub: string, category: { name: string }) =>
-      console.log('Subcategory clicked:', sub, 'from', category.name),
+    onCategoryClick: action('category clicked'),
+    onSubcategoryClick: action('subcategory clicked'),
   },
 }

@@ -2,33 +2,15 @@ import { Icon, Text } from '@/ui-kit'
 
 import styles from './CategoriesMenu.module.css'
 
-type IconName =
-  | 'search'
-  | 'sort'
-  | 'arrow-down'
-  | 'arrow-right'
-  | 'bell'
-  | 'calendar'
-  | 'clock'
-  | 'cross'
-  | 'edit'
-  | 'eye'
-  | 'gallery-add'
-  | 'idea'
-  | 'like'
-  | 'logout'
-  | 'message'
-  | 'moon'
-  | 'more-square'
-  | 'request'
-  | 'share'
-  | 'user'
+// Явный список допустимых иконок (из мок-данных)
+type IconName = 'briefcase' | 'palette' | 'earth' | 'book' | 'home' | 'list'
 
 interface Category {
+  id: string
   name: string
+  color: string
+  icon: IconName
   subcategories: string[]
-  iconColor: string
-  iconName?: IconName // теперь только допустимые имена
 }
 
 interface CategoriesMenuProps {
@@ -49,11 +31,10 @@ export const CategoriesMenu = ({
   const rightCategories = categories.filter((_, index) => index % 2 === 1)
 
   const renderCategory = (category: Category, height: number) => (
-    <div key={category.name} className={styles.category} style={{ height: `${height}px` }}>
+    <div key={category.id} className={styles.category} style={{ height: `${height}px` }}>
       <div className={styles.row}>
-        <div className={styles.iconWrapper} style={{ backgroundColor: category.iconColor }}>
-          {/* замени "cross" на category.iconName, когда будут готовы разные иконки */}
-          <Icon name={(category.iconName as any) || 'cross'} size={40} />
+        <div className={styles.iconWrapper} style={{ backgroundColor: `var(${category.color})` }}>
+          <Icon name={category.icon} size={24} />
         </div>
         <div className={styles.content}>
           <div className={styles.categoryHeader} onClick={() => onCategoryClick?.(category)}>
