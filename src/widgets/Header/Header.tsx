@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import styles from './Header.module.css'
 import { type THeaderProps } from './type'
 
-export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant }) => {
+export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unauth' }) => {
   // TODO  - получить имя пользователя и флаг авторизации и урл - возможно переделать на получение из стора.
 
   const [searchValue, setSearchValue] = useState('')

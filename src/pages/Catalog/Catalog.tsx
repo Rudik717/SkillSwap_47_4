@@ -3,6 +3,8 @@ import { getCategories } from '@/store/categories'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import styles from './Catalog.module.css'
+
 export const Catalog = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { loading, categories, subcategories } = useSelector(
@@ -14,5 +16,9 @@ export const Catalog = () => {
     dispatch(getCategories())
   }, [dispatch])
 
-  return <h1>Catalog</h1>
+  return (
+    <main className={styles.main}>
+      <h1>Catalog</h1>
+    </main>
+  )
 }
