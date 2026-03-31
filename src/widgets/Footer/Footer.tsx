@@ -14,7 +14,9 @@ export const Footer = () => {
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.logoSection}>
-          <Logo />
+          <Link to="/" className={styles.logo}>
+            <Logo />
+          </Link>
           <Text variant="Caption" className={styles.copyright}>
             SkillSwap — 2025
           </Text>

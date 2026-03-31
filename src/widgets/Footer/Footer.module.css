@@ -1,7 +1,7 @@
 .footer {
   max-width: 1440px;
   padding: 36px 36px 32px;
-  background-color: --bg-footer;
+  background-color: var(--bg-footer);
 }
 
 .container {
@@ -17,6 +17,10 @@
   flex-shrink: 0;
   flex-direction: column;
   gap: 112px;
+}
+
+.logo {
+  text-decoration: none;
 }
 
 .copyright {

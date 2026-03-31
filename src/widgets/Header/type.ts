@@ -1,5 +1,5 @@
 export type THeaderProps = {
-  userName: string | undefined
+  userName?: string | undefined
   avatarUrl?: string
-  variant: 'unauth' | 'auth' | 'registration'
+  variant?: 'unauth' | 'auth' | 'registration'
 }
