@@ -1,3 +1,8 @@
+export { FilterChips } from './FilterChips/FilterChips'
 export { Footer } from './Footer/Footer'
+export { GenderFilter } from './GenderFilter/GenderFilter'
 export { Header } from './Header/Header'
 export { CategoriesMenu } from './CategoriesMenu/CategoriesMenu'
+export { RoleFilter } from './RoleFilter/RoleFilter'
+export { SkillFilter } from './SkillFilter/SkillFilter'
+ё
