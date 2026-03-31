@@ -3,8 +3,13 @@
   gap: 32px;
   align-items: center;
   justify-content: space-between;
-  padding: 36px;
+  padding: 36px 36px 20px;
   background-color: var(--bg);
+}
+
+.header--registration {
+  align-items: flex-end;
+  padding-bottom: 0;
 }
 
 /* убрать потом будет SearchInput */

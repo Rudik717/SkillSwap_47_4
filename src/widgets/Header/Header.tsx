@@ -11,7 +11,9 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant }) => {
   // TODO  - получить имя пользователя и флаг авторизации и урл - возможно переделать на получение из стора.
 
   return (
-    <header className={styles.header}>
+    <header
+      className={`${styles.header} ${variant === 'registration' ? styles['header--registration'] : ''}`}
+    >
       <Link className={styles.logo} to="/">
         <Logo />
       </Link>
@@ -21,7 +23,9 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant }) => {
             <Link className={styles.link} to="/about">
               <Text variant="Body">О проекте</Text>
             </Link>
-            <MenuButton onPress={() => {}}>Все навыки</MenuButton>
+            <MenuButton onPress={() => {}} arrowIcon="arrow-down">
+              Все навыки
+            </MenuButton>
           </nav>
           {/* на SearchInput поменять */}
           <div className={styles.div}>SearchInput</div>
@@ -57,7 +61,11 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant }) => {
           </section>
         </>
       )}
-      {variant === 'registration' && <Button variant="tertiary">Закрыть</Button>}
+      {variant === 'registration' && (
+        <Button variant="tertiary" iconRight="cross">
+          Закрыть
+        </Button>
+      )}
     </header>
   )
 }
