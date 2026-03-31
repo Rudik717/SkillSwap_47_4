@@ -14,6 +14,7 @@
 
 .header__anauth {
   display: flex;
+  flex-shrink: 0;
   gap: 8px;
   align-items: center;
 }
@@ -48,12 +49,14 @@
 
 .header__auth {
   display: flex;
+  flex-shrink: 0;
   gap: 24px;
   align-items: center;
 }
 
 .auth__buttons {
   display: flex;
+  flex-shrink: 0;
   gap: 20px;
   align-items: center;
 }
