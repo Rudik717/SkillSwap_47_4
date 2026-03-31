@@ -1,0 +1,10 @@
+.container {
+  position: relative;
+  display: inline-flex;
+}
+
+.badge {
+  position: absolute;
+  background-color: #e0796e;
+  border-radius: 50%;
+}
