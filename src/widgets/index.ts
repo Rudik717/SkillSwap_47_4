@@ -1,5 +1,6 @@
 export { FilterChips } from './FilterChips/FilterChips'
 export { Footer } from './Footer/Footer'
+export { FormLayout } from './FormLayout/FormLayout'
 export { GenderFilter } from './GenderFilter/GenderFilter'
 export { Header } from './Header/Header'
 export { CategoriesMenu } from './CategoriesMenu/CategoriesMenu'

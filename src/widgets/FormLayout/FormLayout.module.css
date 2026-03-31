@@ -1,0 +1,25 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+}
+
+.wrapperSection {
+  display: flex;
+  gap: 24px;
+  width: 1136px;
+  height: 692px;
+  background-color: transparent;
+}
+
+.section {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 60px;
+  background-color: var(--bg-footer);
+  border-radius: 12px;
+}
