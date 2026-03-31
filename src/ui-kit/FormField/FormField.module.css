@@ -3,8 +3,6 @@
   flex: 1;
   flex-direction: column;
   gap: 4px;
-  min-width: 206px;
-  max-width: 460px;
 }
 
 .label {
