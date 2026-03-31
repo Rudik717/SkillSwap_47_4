@@ -1,15 +1,14 @@
-import { Button, Icon, Logo, MenuButton, Text, UserAvatar } from '@/ui-kit'
-import { type FC } from 'react'
+import { Button, Icon, Logo, MenuButton, SearchInput, Text, UserAvatar } from '@/ui-kit'
+import { type FC, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import styles from './Header.module.css'
 import { type THeaderProps } from './type'
 
-// TODO: добавить SearchInput после завершения компонента
-
 export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant }) => {
   // TODO  - получить имя пользователя и флаг авторизации и урл - возможно переделать на получение из стора.
 
+  const [searchValue, setSearchValue] = useState('')
   return (
     <header
       className={`${styles.header} ${variant === 'registration' ? styles['header--registration'] : ''}`}
@@ -23,12 +22,15 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant }) => {
             <Link className={styles.link} to="/about">
               <Text variant="Body">О проекте</Text>
             </Link>
-            <MenuButton onPress={() => {}} arrowIcon="arrow-down">
+            <MenuButton onPress={() => {}} iconName="arrow-down">
               Все навыки
             </MenuButton>
           </nav>
-          {/* на SearchInput поменять */}
-          <div className={styles.div}>SearchInput</div>
+          <SearchInput
+            value={searchValue}
+            onChange={setSearchValue}
+            placeholder="Искать навык"
+          ></SearchInput>
         </>
       )}
       {variant === 'unauth' && (

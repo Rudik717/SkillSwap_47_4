@@ -12,15 +12,6 @@
   padding-bottom: 0;
 }
 
-/* убрать потом будет SearchInput */
-.div {
-  flex: 1;
-  min-width: 527px;
-  height: 48px;
-  background-color: white;
-  border-radius: 8px;
-}
-
 .header__anauth {
   display: flex;
   gap: 8px;

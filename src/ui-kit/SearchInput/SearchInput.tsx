@@ -1,7 +1,7 @@
+import { Icon } from '@/ui-kit'
 import { useRef } from 'react'
 import type { InputHTMLAttributes } from 'react'
 
-import searchIcon from '../../assets/svg/search.svg'
 import styles from './SearchInput.module.css'
 
 export interface SearchInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
@@ -30,7 +30,7 @@ const SearchInput = ({
     <div className={`${styles.container} ${className}`}>
       <div className={`${styles.wrapper} ${disabled ? styles.disabled : ''}`}>
         <div className={styles.icon}>
-          <img src={searchIcon} alt="Поиск" className={styles.searchImage} />
+          <Icon name="search" size={24} color="#69735D" />
         </div>
 
         <input
@@ -51,10 +51,7 @@ const SearchInput = ({
             className={styles.clearButton}
             aria-label="Очистить поиск"
           >
-            <div className={styles.crossIcon}>
-              <span className={styles.crossLine}></span>
-              <span className={styles.crossLine}></span>
-            </div>
+            <Icon name="cross" size={24} />
           </button>
         )}
       </div>

@@ -17,7 +17,7 @@ type Story = StoryObj<typeof SearchInput>
 export const Default: Story = {
   render: () => {
     const [value, setValue] = useState('')
-    return <SearchInput value={value} onChange={setValue} />
+    return <SearchInput value={value} onChange={setValue} placeholder="Искать навык" />
   },
 }
 
@@ -35,13 +35,14 @@ export const Focus: Story = {
       return () => clearTimeout(timer)
     }, [])
 
-    return <SearchInput value={value} onChange={setValue} />
+    return <SearchInput value={value} onChange={setValue} placeholder="Искать навык" />
   },
 }
 
 export const Typing: Story = {
   render: () => {
-    const [value, setValue] = useState('')
+    const [value, setValue] = useState('навык')
+
     useEffect(() => {
       const timer = setTimeout(() => {
         const input = document.querySelector('input')
@@ -52,13 +53,13 @@ export const Typing: Story = {
       return () => clearTimeout(timer)
     }, [])
 
-    return <SearchInput value={value} onChange={setValue} />
+    return <SearchInput value={value} onChange={setValue} placeholder="Искать навык" />
   },
 }
 
 export const Filled: Story = {
   render: () => {
-    const [value, setValue] = useState('')
-    return <SearchInput value={value} onChange={setValue} />
+    const [value, setValue] = useState('React разработчик')
+    return <SearchInput value={value} onChange={setValue} placeholder="Искать навык" />
   },
 }
