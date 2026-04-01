@@ -1,6 +1,7 @@
 import { Catalog, Home, NotFound, ServerError } from '@/pages'
 import type { AppDispatch } from '@/store'
 import { getCategories, getCategoriesState } from '@/store/categories'
+import { getCities, getCitiesState } from '@/store/cities'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
@@ -13,8 +14,12 @@ export const App = () => {
   const { loading, categories, subcategories } = useSelector(getCategoriesState)
   console.log(' *** categories', loading, categories, subcategories)
 
+  const { loading: loadingCities, cities } = useSelector(getCitiesState)
+  console.log(' *** cities', loadingCities, cities)
+
   useEffect(() => {
     dispatch(getCategories())
+    dispatch(getCities())
   }, [dispatch])
 
   return (
