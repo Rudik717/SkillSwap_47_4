@@ -3,16 +3,14 @@ import ReactDOM from 'react-dom'
 
 import styles from './Modal.module.css'
 
-type ModalPadding = 'primary' | 'secondary' | 'tertiary'
-
 type TModal = {
   children: React.ReactElement
   onClose: () => void
-  padding?: ModalPadding
+  paddingTop?: number
+  paddingBottom?: number
 }
 
 /** Такая реализация modalRoot нужна для работы storybook */
-
 let modalRoot = document.getElementById('modal') as Element
 if (!modalRoot) {
   modalRoot = document.createElement('div')
@@ -21,7 +19,7 @@ if (!modalRoot) {
 }
 
 export const Modal = memo((props: TModal) => {
-  const { children, onClose, padding = 'primary' } = props
+  const { children, onClose, paddingTop = 62, paddingBottom = 62 } = props
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -35,14 +33,15 @@ export const Modal = memo((props: TModal) => {
   }, [onClose])
 
   return ReactDOM.createPortal(
-    <div className={styles.modal_overlay} onClick={onClose}>
+    <div className={styles.modalOverlay} onClick={onClose}>
       <div
-        className={`${styles.modal_container} ${styles[`padding-${padding}`]}`}
+        className={styles.modalContainer}
+        style={{ paddingTop, paddingBottom }}
         onClick={(e) => {
           e.stopPropagation()
         }}
       >
-        <div className={styles.modal_content}>{children}</div>
+        {children}
       </div>
     </div>,
     modalRoot

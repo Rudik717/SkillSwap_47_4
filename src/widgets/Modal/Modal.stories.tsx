@@ -8,12 +8,17 @@ const meta: Meta<typeof Modal> = {
   component: Modal,
   tags: ['autodocs'],
   argTypes: {
-    padding: {
+    paddingTop: {
       control: {
-        type: 'select',
-        options: ['primary', 'secondary', 'tertiary'],
+        type: 'number',
       },
-      description: 'Варианты паддингов модального окна',
+      description: 'Отступ сверху',
+    },
+    paddingBottom: {
+      control: {
+        type: 'number',
+      },
+      description: 'Отступ снизу',
     },
     onClose: {
       action: 'onClose',
@@ -45,10 +50,8 @@ const ModalContent = ({ title }: { title: string }) => (
   </div>
 )
 
-// История: модальное окно с паддингом primary (по умолчанию)
-export const PrimaryPadding: Story = {
+export const Primary: Story = {
   args: {
-    padding: 'primary',
     children: <ModalContent title="Модальное окно" />,
     onClose: () => console.log('Modal closed'),
   },
@@ -65,56 +68,6 @@ export const PrimaryPadding: Story = {
     docs: {
       description: {
         story: 'Модальное окно с паддингом по умолчанию (primary).',
-      },
-    },
-  },
-}
-
-// История: модальное окно с паддингом 'secondary'
-export const SecondaryPadding: Story = {
-  args: {
-    padding: 'secondary',
-    children: <ModalContent title="Модальное окно" />,
-    onClose: () => console.log('Modal closed'),
-  },
-  render: (args) => {
-    const { isModalOpen, openModal, closeModal } = useModal()
-    return (
-      <div>
-        <button onClick={openModal}>Открыть модальное окно (primary)</button>
-        {isModalOpen && <Modal {...args} onClose={closeModal} />}
-      </div>
-    )
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Модальное окно с паддингом с паддингом secondary',
-      },
-    },
-  },
-}
-
-// История: модальное окно с паддингом 'tertiary'
-export const TertiaryPadding: Story = {
-  args: {
-    padding: 'tertiary',
-    children: <ModalContent title="Модальное окно" />,
-    onClose: () => console.log('Modal closed'),
-  },
-  render: (args) => {
-    const { isModalOpen, openModal, closeModal } = useModal()
-    return (
-      <div>
-        <button onClick={openModal}>Открыть модальное окно (primary)</button>
-        {isModalOpen && <Modal {...args} onClose={closeModal} />}
-      </div>
-    )
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Модальное окно с паддингом с паддингом tertiary',
       },
     },
   },
