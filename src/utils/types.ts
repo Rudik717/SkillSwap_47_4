@@ -39,3 +39,8 @@ export type TSkill = {
   createdAt: string // Дата создания навыка
   updatedAt: string // Дата последнего обновления навыка
 }
+
+export type TCity = {
+  id: string
+  name: string
+}
