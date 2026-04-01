@@ -76,6 +76,7 @@
   --category-other: #e8ecf7;
   --category-other-hover: #dfe5f4;
   --category-other-active: #d5dbed;
+  --overlay-color: rgb(142 142 142 / 60%);
 
   font: 18px / 145% var(--sans);
   font-synthesis: none;
@@ -101,9 +102,18 @@
 
 #root {
   box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 
-body,
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+
 p {
   margin: 0;
 }

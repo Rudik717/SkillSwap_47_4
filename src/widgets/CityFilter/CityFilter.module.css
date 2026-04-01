@@ -1,0 +1,18 @@
+.cityFilterSection {
+  margin: 32px 0;
+}
+
+.cityList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+  margin-bottom: 12px;
+}
+
+.checkBoxContainer {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  padding: 4px;
+}

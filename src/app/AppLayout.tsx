@@ -5,12 +5,14 @@ import styles from './AppLayout.module.css'
 
 export const AppLayout = () => {
   return (
-    <div className={styles.layout}>
+    <>
       <Header />
-      <div className={styles.content}>
-        <Outlet />
-      </div>
+      <main className={styles.main}>
+        <div className={styles.content}>
+          <Outlet />
+        </div>
+      </main>
       <Footer />
-    </div>
+    </>
   )
 }

@@ -1,7 +1,5 @@
 import { useState } from 'react'
 
-import arrowDownIcon from '../../assets/svg/arrow-down.svg'
-import arrowUpIcon from '../../assets/svg/arrow-up.svg'
 import { Checkbox } from '../../ui-kit/Checkbox/Checkbox'
 import { MenuButton } from '../../ui-kit/MenuButton/MenuButton'
 import { Text } from '../../ui-kit/Text/Text'
@@ -33,13 +31,13 @@ export const SkillFilter = ({
 
   // Функция переключения иконки в зависимости от состояния группы
   const getArrowIcon = (groupId: string) => {
-    return expandedGroups.has(groupId) ? arrowUpIcon : arrowDownIcon
+    return expandedGroups.has(groupId) ? 'arrow-up' : 'arrow-down'
   }
 
   // Изменение стилизации кнопки "стрелка" при раскрытии/скрытии
   const arrowIcon = options.every((group) => expandedGroups.has(group.id))
-    ? arrowUpIcon
-    : arrowDownIcon
+    ? 'arrow-up'
+    : 'arrow-down'
 
   // Обработчик для переключения кнопки для отдельной подкатегории по ее id
   const toggleGroupExpansion = (groupId: string) => {
@@ -95,7 +93,7 @@ export const SkillFilter = ({
                 <MenuButton
                   iconColor="text"
                   color="var(--skill-box-text-color)"
-                  arrowIcon={getArrowIcon(option.id)}
+                  iconName={getArrowIcon(option.id)}
                   onPress={() => toggleGroupExpansion(option.id)}
                   style={{ display: 'inline' }}
                 />
@@ -121,7 +119,7 @@ export const SkillFilter = ({
         iconColor="text"
         color="var(--skill-box-text-color)"
         onPress={toggleGlobalExpansion}
-        arrowIcon={arrowIcon}
+        iconName={arrowIcon}
         style={{ paddingLeft: '0' }}
       />
     </div>

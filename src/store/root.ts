@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
 import { categoriesReducer } from './categories'
+import { citiesReducer } from './cities'
 
 export const rootReducer = combineReducers({
   categories: categoriesReducer,
+  cities: citiesReducer,
 })
 
 export const store = configureStore({

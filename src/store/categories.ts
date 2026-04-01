@@ -43,6 +43,7 @@ const categoriesSlice = createSlice({
   },
 })
 
+export const getCategoriesState = (state: RootState) => state.categories
 export const getAllCategories = (state: RootState) => state.categories.categories
 export const getAllSubcategories = (state: RootState) => state.categories.subcategories
 

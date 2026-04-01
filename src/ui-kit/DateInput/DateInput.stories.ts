@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { DateInput } from './DateInput'
 
 const meta: Meta<typeof DateInput> = {
-  title: 'UI-kit/DateInput',
+  title: 'UI-Kit/DateInput',
   component: DateInput,
   tags: ['autodocs'],
   args: {
