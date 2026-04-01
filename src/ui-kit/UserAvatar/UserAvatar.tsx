@@ -15,11 +15,7 @@ export const UserAvatar = ({ name, url, size = 48 }: UserAvatarProps) => {
       <Text color="black" className={styles.userName}>
         {displayName}
       </Text>
-      {url ? (
-        <Avatar url={url} alt={`${name}'s avatar`} size={size} />
-      ) : (
-        <div className={styles.emptyAvatar} style={{ width: size, height: size }}></div>
-      )}
+      <Avatar url={url} alt={`${name}'s avatar`} size={size} />
     </div>
   )
 }
