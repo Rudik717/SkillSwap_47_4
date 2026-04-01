@@ -1,15 +1,17 @@
 .footer {
-  max-width: 1440px;
-  padding: 36px 36px 32px;
+  display: flex;
   background-color: var(--bg-footer);
 }
 
 .container {
   display: flex;
-  flex-flow: row;
+  flex: 1;
   gap: 189px;
   align-items: center;
   justify-content: space-between;
+  max-width: 1440px;
+  padding: 36px 36px 32px;
+  margin: 0 auto;
 }
 
 .logoSection {
