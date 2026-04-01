@@ -10,3 +10,32 @@ export type TSubcategory = {
   name: string
   categoryId: string
 }
+
+export type TUser = {
+  id: string // "1111"
+  name: string // "Иван"
+  email: string // "ivan@example.com"
+  password?: string // пароль
+  birthDate?: string // "15.05.1990"
+  gender?: 'male' | 'female' | 'unspecified' // "male"
+  city?: string // "Санкт-Петербург"
+  url?: string // "avatar_ivan.jpg"
+  about?: string // "Привет! Люблю ритм, кофе по утрам и людей, которые не боятся пробовать новое."
+  skills: TSkill[] // Все навыки пользователя (тип teach/learn различается полем type)
+  createdAt: string // "2025-01-15T10:30:00Z"
+  updatedAt: string // "2025-03-30T15:20:00Z"
+  favorites?: string[] // Массив ID навыков, добавленных в избранное
+}
+
+export type TSkill = {
+  id: string // "skill_1"
+  userId: string // id из TUser - id пользователя, которому принадлежит этот навык
+  title: string // "Английский язык"
+  type: 'teach' | 'learn' // // "Учу" или "Учусь"
+  category: string // Название категории (из TCategory.name) — для отображения в карточке
+  subcategory: string // Название подкатегории (из TSubcategory.name) — для отображения в карточке
+  description?: string // "Научу свободно говорить на английском"
+  image?: string // ["english_course.jpg"]
+  createdAt: string // Дата создания навыка
+  updatedAt: string // Дата последнего обновления навыка
+}
