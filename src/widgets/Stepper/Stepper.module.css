@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.steps {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.step {
+  width: 60px;
+  height: 4px;
+  background-color: var(--stepper-accent-color);
+  border-radius: 8px;
+}
+
+.stepActive {
+  background-color: var(--stepper-disabled-color);
+}

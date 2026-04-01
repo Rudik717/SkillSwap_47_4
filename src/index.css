@@ -77,6 +77,8 @@
   --category-other-hover: #dfe5f4;
   --category-other-active: #d5dbed;
   --overlay-color: rgb(142 142 142 / 60%);
+  --stepper-accent-color: rgb(171 210 122);
+  --stepper-disabled-color: rgb(228 232 223 / 100%);
 
   font: 18px / 145% var(--sans);
   font-synthesis: none;
