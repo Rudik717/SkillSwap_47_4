@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import ReactSelect, { components } from 'react-select'
 
 import { Checkbox } from '../Checkbox/Checkbox'
@@ -22,7 +21,6 @@ type SelectProps = {
   placeholder?: string
   isSearchable?: boolean
   isMulti?: boolean
-  variant?: 'default' | 'calendar'
 }
 
 // Стрелка вниз
@@ -33,27 +31,41 @@ const CustomDropdownIndicator = (props: any) => (
 )
 
 // Крестик для очистки
-const CustomClearIndicator = (props: any) => (
-  <components.ClearIndicator {...props}>
-    <Icon name="cross" size={24} color="#253017" />
-  </components.ClearIndicator>
-)
+const CustomClearIndicator = (props: any) => {
+  const { inputValue } = props.selectProps
 
-// Option с чекбоксом для мультивыбора
-const CheckboxOption = (props: any) => {
-  const { innerProps, isSelected, label } = props
+  if (!inputValue) return null
 
   return (
-    <components.Option {...props}>
-      <Checkbox state={isSelected ? 'checked' : 'unchecked'} onClick={innerProps.onClick}>
-        {label}
-      </Checkbox>
+    <components.ClearIndicator {...props}>
+      <Icon name="cross" size={24} color="#253017" />
+    </components.ClearIndicator>
+  )
+}
+
+// Option с чекбоксом
+const ValueContainer = ({ children, ...props }: any) => {
+  const selected = props.selectProps.value
+  const count = Array.isArray(selected) ? selected.length : 0
+
+  return (
+    <components.ValueContainer {...props}>
+      {count > 0 ? <div className={styles.multiValueLabel}>Выбрано: {count}</div> : children}
+    </components.ValueContainer>
+  )
+}
+
+const CheckboxOption = (props: any) => {
+  const { isSelected, label } = props
+
+  return (
+    <components.Option {...props} className={styles.checkboxOption}>
+      <Checkbox state={isSelected ? 'checked' : 'unchecked'}>{label}</Checkbox>
     </components.Option>
   )
 }
 
 export const Select = ({
-  variant = 'default',
   label,
   value,
   onChange,
@@ -65,36 +77,37 @@ export const Select = ({
   isSearchable = false,
   isMulti = false,
 }: SelectProps) => {
-  const [inputValue, setInputValue] = useState('')
-
   const selectComponents: any = {
     DropdownIndicator: CustomDropdownIndicator,
   }
 
-  if (!isMulti) {
+  if (isSearchable && !isMulti) {
     selectComponents.ClearIndicator = CustomClearIndicator
   }
 
   if (isMulti) {
     selectComponents.Option = CheckboxOption
+    selectComponents.ValueContainer = ValueContainer
   }
 
   return (
     <FormField label={label} error={error} info={info}>
-      <div className={`${styles.selectWrapper} ${styles[variant]} ${error ? styles.error : ''}`}>
+      <div className={`${styles.selectWrapper} ${error ? styles.error : ''}`}>
         <ReactSelect
           name={name}
           value={value}
-          onChange={(option) => onChange?.(option as Option | Option[] | null)}
           options={options}
           placeholder={placeholder}
           isSearchable={isSearchable}
-          isClearable={!isMulti && !!inputValue}
+          isClearable={isSearchable && !isMulti}
           isMulti={isMulti}
+          closeMenuOnSelect={!isMulti}
           classNamePrefix="select"
           components={selectComponents}
-          inputValue={inputValue}
-          onInputChange={(text) => setInputValue(text)}
+          onChange={(option) => {
+            onChange?.(option as Option | Option[] | null)
+          }}
+          hideSelectedOptions={false}
         />
       </div>
     </FormField>

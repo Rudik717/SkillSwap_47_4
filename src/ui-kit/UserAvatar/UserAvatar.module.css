@@ -10,9 +10,3 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-.emptyAvatar {
-  flex-shrink: 0;
-  background-color: #8b8989;
-  border-radius: 50%;
-}
