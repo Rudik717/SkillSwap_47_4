@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { RoleFilter } from './RoleFilter'
 
 const meta: Meta<typeof RoleFilter> = {
-  title: 'Components/RoleFilter',
+  title: 'Widgets/RoleFilter',
   tags: ['autodocs'],
   component: RoleFilter,
 }
