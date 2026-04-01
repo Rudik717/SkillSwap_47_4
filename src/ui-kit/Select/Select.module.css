@@ -1,50 +1,175 @@
 /* Обёртка компонента */
 .selectWrapper {
+  position: relative;
   width: 100%;
+  min-width: 206px;
+  max-width: 436px;
 }
 
-/* Input */
+/* Контрол селекта */
 :global(.select__control) {
   display: flex;
+  gap: 10px;
   align-items: center;
+  height: 48px;
   padding: 0 20px;
-  font-family: Roboto, sans-serif;
+  overflow: hidden;
   cursor: pointer;
+}
+
+.selectWrapper :global(.select__control) {
+  outline: none;
   border: 1px solid #69735d;
   border-radius: 12px;
+  box-shadow: none;
+}
+
+.selectWrapper :global(.select__control--is-focused) {
+  border-color: #69735d;
+  box-shadow: none;
+}
+
+.selectWrapper :global(.select__control:hover) {
+  border-color: #69735d;
+}
+
+/* Контейнер выбранного значения */
+:global(.select__value-container) {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+:global(.select__control) :global(.select__value-container) {
+  padding: 0;
 }
 
 /* Placeholder */
-:global(.select__placeholder) {
+.selectWrapper :global(.select__placeholder) {
+  padding: 12px 0;
+  margin: 0;
   font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 24px;
   color: #69735d;
 }
 
-.select__single-value {
+/* Одиночное выбранное значение */
+:global(.select__single-value) {
   color: #253017;
 }
 
+/* Мультивыбор */
 :global(.select__multi-value) {
   padding: 4px 0;
   margin: 0;
   color: #253017;
+  border-radius: 12px;
 }
 
-.select__indicator-separator {
-  display: none;
-}
-
-.select__dropdown-indicator,
-.select__clear-indicator {
-  padding: 12px 20px 12px 0;
+/* Иконки */
+:global(.select__dropdown-indicator),
+:global(.select__clear-indicator) {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  color: #253017;
   cursor: pointer;
 }
 
-/* Dropdown меню */
-:global(.select__menu) {
-  margin-top: 0;
+:global(.select__indicator-separator) {
+  display: none;
 }
 
-/* Вариант для календаря  */
+.selectWrapper :global(.select__indicator) {
+  padding: 0;
+}
+
+/* Dropdown меню */
+.selectWrapper :global(.select__menu) {
+  z-index: 0;
+  width: 100%;
+  margin-top: 0;
+  overflow: hidden;
+  background-color: #fff;
+  border: 1px solid #69735d;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  box-shadow: none;
+}
+
+.selectWrapper :global(.select__control--menu-is-open) {
+  z-index: 1;
+  border-bottom-color: #e4e8df;
+  border-radius: 12px 12px 0 0;
+}
+
+.selectWrapper :global(.select__control--menu-is-open:hover) {
+  border-bottom-color: #e4e8df;
+}
+
+.selectWrapper :global(.select__menu-list) {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 200px;
+  padding: 8px 0;
+  overflow-y: auto;
+}
+
+/* Опции */
+.selectWrapper :global(.select__option) {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 4px 0 4px 12px;
+  cursor: pointer;
+}
+
+.selectWrapper :global(.select__option--is-selected) {
+  color: #508826;
+  background-color: transparent;
+}
+
+.selectWrapper :global(.select__dropdown-indicator svg) {
+  color: #253017;
+}
+
+.selectWrapper :global(.select__option--is-focused) {
+  background-color: transparent;
+}
+
+.selectWrapper :global(.select__option:hover) {
+  background-color: #e4e8df;
+}
+
+.checkboxOption {
+  box-sizing: border-box;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+.checkboxOption :global(.checkbox) {
+  flex-shrink: 0;
+}
+
+/* Поворот стрелки при открытии селекта */
+:global(.select__dropdown-indicator svg) {
+  transition: transform 0.2s ease;
+}
+
+:global(.select__control--menu-is-open .select__dropdown-indicator svg) {
+  transform: rotate(180deg);
+}
+
+.multiValueLabel {
+  width: 100%;
+  padding: 12px 0;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  color: #253017;
+}
