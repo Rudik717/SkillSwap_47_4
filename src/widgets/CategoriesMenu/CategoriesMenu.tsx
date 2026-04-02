@@ -1,3 +1,4 @@
+import { CATEGORIES_LIST } from '@/store/categories'
 import { Icon, Text } from '@/ui-kit'
 
 import styles from './CategoriesMenu.module.css'
@@ -14,7 +15,6 @@ interface Category {
 }
 
 interface CategoriesMenuProps {
-  categories: Category[]
   onCategoryClick?: (category: Category) => void
   onSubcategoryClick?: (subcategory: string, category: Category) => void
 }
@@ -22,11 +22,8 @@ interface CategoriesMenuProps {
 const leftHeights = [316, 280, 244]
 const rightHeights = [316, 244, 280]
 
-export const CategoriesMenu = ({
-  categories,
-  onCategoryClick,
-  onSubcategoryClick,
-}: CategoriesMenuProps) => {
+export const CategoriesMenu = ({ onCategoryClick, onSubcategoryClick }: CategoriesMenuProps) => {
+  const categories = CATEGORIES_LIST as Category[] /*Потом нужно будет заменить на выгрузку с api*/
   const leftCategories = categories.filter((_, index) => index % 2 === 0)
   const rightCategories = categories.filter((_, index) => index % 2 === 1)
 
@@ -42,11 +39,7 @@ export const CategoriesMenu = ({
           </div>
           <div className={styles.subcategories}>
             {category.subcategories.map((sub) => (
-              <div
-                key={sub}
-                className={styles.subcategory}
-                onClick={() => onSubcategoryClick?.(sub, category)}
-              >
+              <div key={sub} onClick={() => onSubcategoryClick?.(sub, category)}>
                 <Text className={styles.subcategoryText}>{sub}</Text>
               </div>
             ))}

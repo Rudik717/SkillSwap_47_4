@@ -52,7 +52,6 @@
 
 .categoryHeader {
   margin-bottom: 12px;
-  cursor: pointer;
 }
 
 .categoryTitle {
@@ -72,10 +71,6 @@
   margin: 0;
 }
 
-.subcategory {
-  cursor: pointer;
-}
-
 .subcategoryText {
   margin: 0;
   font-family: Roboto, sans-serif;
@@ -84,8 +79,4 @@
   line-height: 24px;
   color: #4a4a4a;
   letter-spacing: 0.02em;
-}
-
-.subcategoryText:hover {
-  color: #000;
 }

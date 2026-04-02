@@ -1,4 +1,6 @@
-import React from 'react'
+import { MenuButton } from '@/ui-kit'
+import { CategoriesMenu } from '@/widgets/CategoriesMenu/CategoriesMenu'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Logo } from '../../ui-kit/Logo/Logo'
@@ -6,6 +8,7 @@ import { Text } from '../../ui-kit/Text/Text'
 import styles from './Footer.module.css'
 
 export const Footer = () => {
+  const [categoriesMenuVisible, setCategoriesMenuVisible] = useState(false)
   const handlePlaceholderClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
   }
@@ -42,9 +45,19 @@ export const Footer = () => {
           >
             <Text>Политика конфиденциальности</Text>
           </Link>
-          <Link to="/skills" className={styles.link}>
-            <Text>Все навыки</Text>
-          </Link>
+          <div>
+            <MenuButton
+              onPress={() => setCategoriesMenuVisible(!categoriesMenuVisible)}
+              iconName={categoriesMenuVisible ? 'arrow-down' : 'arrow-up'}
+            >
+              Все навыки
+            </MenuButton>
+            <div
+              className={`${styles.categoriesMenu} ${categoriesMenuVisible ? styles.active : ''}`}
+            >
+              <CategoriesMenu />
+            </div>
+          </div>
           <Link
             to="#"
             className={styles.link}

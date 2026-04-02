@@ -4,6 +4,7 @@
 }
 
 .container {
+  position: relative;
   display: flex;
   flex: 1;
   gap: 189px;
@@ -51,4 +52,21 @@
 
 .link:hover {
   opacity: 0.7;
+}
+
+.categoriesMenu {
+  position: absolute;
+  bottom: 140px;
+  left: 36px;
+  z-index: 10;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: 0.3s;
+}
+
+.categoriesMenu.active {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY();
 }

@@ -1,4 +1,5 @@
 import { Button, Icon, Logo, MenuButton, SearchInput, Text, UserAvatar } from '@/ui-kit'
+import { CategoriesMenu } from '@/widgets/CategoriesMenu/CategoriesMenu'
 import { type FC, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -7,7 +8,7 @@ import { type THeaderProps } from './type'
 
 export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unauth' }) => {
   // TODO  - получить имя пользователя и флаг авторизации и урл - возможно переделать на получение из стора.
-
+  const [categoriesMenuVisible, setCategoriesMenuVisible] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   return (
     <header
@@ -23,9 +24,19 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
               <Link className={styles.link} to="/about">
                 <Text variant="Body">О проекте</Text>
               </Link>
-              <MenuButton onPress={() => {}} iconName="arrow-down">
-                Все навыки
-              </MenuButton>
+              <div>
+                <MenuButton
+                  onPress={() => setCategoriesMenuVisible(!categoriesMenuVisible)}
+                  iconName={categoriesMenuVisible ? 'arrow-up' : 'arrow-down'}
+                >
+                  Все навыки
+                </MenuButton>
+                <div
+                  className={`${styles.categoriesMenu} ${categoriesMenuVisible ? styles.active : ''}`}
+                >
+                  <CategoriesMenu />
+                </div>
+              </div>
             </nav>
             <SearchInput
               value={searchValue}
