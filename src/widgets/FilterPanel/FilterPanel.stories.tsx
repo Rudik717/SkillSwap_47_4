@@ -2,10 +2,11 @@ import { mockStore } from '@/utils'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Provider } from 'react-redux'
 
-import { RoleFilter } from './RoleFilter'
+import { FilterPanel } from './FilterPanel'
 
-const meta: Meta<typeof RoleFilter> = {
-  title: 'Widgets/RoleFilter',
+const meta = {
+  title: 'Widgets/FilterPanel',
+  component: FilterPanel,
   tags: ['autodocs'],
   decorators: [
     (Story) => (
@@ -16,15 +17,10 @@ const meta: Meta<typeof RoleFilter> = {
       </Provider>
     ),
   ],
-  component: RoleFilter,
-}
+} satisfies Meta<typeof FilterPanel>
 
 export default meta
 
-type Story = StoryObj<typeof RoleFilter>
-
-export const Default: Story = {
-  args: {
-    onChange: () => {},
-  },
+export const Primary: StoryObj = {
+  args: {},
 }

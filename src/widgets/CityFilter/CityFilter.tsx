@@ -8,36 +8,38 @@ import styles from './CityFilter.module.css'
 
 interface CityFilterProps {
   options: { label: string; value: string }[]
-  selectedCityList: string[]
-  onChange: (value: string[]) => void
+  selectedValues: string[]
+  onClick: (value: string) => void
 }
 
-export const CityFilter = ({ options, selectedCityList = [], onChange }: CityFilterProps) => {
+export const CityFilter = ({ options, selectedValues = [], onClick }: CityFilterProps) => {
   const [showAllCityList, setShowAllCityList] = useState(false)
   const displayedCityList = showAllCityList ? options : options.slice(0, 5)
 
   const handleCityListToggle = (value: string) => {
-    const newSelectedCityList = selectedCityList.includes(value)
-      ? selectedCityList.filter((c) => c !== value)
-      : [...selectedCityList, value]
-    onChange(newSelectedCityList)
+    onClick?.(value)
+  }
+
+  const checkboxState = (value: string) => {
+    return selectedValues.includes(value) ? 'checked' : 'unchecked'
   }
 
   return (
     <div className={styles.cityFilterSection}>
       <Text variant="H3">Город</Text>
+
       <div className={styles.cityList}>
-        {displayedCityList.map((city) => (
-          <div className={styles.checkBoxContainer}>
+        {displayedCityList.map(({ value, label }) => (
+          <div className={styles.checkBoxContainer} key={value}>
             <Checkbox
-              key={city.value}
-              state={selectedCityList.includes(city.value) ? 'checked' : 'unchecked'}
-              onClick={() => handleCityListToggle(city.value)}
-              children={city.label}
+              state={checkboxState(value)}
+              onClick={() => handleCityListToggle(value)}
+              children={label}
             />
           </div>
         ))}
       </div>
+
       <div>
         <MenuButton
           iconName={showAllCityList ? 'arrow-up' : 'arrow-down'}
