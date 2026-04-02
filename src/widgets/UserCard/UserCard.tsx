@@ -13,6 +13,8 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
   const categories = useSelector(getAllCategories)
 
   const MAX_VISIBLE = 2
+  const textColor = 'var(--text)'
+
   const displayedTeachSkills = teachSkills.slice(0, MAX_VISIBLE)
   const remainingTeachCount = teachSkills.length - MAX_VISIBLE
   const displayedLearnSkills = learnSkills.slice(0, MAX_VISIBLE)
@@ -21,7 +23,7 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
   const [like, setLike] = useState<boolean>(false)
 
   const toggleLike = () => {
-    like ? setLike(false) : setLike(true)
+    setLike(!like)
   }
 
   const calculateAge = (birthDate?: string) => {
@@ -29,6 +31,11 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
     const today = new Date()
     const birth = new Date(birthDate)
     let age = today.getFullYear() - birth.getFullYear()
+    const hasHadBirthday =
+      today.getMonth() > birth.getMonth() ||
+      (today.getMonth() === birth.getMonth() && today.getDate() >= birth.getDate())
+
+    if (!hasHadBirthday) age--
     return age
   }
 
@@ -59,18 +66,18 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
   return (
     <article className={styles['user-card']}>
       <div className={styles['user-card__header']}>
-        <Avatar url={avatar}></Avatar>
+        <Avatar url={avatar} alt={`Аватар ${name}`}></Avatar>
         <div className={styles['user-card__info']}>
           <button className={styles['user-card__like-button']} onClick={toggleLike}>
-            <Icon name={like ? 'like-filled' : 'like'} color="#253017"></Icon>
+            <Icon name={like ? 'like-filled' : 'like'} color={textColor}></Icon>
           </button>
           <div className={styles['user-card__info_title']}>
-            <Text variant="H3" style={{ fontWeight: 600, color: '#253017' }}>
+            <Text variant="H3" style={{ fontWeight: 600, color: textColor }}>
               {name}
             </Text>
             <Text
               variant="Caption"
-              style={{ color: '#253017' }}
+              style={{ color: textColor }}
             >{`${city}, ${getAgeText(birthDate)}`}</Text>
           </div>
         </div>
@@ -78,7 +85,7 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
       <section className={styles['user-card__body']}>
         <div className={styles['body-skills']}>
           <div className={styles['body-skills_section']}>
-            <Text variant="H4" style={{ color: '#253017' }}>
+            <Text variant="H4" style={{ color: textColor }}>
               Может научить:
             </Text>
             <div className={styles['body-skills_section_buttons']}>
@@ -95,7 +102,7 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
             </div>
           </div>
           <div className={styles['body-skills_section']}>
-            <Text variant="H4" style={{ color: '#253017' }}>
+            <Text variant="H4" style={{ color: textColor }}>
               Хочет научиться:
             </Text>
             <div className={styles['body-skills_section_buttons']}>
