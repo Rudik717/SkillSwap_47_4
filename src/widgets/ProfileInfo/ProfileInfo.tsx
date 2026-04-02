@@ -1,23 +1,17 @@
-import { getAllCities } from '@/store/cities'
 import { Avatar, Button, DateInput, Icon, Select, Text, TextArea, TextInput } from '@/ui-kit'
 import type { Option } from '@/ui-kit/Select/Select'
 import type { TCity, TUser } from '@/utils'
 import React from 'react'
 import { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
 
 import styles from './ProfileInfo.module.css'
 
 interface ProfileInfoProps {
-  cities?: TCity[]
+  cities: TCity[]
   user?: TUser | null
 }
 
-export const ProfileInfo = ({ cities: citiesProp, user }: ProfileInfoProps) => {
-  // Получаем список городов
-  const allCities = useSelector(getAllCities)
-  const cities = citiesProp ?? allCities
-
+export const ProfileInfo = ({ cities, user }: ProfileInfoProps) => {
   const cityOptions: Option[] = cities.map((c) => ({ label: c.name, value: c.id }))
 
   // Опции для селекта выбора пола
