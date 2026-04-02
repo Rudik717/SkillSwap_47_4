@@ -44,7 +44,12 @@ export type TCity = {
   id: string
   name: string
 }
+
 export type TSkillFormData = Pick<
   TSkill,
   'title' | 'category' | 'subcategory' | 'description' | 'images'
 >
+
+export type TRole = 'all' | 'teach' | 'learn'
+export type TGender = 'any' | 'male' | 'female'
+
