@@ -6,6 +6,7 @@ import {
   recommendedUsersSelector,
 } from '@/store/users'
 import { UsersGrid } from '@/widgets'
+import { ActiveFilterChips } from '@/widgets/FilterPanel/ActiveFilterChips'
 import { FilterPanel } from '@/widgets/FilterPanel/FilterPanel'
 import { useSelector } from 'react-redux'
 
@@ -20,7 +21,10 @@ export const Home = () => {
 
   return (
     <div className={styles.container}>
-      <FilterPanel />
+      <div>
+        <FilterPanel />
+        <ActiveFilterChips />
+      </div>
       {isFilterActive ? (
         <UsersGrid users={filteredUsers} title="Подходящие предложения:" />
       ) : (
