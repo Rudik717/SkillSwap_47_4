@@ -1,4 +1,6 @@
+import { mockStore } from '@/utils'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Provider } from 'react-redux'
 
 import { UsersGrid } from './UsersGrid'
 
@@ -7,7 +9,7 @@ const mockUsers = [
   {
     id: '1',
     name: 'Анна',
-    avatar: 'https://via.placeholder.com/80',
+    avatar: 'https://cataas.com/cat',
     city: 'Москва',
     birthDate: '1990-01-01',
     skills: [
@@ -39,7 +41,7 @@ const mockUsers = [
   {
     id: '2',
     name: 'Иван',
-    avatar: 'https://via.placeholder.com/80',
+    avatar: 'https://cataas.com/cat',
     city: 'СПб',
     birthDate: '1992-05-15',
     skills: [
@@ -71,7 +73,7 @@ const mockUsers = [
   {
     id: '3',
     name: 'Мария',
-    avatar: 'https://via.placeholder.com/80',
+    avatar: 'https://cataas.com/cat',
     city: 'Казань',
     birthDate: '1988-12-10',
     skills: [
@@ -106,6 +108,15 @@ const meta: Meta<typeof UsersGrid> = {
   title: 'Widgets/UsersGrid',
   component: UsersGrid,
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <Provider store={mockStore}>
+        <div style={{}}>
+          <Story />
+        </div>
+      </Provider>
+    ),
+  ],
 }
 
 export default meta

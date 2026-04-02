@@ -17,13 +17,18 @@ interface UsersGridProps {
 export const UsersGrid = ({ users, title, button, columns = 3 }: UsersGridProps) => {
   return (
     <div className={styles.container}>
-      {(title || button) && (
+      {title || button ? (
         <div className={styles.header}>
           {title && <Text variant="H1">{title}</Text>}
-          {button && <Button onClick={button.onClick}>{button.label}</Button>}
+          {button && (
+            <div>
+              <Button onClick={button.onClick}>{button.label}</Button>
+            </div>
+          )}
         </div>
-      )}
-      <div className={styles.grid} style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
+      ) : null}
+
+      <div className={styles.grid} style={{ gridTemplateColumns: `repeat(${columns}, auto)` }}>
         {users.map((user) => (
           <UserCard key={user.id} user={user} />
         ))}

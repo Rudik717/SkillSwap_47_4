@@ -1,15 +1,16 @@
 .container {
-    width: 100%;
+  width: 100%;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
 }
 
 .grid {
-    display: grid;
-    gap: 24px;
+  display: grid;
+  column-gap: 24px;
+  justify-content: space-between;
 }
