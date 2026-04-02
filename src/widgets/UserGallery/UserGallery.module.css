@@ -1,5 +1,6 @@
 .galleryContainer {
   width: 100%;
+  min-width: 440px;
   max-width: 440px;
 }
 

@@ -5,7 +5,7 @@ import type { TSkillFormData } from '@utils/types'
 
 import { RegistrationPreview } from './RegistrationPreview'
 
-const Images = [
+const images = [
   'https://i.pinimg.com/736x/18/13/63/1813631ee45a3612a6d9b4b116567a4b.jpg',
   'https://i.pinimg.com/736x/04/20/c4/0420c4d695e7f04aa9f769ee9dca0878.jpg',
   'https://i.pinimg.com/736x/ff/e3/2d/ffe32d8f5d5ca7fe2409ebfcd0fd9b28.jpg',
@@ -14,7 +14,7 @@ const Images = [
 ]
 
 const meta: Meta<typeof RegistrationPreview> = {
-  title: 'Pages/RegistrationPreview',
+  title: 'Widgets/RegistrationPreview',
   component: RegistrationPreview,
   parameters: {
     layout: 'centered',
@@ -60,7 +60,7 @@ export const WithFourImages: Story = {
   args: {
     data: {
       ...mockData,
-      images: Images.slice(0, 4),
+      images: images.slice(0, 4),
     },
     isOpen: true,
     onEdit: () => {},
@@ -73,7 +73,7 @@ export const WithSingleImage: Story = {
   args: {
     data: {
       ...mockData,
-      images: Images.slice(0, 1),
+      images: images.slice(0, 1),
     },
     isOpen: true,
     onEdit: () => {},
@@ -86,7 +86,7 @@ export const WithTwoImages: Story = {
   args: {
     data: {
       ...mockData,
-      images: Images.slice(0, 2),
+      images: images.slice(0, 2),
     },
     isOpen: true,
     onEdit: () => {},
@@ -99,7 +99,7 @@ export const WithThreeImages: Story = {
   args: {
     data: {
       ...mockData,
-      images: Images.slice(0, 3),
+      images: images.slice(0, 3),
     },
     isOpen: true,
     onEdit: () => {},
@@ -112,7 +112,7 @@ export const WithFiveImages: Story = {
   args: {
     data: {
       ...mockData,
-      images: Images.slice(0, 5),
+      images: images.slice(0, 5),
     },
     isOpen: true,
     onEdit: () => {},
@@ -128,7 +128,7 @@ export const LongContent: Story = {
       title: 'Очень длинное название навыка которое не помещается в одну строку',
       subcategory: 'Музыка и звук / Инструменты / Ударные / Барабаны',
       description: 'Это очень длинное описание навыка. ' + 'А '.repeat(250) + 'вот так.',
-      images: Images.slice(0, 4),
+      images: images.slice(0, 4),
     },
     isOpen: true,
     onEdit: () => {},
