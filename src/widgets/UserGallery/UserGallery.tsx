@@ -1,8 +1,8 @@
 import { Icon } from '@/ui-kit'
 import React, { useRef, useState } from 'react'
-import 'swiper/css'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { SwiperClass } from 'swiper/react'
+import 'swiper/swiper.css'
 
 import styles from './UserGallery.module.css'
 
