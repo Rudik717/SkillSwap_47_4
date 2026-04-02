@@ -52,7 +52,7 @@ export const RegistrationPreview: FC<TRegistrationPreview> = memo(
             </section>
             {images && images.length > 0 && (
               <div className={styles.galleryWrapper}>
-                <UserGallery images={images}></UserGallery>
+                <UserGallery images={images} navigation={false}></UserGallery>
               </div>
             )}
           </article>
