@@ -3,7 +3,7 @@ import { type ReactNode } from 'react'
 import styles from './FormLayout.module.css'
 
 interface Props {
-  title: ReactNode
+  title?: ReactNode
   children: ReactNode
   infoBlock: ReactNode
 }
