@@ -1,0 +1,50 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.centered {
+  text-align: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.card {
+  display: flex;
+  gap: 44px;
+}
+
+.galleryWrapper {
+  flex: 1;
+  min-width: 200px;
+}
+
+.infoSkill {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 420px;
+}
+
+.infoSkillText {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 32px;
+}
+
+.infoSkillTexTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.infoButtons {
+  display: flex;
+  gap: 12px;
+}

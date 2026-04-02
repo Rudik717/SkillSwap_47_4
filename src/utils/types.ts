@@ -35,7 +35,7 @@ export type TSkill = {
   subcategory: string // Название подкатегории (из TSubcategory.name) — для отображения в карточке
   title: string // "Английский язык"
   description?: string // "Научу свободно говорить на английском"
-  image?: string // ["english_course.jpg"]
+  images?: string[] // ["english_course.jpg"]
   createdAt: string // Дата создания навыка
   updatedAt: string // Дата последнего обновления навыка
 }
@@ -45,5 +45,11 @@ export type TCity = {
   name: string
 }
 
+export type TSkillFormData = Pick<
+  TSkill,
+  'title' | 'category' | 'subcategory' | 'description' | 'images'
+>
+
 export type TRole = 'all' | 'teach' | 'learn'
 export type TGender = 'any' | 'male' | 'female'
+

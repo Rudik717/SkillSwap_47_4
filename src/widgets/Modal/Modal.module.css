@@ -15,6 +15,7 @@
   max-width: 80%;
   padding-right: 60px;
   padding-left: 60px;
+  overflow: hidden;
   background-color: var(--bg);
   border-radius: 12px;
 }
