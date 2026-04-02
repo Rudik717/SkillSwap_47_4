@@ -1,0 +1,45 @@
+.container {
+  max-width: 244px;
+}
+
+.itemsList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.item {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.item:last-child {
+  margin-bottom: 0;
+}
+
+.sidebarButton {
+  gap: 12px;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 12px 20px;
+  background: transparent;
+}
+
+.sidebarButton_active {
+  background-color: rgb(222 235 197);
+}
+
+.sidebarButton:hover:not(:disabled) {
+  background-color: rgb(228 232 223);
+}
+
+.disabled {
+  background: transparent;
+}
