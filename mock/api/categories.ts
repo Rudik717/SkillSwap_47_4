@@ -1,0 +1,252 @@
+export const data = {
+  categories: [
+    {
+      id: '1',
+      name: 'Бизнес и карьера',
+      color: 'var(--category-business)',
+      icon: 'briefcase',
+    },
+    {
+      id: '2',
+      name: 'Творчество и искусство',
+      color: 'var(--category-creative)',
+      icon: 'palette',
+    },
+    {
+      id: '3',
+      name: 'Иностранные языки',
+      color: 'var(--category-languages)',
+      icon: 'earth',
+    },
+    {
+      id: '4',
+      name: 'Образование и развитие',
+      color: 'var(--category-education)',
+      icon: 'book',
+    },
+    {
+      id: '6',
+      name: 'Дом и уют',
+      color: 'var(--category-home)',
+      icon: 'home',
+    },
+    {
+      id: '5',
+      name: 'Здоровье и лайфстайл',
+      color: 'var(--category-health)',
+      icon: 'list',
+    },
+  ],
+  subcategories: [
+    {
+      id: '1',
+      name: 'Управление командой',
+      categoryId: '1',
+    },
+    {
+      id: '2',
+      name: 'Маркетинг и реклама',
+      categoryId: '1',
+    },
+    {
+      id: '3',
+      name: 'Продажи и переговоры',
+      categoryId: '1',
+    },
+    {
+      id: '4',
+      name: 'Личный бренд',
+      categoryId: '1',
+    },
+    {
+      id: '5',
+      name: 'Резюме и собеседование',
+      categoryId: '1',
+    },
+    {
+      id: '6',
+      name: 'Тайм-менеджмент',
+      categoryId: '1',
+    },
+    {
+      id: '7',
+      name: 'Проектное управление',
+      categoryId: '1',
+    },
+    {
+      id: '8',
+      name: 'Предпринимательство',
+      categoryId: '1',
+    },
+    {
+      id: '9',
+      name: 'Английский',
+      categoryId: '3',
+    },
+    {
+      id: '10',
+      name: 'Французский',
+      categoryId: '3',
+    },
+    {
+      id: '11',
+      name: 'Испанский',
+      categoryId: '3',
+    },
+    {
+      id: '12',
+      name: 'Немецкий',
+      categoryId: '3',
+    },
+    {
+      id: '13',
+      name: 'Китайский',
+      categoryId: '3',
+    },
+    {
+      id: '14',
+      name: 'Японский',
+      categoryId: '3',
+    },
+    {
+      id: '15',
+      name: 'Подготовка к экзаменам (IELTS, TOEFL)',
+      categoryId: '3',
+    },
+    {
+      id: '16',
+      name: 'Уборка и организация',
+      categoryId: '6',
+    },
+    {
+      id: '17',
+      name: 'Домашние финансы',
+      categoryId: '6',
+    },
+    {
+      id: '18',
+      name: 'Приготовление еды',
+      categoryId: '6',
+    },
+    {
+      id: '19',
+      name: 'Домашние растения',
+      categoryId: '6',
+    },
+    {
+      id: '20',
+      name: 'Ремонт',
+      categoryId: '6',
+    },
+    {
+      id: '21',
+      name: 'Хранение вещей',
+      categoryId: '6',
+    },
+    {
+      id: '22',
+      name: 'Рисование и иллюстрация',
+      categoryId: '2',
+    },
+    {
+      id: '23',
+      name: 'Фотография',
+      categoryId: '2',
+    },
+    {
+      id: '24',
+      name: 'Видеомонтаж',
+      categoryId: '2',
+    },
+    {
+      id: '25',
+      name: 'Музыка и звук',
+      categoryId: '2',
+    },
+    {
+      id: '26',
+      name: 'Актёрское мастерство',
+      categoryId: '2',
+    },
+    {
+      id: '27',
+      name: 'Креативное письмо',
+      categoryId: '2',
+    },
+    {
+      id: '28',
+      name: 'Арт-терапия',
+      categoryId: '2',
+    },
+    {
+      id: '29',
+      name: 'Декор и DIY',
+      categoryId: '2',
+    },
+    {
+      id: '30',
+      name: 'Личностное развитие',
+      categoryId: '4',
+    },
+    {
+      id: '31',
+      name: 'Навыки обучения',
+      categoryId: '4',
+    },
+    {
+      id: '32',
+      name: 'Когнитивные техники',
+      categoryId: '4',
+    },
+    {
+      id: '33',
+      name: 'Скорочтение',
+      categoryId: '4',
+    },
+    {
+      id: '34',
+      name: 'Навыки преподавания',
+      categoryId: '4',
+    },
+    {
+      id: '35',
+      name: 'Коучинг',
+      categoryId: '4',
+    },
+    {
+      id: '36',
+      name: 'Йога и медитация',
+      categoryId: '5',
+    },
+    {
+      id: '37',
+      name: 'Питание и ЗОЖ',
+      categoryId: '5',
+    },
+    {
+      id: '38',
+      name: 'Ментальное здоровье',
+      categoryId: '5',
+    },
+    {
+      id: '39',
+      name: 'Осознанность',
+      categoryId: '5',
+    },
+    {
+      id: '40',
+      name: 'Физические тренировки',
+      categoryId: '5',
+    },
+    {
+      id: '41',
+      name: 'Сон и восстановление',
+      categoryId: '5',
+    },
+    {
+      id: '42',
+      name: 'Баланс жизни и работы',
+      categoryId: '5',
+    },
+  ],
+}

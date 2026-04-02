@@ -18,15 +18,11 @@ export type Group = {
 
 interface SkillFilterProps {
   options: Group[]
-  value?: string[]
+  selectedIds?: string[]
   onChange?: (selectedId: string) => void
 }
 
-export const SkillFilter = ({
-  options /**TODO: использовать пропс value из интерфейса*/,
-  onChange,
-}: SkillFilterProps) => {
-  //Состояние для открытия/закрытия
+export const SkillFilter = ({ options, onChange, selectedIds }: SkillFilterProps) => {
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set())
 
   // Функция переключения иконки в зависимости от состояния группы
@@ -64,12 +60,30 @@ export const SkillFilter = ({
     }
   }
 
-  /** TODO: Нужно реализовать отслеживание кликов на чекбоксы*/
-  // Обработчик для выбранных категорий/подкатегорий
   const handleItemSelected = (itemId: string) => {
-    if (onChange) {
-      onChange(itemId)
+    onChange?.(itemId)
+  }
+
+  const checkboxState = (id: string) => {
+    const selected = selectedIds?.includes(id)
+    return selected ? 'checked' : 'unchecked'
+  }
+
+  const checkboxGroupState = (id: string) => {
+    const group = options.find((g) => g.id === id)
+
+    if (!group) {
+      return 'unchecked'
     }
+
+    const { items } = group
+    const selectedItems = items.filter(({ id }) => selectedIds?.includes(id))
+
+    if (!selectedItems.length) {
+      return 'unchecked'
+    }
+
+    return selectedItems.length === items.length ? 'checked' : 'indeterminate'
   }
 
   return (
@@ -85,7 +99,7 @@ export const SkillFilter = ({
             <div className={styles.category}>
               <Checkbox
                 key={option.id}
-                state="indeterminate"
+                state={checkboxGroupState(option.id)}
                 onClick={() => handleItemSelected(option.id)}
                 children={option.label}
               />
@@ -104,7 +118,7 @@ export const SkillFilter = ({
                 <li key={item.id} className={styles.item}>
                   <Checkbox
                     key={item.id}
-                    state="checked"
+                    state={checkboxState(item.id)}
                     onClick={() => handleItemSelected(item.id)}
                     children={item.label}
                   />
