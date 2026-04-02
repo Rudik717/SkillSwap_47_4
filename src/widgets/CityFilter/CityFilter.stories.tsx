@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 import { CityFilter } from './CityFilter'
 
-export const CITY_ROLE = [
+const CITY_ROLE = [
   { label: 'Москва', value: 'Moscow' },
   { label: 'Санкт-Петербург', value: 'Saint-Petersburg' },
   { label: 'Новосибирск', value: 'Novosibirsk' },
@@ -58,23 +58,27 @@ export const CITY_ROLE = [
 
 const meta: Meta<typeof CityFilter> = {
   title: 'Widgets/CityFilter',
-  tags: ['autodocs'],
   component: CityFilter,
+  tags: ['autodocs'],
 }
 
 export default meta
-
 type Story = StoryObj<typeof CityFilter>
 
 export const Default: Story = {
-  args: {
-    options: CITY_ROLE,
-  },
-  render: (args) => {
-    const [selectedCityList, setSelectedCityList] = useState<string[]>([])
+  render: () => {
+    const CityFilterWrapper = () => {
+      const [selectedCityList, setSelectedCityList] = useState<string[]>([])
 
-    return (
-      <CityFilter {...args} selectedCityList={selectedCityList} onChange={setSelectedCityList} />
-    )
+      return (
+        <CityFilter
+          options={CITY_ROLE}
+          selectedCityList={selectedCityList}
+          onChange={setSelectedCityList}
+        />
+      )
+    }
+
+    return <CityFilterWrapper />
   },
 }

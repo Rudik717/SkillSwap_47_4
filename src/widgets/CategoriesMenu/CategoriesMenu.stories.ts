@@ -1,120 +1,101 @@
+import { categoriesReducer } from '@/store/categories'
+import { configureStore } from '@reduxjs/toolkit'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import React from 'react'
+import { Provider } from 'react-redux'
 import { action } from 'storybook/actions'
 
 import { CategoriesMenu } from './CategoriesMenu'
 
-interface Category {
-  id: string
-  name: string
-  color: string
-  icon: string
-  subcategories: string[]
-}
-
-const mockCategories: Category[] = [
-  {
-    id: '1',
-    name: 'Бизнес и карьера',
-    color: '--category-business',
-    icon: 'briefcase',
-    subcategories: [
-      'Управление командой',
-      'Маркетинг и реклама',
-      'Продажи и переговоры',
-      'Личный бренд',
-      'Резюме и собеседование',
-      'Тайм-менеджмент',
-      'Проектное управление',
-      'Предпринимательство',
-    ],
+const mockStore = configureStore({
+  reducer: { categories: categoriesReducer },
+  preloadedState: {
+    categories: {
+      categories: [
+        { id: '1', name: 'Бизнес и карьера', color: 'var(--category-business)', icon: 'briefcase' },
+        {
+          id: '2',
+          name: 'Творчество и искусство',
+          color: 'var(--category-creative)',
+          icon: 'palette',
+        },
+        { id: '3', name: 'Иностранные языки', color: 'var(--category-languages)', icon: 'earth' },
+        {
+          id: '4',
+          name: 'Образование и развитие',
+          color: 'var(--category-education)',
+          icon: 'book',
+        },
+        { id: '6', name: 'Дом и уют', color: 'var(--category-home)', icon: 'home' },
+        { id: '5', name: 'Здоровье и лайфстайл', color: 'var(--category-health)', icon: 'list' },
+      ],
+      subcategories: [
+        { id: '1', name: 'Управление командой', categoryId: '1' },
+        { id: '2', name: 'Маркетинг и реклама', categoryId: '1' },
+        { id: '3', name: 'Продажи и переговоры', categoryId: '1' },
+        { id: '4', name: 'Личный бренд', categoryId: '1' },
+        { id: '5', name: 'Резюме и собеседование', categoryId: '1' },
+        { id: '6', name: 'Тайм-менеджмент', categoryId: '1' },
+        { id: '7', name: 'Проектное управление', categoryId: '1' },
+        { id: '8', name: 'Предпринимательство', categoryId: '1' },
+        { id: '9', name: 'Английский', categoryId: '3' },
+        { id: '10', name: 'Французский', categoryId: '3' },
+        { id: '11', name: 'Испанский', categoryId: '3' },
+        { id: '12', name: 'Немецкий', categoryId: '3' },
+        { id: '13', name: 'Китайский', categoryId: '3' },
+        { id: '14', name: 'Японский', categoryId: '3' },
+        { id: '15', name: 'Подготовка к экзаменам (IELTS, TOEFL)', categoryId: '3' },
+        { id: '16', name: 'Уборка и организация', categoryId: '6' },
+        { id: '17', name: 'Домашние финансы', categoryId: '6' },
+        { id: '18', name: 'Приготовление еды', categoryId: '6' },
+        { id: '19', name: 'Домашние растения', categoryId: '6' },
+        { id: '20', name: 'Ремонт', categoryId: '6' },
+        { id: '21', name: 'Хранение вещей', categoryId: '6' },
+        { id: '22', name: 'Рисование и иллюстрация', categoryId: '2' },
+        { id: '23', name: 'Фотография', categoryId: '2' },
+        { id: '24', name: 'Видеомонтаж', categoryId: '2' },
+        { id: '25', name: 'Музыка и звук', categoryId: '2' },
+        { id: '26', name: 'Актёрское мастерство', categoryId: '2' },
+        { id: '27', name: 'Креативное письмо', categoryId: '2' },
+        { id: '28', name: 'Арт-терапия', categoryId: '2' },
+        { id: '29', name: 'Декор и DIY', categoryId: '2' },
+        { id: '30', name: 'Личностное развитие', categoryId: '4' },
+        { id: '31', name: 'Навыки обучения', categoryId: '4' },
+        { id: '32', name: 'Когнитивные техники', categoryId: '4' },
+        { id: '33', name: 'Скорочтение', categoryId: '4' },
+        { id: '34', name: 'Навыки преподавания', categoryId: '4' },
+        { id: '35', name: 'Коучинг', categoryId: '4' },
+        { id: '36', name: 'Йога и медитация', categoryId: '5' },
+        { id: '37', name: 'Питание и ЗОЖ', categoryId: '5' },
+        { id: '38', name: 'Ментальное здоровье', categoryId: '5' },
+        { id: '39', name: 'Осознанность', categoryId: '5' },
+        { id: '40', name: 'Физические тренировки', categoryId: '5' },
+        { id: '41', name: 'Сон и восстановление', categoryId: '5' },
+        { id: '42', name: 'Баланс жизни и работы', categoryId: '5' },
+      ],
+      loading: false,
+      error: null,
+    },
   },
-  {
-    id: '2',
-    name: 'Творчество и искусство',
-    color: '--category-creative',
-    icon: 'palette',
-    subcategories: [
-      'Рисование и иллюстрация',
-      'Фотография',
-      'Видеомонтаж',
-      'Музыка и звук',
-      'Актёрское мастерство',
-      'Креативное письмо',
-      'Арт-терапия',
-      'Декор и DIY',
-    ],
-  },
-  {
-    id: '3',
-    name: 'Иностранные языки',
-    color: '--category-languages',
-    icon: 'earth',
-    subcategories: [
-      'Английский',
-      'Французский',
-      'Испанский',
-      'Немецкий',
-      'Китайский',
-      'Японский',
-      'Подготовка к экзаменам (IELTS, TOEFL)',
-    ],
-  },
-  {
-    id: '4',
-    name: 'Образование и развитие',
-    color: '--category-education',
-    icon: 'book',
-    subcategories: [
-      'Личностное развитие',
-      'Навыки обучения',
-      'Когнитивные техники',
-      'Скорочтение',
-      'Навыки преподавания',
-      'Коучинг',
-    ],
-  },
-  {
-    id: '5',
-    name: 'Дом и уют',
-    color: '--category-home',
-    icon: 'home',
-    subcategories: [
-      'Уборка и организация',
-      'Домашние финансы',
-      'Приготовление еды',
-      'Домашние растения',
-      'Ремонт',
-      'Хранение вещей',
-    ],
-  },
-  {
-    id: '6',
-    name: 'Здоровье и лайфстайл',
-    color: '--category-health',
-    icon: 'list',
-    subcategories: [
-      'Йога и медитация',
-      'Питание и ЗОЖ',
-      'Ментальное здоровье',
-      'Осознанность',
-      'Физические тренировки',
-      'Сон и восстановление',
-      'Баланс жизни и работы',
-    ],
-  },
-]
+})
 
 const meta: Meta<typeof CategoriesMenu> = {
   title: 'Widgets/CategoriesMenu',
   component: CategoriesMenu,
   tags: ['autodocs'],
+  decorators: [
+    (Story) =>
+      React.createElement(Provider, {
+        store: mockStore,
+        children: React.createElement(Story),
+      }),
+  ],
 }
 
 export default meta
 
-export const Default: StoryObj = {
+export const Default: StoryObj<typeof CategoriesMenu> = {
   args: {
-    categories: mockCategories,
     onCategoryClick: action('category clicked'),
     onSubcategoryClick: action('subcategory clicked'),
   },
