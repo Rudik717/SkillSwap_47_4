@@ -25,6 +25,7 @@ export type TUser = {
   createdAt: string // "2025-01-15T10:30:00Z"
   updatedAt: string // "2025-03-30T15:20:00Z"
   favorites?: string[] // Массив TSkill.id навыков, добавленных в избранное
+  likes?: number // Количество лайков (Популярные на главной)
 }
 
 export type TSkill = {
@@ -52,4 +53,3 @@ export type TSkillFormData = Pick<
 
 export type TRole = 'all' | 'teach' | 'learn'
 export type TGender = 'any' | 'male' | 'female'
-

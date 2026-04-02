@@ -1,0 +1,10 @@
+.container {
+  display: flex;
+  gap: 24px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
