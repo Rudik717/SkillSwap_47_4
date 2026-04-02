@@ -1,5 +1,5 @@
 import { Button, Text } from '@/ui-kit'
-import { Modal } from '@/widgets'
+import { Modal, UserGallery } from '@/widgets'
 import { type FC, memo } from 'react'
 
 import styles from './RegistrationPreview.module.css'
@@ -50,7 +50,11 @@ export const RegistrationPreview: FC<TRegistrationPreview> = memo(
                 </Button>
               </div>
             </section>
-            <div className={styles.div}>{images}</div>
+            {images && images.length > 0 && (
+              <div className={styles.galleryWrapper}>
+                <UserGallery images={images}></UserGallery>
+              </div>
+            )}
           </article>
         </div>
       </Modal>

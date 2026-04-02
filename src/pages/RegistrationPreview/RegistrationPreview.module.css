@@ -16,17 +16,13 @@
 
 .card {
   display: flex;
+  flex-wrap: wrap;
   gap: 44px;
 }
 
-/* 
-Убрать потом
-*/
-
-.div {
-  width: 440px;
-  height: 324px;
-  background-color: blue;
+.galleryWrapper {
+  flex: 1;
+  min-width: 200px;
 }
 
 .infoSkill {

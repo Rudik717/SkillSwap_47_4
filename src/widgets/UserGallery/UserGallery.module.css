@@ -17,6 +17,7 @@
   grid-template-rows: 1fr;
   grid-template-columns: 1fr;
   gap: 0;
+  max-width: 324px;
   aspect-ratio: 1 / 1;
 }
 
