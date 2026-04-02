@@ -1,5 +1,6 @@
 export { CategoriesMenu } from './CategoriesMenu/CategoriesMenu'
 export { CityFilter } from './CityFilter/CityFilter'
+export { ExchangeOffer } from './ExchangeOffer/ExchangeOffer'
 export { FilterChips } from './FilterChips/FilterChips'
 export { Footer } from './Footer/Footer'
 export { FormLayout } from './FormLayout/FormLayout'
