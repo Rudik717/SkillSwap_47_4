@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { ProfileMenu, menuItems } from './ProfileMenu'
 
 const meta: Meta<typeof ProfileMenu> = {
-  title: 'Components/ProfileMenu',
+  title: 'Widgets/ProfileMenu',
   component: ProfileMenu,
   decorators: [
     (Story) => (
