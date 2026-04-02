@@ -5,6 +5,7 @@ import ArrowSquareLeft from '@/assets/svg/arrow-square-left.svg?react'
 import ArrowSquareRight from '@/assets/svg/arrow-square-right.svg?react'
 import ArrowUp from '@/assets/svg/arrow-up.svg?react'
 import Bell from '@/assets/svg/bell.svg?react'
+import BigBell from '@/assets/svg/big-bell.svg?react'
 import Book from '@/assets/svg/book.svg?react'
 import Briefcase from '@/assets/svg/briefcase.svg?react'
 import Calendar from '@/assets/svg/calendar.svg?react'
@@ -57,6 +58,7 @@ export const icons = {
   'arrow-square-left': ArrowSquareLeft,
   'arrow-square-right': ArrowSquareRight,
   bell: Bell,
+  'big-bell': BigBell,
   book: Book,
   briefcase: Briefcase,
   calendar: Calendar,
@@ -117,6 +119,7 @@ type IconParams = Partial<Record<IconName, IconParam>>
 
 const iconParams: IconParams = {
   bell: { disableFill: true },
+  'big-bell': { disableFill: true },
   book: { disableFill: true, disableStroke: true },
   briefcase: { disableFill: true, disableStroke: true },
   earth: { disableFill: true, disableStroke: true },

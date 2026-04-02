@@ -36,10 +36,10 @@ export const ExchangeOffer: React.FC<ExchangeOfferProps> = ({
   if (!isOpen) return null
 
   return (
-    <Modal onClose={handleClose} paddingTop={40} paddingBottom={40}>
+    <Modal onClose={handleClose}>
       <div className={styles.container}>
         <div className={styles.icon}>
-          <Icon name="bell" size={80} color="#ABD27A" />
+          <Icon name="big-bell" size={100} />
         </div>
 
         <div className={styles.text}>
@@ -53,7 +53,7 @@ export const ExchangeOffer: React.FC<ExchangeOfferProps> = ({
         </div>
 
         <div className={styles.button}>
-          <Button variant="primary" onClick={handleClose} className={styles.button}>
+          <Button variant="primary" onClick={handleClose}>
             Готово
           </Button>
         </div>
