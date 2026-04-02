@@ -1,0 +1,58 @@
+.conteiner {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  justify-content: center;
+}
+
+.fieldConteiner {
+  gap: 16px;
+}
+
+.buttonConteiner {
+  gap: 12px;
+  align-items: center;
+  margin-block-start: 24px;
+}
+
+.button {
+  display: flex;
+  align-self: stretch;
+}
+
+.infoBlock {
+  gap: 40px;
+  align-items: center;
+}
+
+.textConteiner {
+  gap: 12px;
+  text-align: center;
+}
+
+.divider {
+  position: relative;
+  display: flex;
+  align-self: stretch;
+  justify-content: center;
+  margin: 24px 0;
+}
+
+.hr {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+  margin-top: 1px;
+  background: rgb(228 232 223 / 100%);
+}
+
+.or {
+  z-index: 2;
+  padding: 0 4px;
+  background: var(--bg-footer);
+}
+
+.register {
+  text-decoration: none;
+}

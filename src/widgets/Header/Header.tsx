@@ -1,14 +1,18 @@
 import { Button, Icon, Logo, MenuButton, SearchInput, Text, UserAvatar } from '@/ui-kit'
 import { type FC, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import styles from './Header.module.css'
 import { type THeaderProps } from './type'
 
 export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unauth' }) => {
-  // TODO  - получить имя пользователя и флаг авторизации и урл - возможно переделать на получение из стора.
-
+  const navigate = useNavigate()
   const [searchValue, setSearchValue] = useState('')
+
+  const handleLogin = () => {
+    navigate('/login')
+  }
+
   return (
     <header
       className={`${styles.header} ${variant === 'registration' ? styles['header--registration'] : ''}`}
@@ -40,7 +44,9 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
               <Icon name="moon"></Icon>
             </button>
             <div className={styles.header__anauth}>
-              <Button variant="secondary">Войти</Button>
+              <Button variant="secondary" onClick={handleLogin}>
+                Войти
+              </Button>
               <Button variant="primary">Зарегистрироваться</Button>
             </div>
           </>

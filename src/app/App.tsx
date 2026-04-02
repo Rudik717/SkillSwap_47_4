@@ -1,4 +1,4 @@
-import { Catalog, Home, NotFound, ServerError } from '@/pages'
+import { Catalog, Home, Login, NotFound, ServerError } from '@/pages'
 import type { AppDispatch } from '@/store'
 import { getCategories, getCategoriesState } from '@/store/categories'
 import { getCities, getCitiesState } from '@/store/cities'
@@ -28,6 +28,7 @@ export const App = () => {
         <Route path="*" element={<NotFound />} />
         <Route index element={<Home />} />
         <Route path="/catalog" element={<Catalog />} />
+        <Route path="login" element={<Login />} />
         <Route path="server-error" element={<ServerError />} />
       </Route>
     </Routes>
