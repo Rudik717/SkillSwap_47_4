@@ -21,7 +21,7 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
   const [like, setLike] = useState<boolean>(false)
 
   const toggleLike = () => {
-    like ? setLike(false) : setLike(true)
+    setLike(!like)
   }
 
   const calculateAge = (birthDate?: string) => {
@@ -29,6 +29,11 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
     const today = new Date()
     const birth = new Date(birthDate)
     let age = today.getFullYear() - birth.getFullYear()
+    const hasHadBirthday =
+      today.getMonth() > birth.getMonth() ||
+      (today.getMonth() === birth.getMonth() && today.getDate() >= birth.getDate())
+
+    if (!hasHadBirthday) age--
     return age
   }
 
@@ -59,7 +64,7 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
   return (
     <article className={styles['user-card']}>
       <div className={styles['user-card__header']}>
-        <Avatar url={avatar}></Avatar>
+        <Avatar url={avatar} alt={`Аватар ${name}`}></Avatar>
         <div className={styles['user-card__info']}>
           <button className={styles['user-card__like-button']} onClick={toggleLike}>
             <Icon name={like ? 'like-filled' : 'like'} color="#253017"></Icon>
