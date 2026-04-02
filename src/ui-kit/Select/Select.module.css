@@ -2,8 +2,6 @@
 .selectWrapper {
   position: relative;
   width: 100%;
-  min-width: 206px;
-  max-width: 436px;
 }
 
 /* Контрол селекта */
@@ -89,7 +87,6 @@
 
 /* Dropdown меню */
 .selectWrapper :global(.select__menu) {
-  z-index: 0;
   width: 100%;
   margin-top: 0;
   overflow: hidden;
@@ -101,7 +98,6 @@
 }
 
 .selectWrapper :global(.select__control--menu-is-open) {
-  z-index: 1;
   border-bottom-color: #e4e8df;
   border-radius: 12px 12px 0 0;
 }

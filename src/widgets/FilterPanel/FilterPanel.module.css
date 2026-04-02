@@ -2,7 +2,9 @@
   display: flex;
   flex-direction: column;
   width: 324px;
+  min-width: 324px;
   padding: 20px;
+  border-radius: 12px;
 }
 
 .headingContainer {

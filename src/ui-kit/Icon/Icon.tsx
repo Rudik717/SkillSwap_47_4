@@ -1,3 +1,5 @@
+import Apple from '@/assets/svg/Apple.svg?react'
+import Google from '@/assets/svg/Google.svg?react'
 import Add from '@/assets/svg/add.svg?react'
 import ArrowDown from '@/assets/svg/arrow-down.svg?react'
 import ArrowLeft from '@/assets/svg/arrow-left.svg?react'
@@ -25,6 +27,7 @@ import GalleryAdd from '@/assets/svg/gallery-add.svg?react'
 import GalleryEdit from '@/assets/svg/gallery-edit.svg?react'
 import Home from '@/assets/svg/home.svg?react'
 import Idea from '@/assets/svg/idea.svg?react'
+import LightBubble from '@/assets/svg/light-bulb.svg?react'
 import LeftSwitch from '@/assets/svg/left-switch.svg?react'
 import LikeFilled from '@/assets/svg/like-filled.svg?react'
 import Like from '@/assets/svg/like.svg?react'
@@ -50,6 +53,7 @@ import User from '@/assets/svg/user.svg?react'
 
 export const icons = {
   add: Add,
+  apple: Apple,
   'arrow-up': ArrowUp,
   'arrow-down': ArrowDown,
   'arrow-left': ArrowLeft,
@@ -76,8 +80,10 @@ export const icons = {
   'filter-square': FilterSquare,
   'gallery-add': GalleryAdd,
   'gallery-edit': GalleryEdit,
+  google: Google,
   home: Home,
   idea: Idea,
+  'light-bubble': LightBubble,
   like: Like,
   'like-filled': LikeFilled,
   list: List,

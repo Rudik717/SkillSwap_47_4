@@ -5,7 +5,7 @@ import { FormField } from '../FormField/FormField'
 import { Icon } from '../Icon/Icon'
 import styles from './Select.module.css'
 
-type Option = {
+export type Option = {
   label: string
   value: string
 }

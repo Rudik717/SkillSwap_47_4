@@ -27,7 +27,6 @@ input::placeholder {
 .input:focus,
 .button:focus {
   outline: none;
-  border-width: 2px;
 }
 
 .input__container {
