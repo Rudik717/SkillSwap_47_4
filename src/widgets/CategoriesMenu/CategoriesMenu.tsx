@@ -1,5 +1,6 @@
-import { CATEGORIES_LIST } from '@/store/categories'
+import { getAllCategories, getAllSubcategories } from '@/store/categories'
 import { Icon, Text } from '@/ui-kit'
+import { useSelector } from 'react-redux'
 
 import styles from './CategoriesMenu.module.css'
 
@@ -23,14 +24,21 @@ const leftHeights = [316, 280, 244]
 const rightHeights = [316, 244, 280]
 
 export const CategoriesMenu = ({ onCategoryClick, onSubcategoryClick }: CategoriesMenuProps) => {
-  const categories = CATEGORIES_LIST as Category[] /*Потом нужно будет заменить на выгрузку с api*/
+  const categoryList = useSelector(getAllCategories)
+  const subcategoryList = useSelector(getAllSubcategories)
+  const categories = categoryList.map((cat) => ({
+    ...cat,
+    subcategories: subcategoryList
+      .filter((sub) => sub.categoryId === cat.id)
+      .map((sub) => sub.name),
+  })) as Category[]
   const leftCategories = categories.filter((_, index) => index % 2 === 0)
   const rightCategories = categories.filter((_, index) => index % 2 === 1)
 
   const renderCategory = (category: Category, height: number) => (
     <div key={category.id} className={styles.category} style={{ height: `${height}px` }}>
       <div className={styles.row}>
-        <div className={styles.iconWrapper} style={{ backgroundColor: `var(${category.color})` }}>
+        <div className={styles.iconWrapper} style={{ backgroundColor: `${category.color}` }}>
           <Icon name={category.icon} size={24} />
         </div>
         <div className={styles.content}>
