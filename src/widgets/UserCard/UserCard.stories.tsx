@@ -1,4 +1,4 @@
-import { mockStore } from '@/utils'
+import { mockStore } from '@/utils/store'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Provider } from 'react-redux'
 
