@@ -1,47 +1,15 @@
-import { categoriesReducer } from '@/store/categories'
-import { configureStore } from '@reduxjs/toolkit'
+import { mockStore } from '@/utils'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Provider } from 'react-redux'
 
 import '../../index.css'
 import { UserCard } from './UserCard'
 
-const mockStore = configureStore({
-  reducer: {
-    categories: categoriesReducer,
-  },
-  preloadedState: {
-    categories: {
-      categories: [
-        { id: '1', name: 'Бизнес и карьера', color: 'var(--category-business)', icon: 'briefcase' },
-        {
-          id: '2',
-          name: 'Творчество и искусство',
-          color: 'var(--category-creative)',
-          icon: 'palette',
-        },
-        { id: '3', name: 'Иностранные языки', color: 'var(--category-languages)', icon: 'earth' },
-        {
-          id: '4',
-          name: 'Образование и развитие',
-          color: 'var(--category-education)',
-          icon: 'book',
-        },
-        { id: '5', name: 'Здоровье и лайфстайл', color: 'var(--category-health)', icon: 'heart' },
-        { id: '6', name: 'Дом и уют', color: 'var(--category-home)', icon: 'home' },
-      ],
-      subcategories: [],
-      loading: false,
-      error: null,
-    },
-  },
-})
-
 const meta: Meta<typeof UserCard> = {
   title: 'Widgets/UserCard',
   component: UserCard,
   decorators: [
-    (Story: any) => (
+    (Story) => (
       <Provider store={mockStore}>
         <div style={{ width: '324px' }}>
           <Story />
