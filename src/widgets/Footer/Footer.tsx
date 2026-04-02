@@ -18,7 +18,7 @@ export const Footer = () => {
             <Logo />
           </Link>
           <Text variant="Caption" className={styles.copyright}>
-            SkillSwap — 2025
+            SkillSwap — 2026
           </Text>
         </div>
 
