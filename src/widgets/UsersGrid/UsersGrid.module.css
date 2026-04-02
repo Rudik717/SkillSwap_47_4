@@ -11,6 +11,6 @@
 
 .grid {
   display: grid;
-  column-gap: 24px;
+  gap: 24px;
   justify-content: space-between;
 }
