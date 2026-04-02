@@ -1,23 +1,29 @@
-import React from 'react'
+import { type AppDispatch } from '@/store'
+import { getFilterState, setRole } from '@/store/filter'
+import type { TRole } from '@/utils'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { RadioGroup } from '@ui-kit/RadioGroup/RadioGroup'
 
 import styles from './RoleFilter.module.css'
 
-interface RoleFilterProps {
-  onChange: (value: string) => void
-}
+export const RoleFilter = () => {
+  const dispatch = useDispatch<AppDispatch>()
+  const { role } = useSelector(getFilterState)
 
-export const RoleFilter: React.FC<RoleFilterProps> = ({ onChange }) => {
   const roleFilterOptions = [
-    { label: 'Всё', value: 'Всё' },
-    { label: 'Хочу научиться', value: 'Хочу научиться' },
-    { label: 'Могу научить', value: 'Могу научить' },
+    { label: 'Всё', value: 'all' },
+    { label: 'Хочу научиться', value: 'learn' },
+    { label: 'Могу научить', value: 'teach' },
   ]
+
+  const onChange = (value: string) => {
+    dispatch(setRole(value as TRole))
+  }
 
   return (
     <div className={styles.roleFilter}>
-      <RadioGroup name="role-filter" options={roleFilterOptions} onChange={onChange} />
+      <RadioGroup name="role-filter" options={roleFilterOptions} onChange={onChange} value={role} />
     </div>
   )
 }

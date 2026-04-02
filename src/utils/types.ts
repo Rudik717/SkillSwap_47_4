@@ -44,3 +44,6 @@ export type TCity = {
   id: string
   name: string
 }
+
+export type TRole = 'all' | 'teach' | 'learn'
+export type TGender = 'any' | 'male' | 'female'
