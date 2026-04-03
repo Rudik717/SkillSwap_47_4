@@ -22,15 +22,16 @@ export const SkillFilter = () => {
   })
 
   const onChange = (selectedId: string) => {
-    const selectedCategory = categories.find((category) => category.id === selectedId)
+    const isSelectedCategory = !selectedId.includes('-') // subcategory UI id = `${categoryId}-${subcategoryId}
 
-    if (selectedCategory) {
+    if (isSelectedCategory) {
+      const selectedCategory = categories.find((category) => category.id === selectedId)
       const selectedSubcategories = subcategories.filter(
         ({ id, categoryId }) =>
-          filter.subcategories.includes(id) && categoryId === selectedCategory.id
+          filter.subcategories.includes(id) && categoryId === selectedCategory?.id
       )
       const allSubcategories = subcategories.filter(
-        ({ categoryId }) => categoryId === selectedCategory.id
+        ({ categoryId }) => categoryId === selectedCategory?.id
       )
 
       const isAlreadySelected = selectedSubcategories.length === allSubcategories.length
@@ -52,7 +53,7 @@ export const SkillFilter = () => {
 
     const updatedSubcategories = isAlreadySelected
       ? [...filter.subcategories.filter((id) => id !== subcategoryId)]
-      : [...filter.subcategories, ...subcategoryId]
+      : [...filter.subcategories, subcategoryId]
     dispatch(setSubcategories([...new Set(updatedSubcategories)]))
   }
 

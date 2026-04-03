@@ -1,4 +1,6 @@
-import React from 'react'
+import { useOutsideClick } from '@/utils'
+import { CategoriesMenu } from '@/widgets/CategoriesMenu/CategoriesMenu'
+import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Logo } from '../../ui-kit/Logo/Logo'
@@ -6,9 +8,15 @@ import { Text } from '../../ui-kit/Text/Text'
 import styles from './Footer.module.css'
 
 export const Footer = () => {
+  const [categoriesMenuVisible, setCategoriesMenuVisible] = useState(false)
   const handlePlaceholderClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
   }
+  const allCategoriesRef = useRef<HTMLDivElement | null>(null)
+  useOutsideClick({
+    ref: allCategoriesRef,
+    handler: () => setCategoriesMenuVisible(false),
+  })
 
   return (
     <footer className={styles.footer}>
@@ -42,9 +50,19 @@ export const Footer = () => {
           >
             <Text>Политика конфиденциальности</Text>
           </Link>
-          <Link to="/skills" className={styles.link}>
-            <Text>Все навыки</Text>
-          </Link>
+          <div ref={allCategoriesRef}>
+            <button
+              className={styles.allCategoriesButton}
+              onClick={() => setCategoriesMenuVisible(!categoriesMenuVisible)}
+            >
+              Все навыки
+            </button>
+            <div
+              className={`${styles.categoriesMenu} ${categoriesMenuVisible ? styles.active : ''}`}
+            >
+              <CategoriesMenu />
+            </div>
+          </div>
           <Link
             to="#"
             className={styles.link}
