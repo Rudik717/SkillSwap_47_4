@@ -9,6 +9,12 @@ type UsersState = {
 
 type RootState = {
   users: UsersState
+  filter: {
+    role: string
+    subcategories: string[]
+    gender: string
+    cities: string[]
+  }
 }
 
 const initialState: UsersState = {
@@ -20,7 +26,7 @@ const initialState: UsersState = {
 export const getUsers = createAsyncThunk('users/getAll', async () => getUsersApi())
 
 const usersSlice = createSlice({
-  name: 'cities',
+  name: 'users',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -73,10 +79,41 @@ export const recommendedUsersSelector = createSelector([getUsersState], (state) 
   return users.slice(0, 9)
 })
 
-export const filteredUsersSelector = createSelector([getUsersState], (state) => {
-  const { users } = state
+export const filteredUsersSelector = createSelector(
+  [getUsersState, (state: RootState) => state.filter],
+  (usersState, filter) => {
+    let filtered = usersState.users
 
-  return users.slice(0, 9)
-})
+    // Фильтр по полу
+    if (filter.gender !== 'any') {
+      filtered = filtered.filter((user) => user.gender && user.gender === filter.gender)
+    }
+
+    // Фильтр по городам
+    if (filter.cities.length) {
+      filtered = filtered.filter((user) => user.city && filter.cities.includes(user.city))
+    }
+
+    // Фильтр по роли (через skills)
+    if (filter.role !== 'all') {
+      filtered = filtered.filter((user) => {
+        const hasTeach = user.skills?.some((s) => s.type === 'teach') ?? false
+        const hasLearn = user.skills?.some((s) => s.type === 'learn') ?? false
+        if (filter.role === 'can_teach') return hasTeach
+        if (filter.role === 'want_to_learn') return hasLearn
+        return true
+      })
+    }
+
+    // Фильтр по подкатегориям
+    if (filter.subcategories.length) {
+      filtered = filtered.filter((user) =>
+        user.skills?.some((skill) => filter.subcategories.includes(skill.subcategory))
+      )
+    }
+
+    return filtered
+  }
+)
 
 export const usersReducer = usersSlice.reducer
