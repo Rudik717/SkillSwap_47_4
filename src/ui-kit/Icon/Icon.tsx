@@ -1,11 +1,13 @@
+import Apple from '@/assets/svg/Apple.svg?react'
+import Google from '@/assets/svg/Google.svg?react'
 import Add from '@/assets/svg/add.svg?react'
 import ArrowDown from '@/assets/svg/arrow-down.svg?react'
 import ArrowLeft from '@/assets/svg/arrow-left.svg?react'
-import ArrowRight from '@/assets/svg/arrow-right.svg?react'
 import ArrowSquareLeft from '@/assets/svg/arrow-square-left.svg?react'
 import ArrowSquareRight from '@/assets/svg/arrow-square-right.svg?react'
 import ArrowUp from '@/assets/svg/arrow-up.svg?react'
 import Bell from '@/assets/svg/bell.svg?react'
+import BigBell from '@/assets/svg/big-bell.svg?react'
 import Book from '@/assets/svg/book.svg?react'
 import Briefcase from '@/assets/svg/briefcase.svg?react'
 import Calendar from '@/assets/svg/calendar.svg?react'
@@ -25,6 +27,8 @@ import GalleryAdd from '@/assets/svg/gallery-add.svg?react'
 import GalleryEdit from '@/assets/svg/gallery-edit.svg?react'
 import Home from '@/assets/svg/home.svg?react'
 import Idea from '@/assets/svg/idea.svg?react'
+import LeftSwitch from '@/assets/svg/left-switch.svg?react'
+import LightBubble from '@/assets/svg/light-bulb.svg?react'
 import LikeFilled from '@/assets/svg/like-filled.svg?react'
 import Like from '@/assets/svg/like.svg?react'
 import List from '@/assets/svg/list.svg?react'
@@ -37,6 +41,7 @@ import PlusCircle from '@/assets/svg/plus-circle.svg?react'
 import RadioButtonActive from '@/assets/svg/radiobutton-active.svg?react'
 import RadioButtonEmpty from '@/assets/svg/radiobutton-empty.svg?react'
 import Request from '@/assets/svg/request.svg?react'
+import RightSwitch from '@/assets/svg/right-switch.svg?react'
 import ScrollBig from '@/assets/svg/scroll-big.svg?react'
 import Scroll from '@/assets/svg/scroll.svg?react'
 import Search from '@/assets/svg/search.svg?react'
@@ -48,13 +53,16 @@ import User from '@/assets/svg/user.svg?react'
 
 export const icons = {
   add: Add,
+  apple: Apple,
   'arrow-up': ArrowUp,
   'arrow-down': ArrowDown,
   'arrow-left': ArrowLeft,
-  'arrow-right': ArrowRight,
+  'left-switch': LeftSwitch,
+  'right-switch': RightSwitch,
   'arrow-square-left': ArrowSquareLeft,
   'arrow-square-right': ArrowSquareRight,
   bell: Bell,
+  'big-bell': BigBell,
   book: Book,
   briefcase: Briefcase,
   calendar: Calendar,
@@ -72,8 +80,10 @@ export const icons = {
   'filter-square': FilterSquare,
   'gallery-add': GalleryAdd,
   'gallery-edit': GalleryEdit,
+  google: Google,
   home: Home,
   idea: Idea,
+  'light-bubble': LightBubble,
   like: Like,
   'like-filled': LikeFilled,
   list: List,
@@ -115,6 +125,7 @@ type IconParams = Partial<Record<IconName, IconParam>>
 
 const iconParams: IconParams = {
   bell: { disableFill: true },
+  'big-bell': { disableFill: true },
   book: { disableFill: true, disableStroke: true },
   briefcase: { disableFill: true, disableStroke: true },
   earth: { disableFill: true, disableStroke: true },

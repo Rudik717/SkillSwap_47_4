@@ -55,8 +55,10 @@
   --text-error: #bf3920;
   --bg: rgb(249 250 247);
   --bg-footer: rgb(255 255 255);
+  --bg-gallery-overlay: rgb(255 255 255 / 50%);
   --border-input-main: rgb(105 115 93);
   --color-placeholder: rgb(105 115 93);
+  --color-gallery-img-wrap-empty: #f5f5f5;
   --color-input-disabled: rgb(225 225 225);
   --color-error: rgb(191 57 32);
   --color-caret: rgb(80 136 38);
@@ -95,6 +97,8 @@
   :root {
     --text: #9ca3af;
     --bg: #16171d;
+    --bg-gallery-overlay: rgb(0 0 0 / 50%);
+    --color-gallery-img-wrap-empty: #1e1f25cf;
   }
 
   #social .button-icon {

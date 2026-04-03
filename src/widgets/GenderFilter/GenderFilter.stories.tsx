@@ -1,5 +1,6 @@
+import { mockStore } from '@/utils/store'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { action } from 'storybook/actions'
+import { Provider } from 'react-redux'
 
 import { GenderFilter } from './GenderFilter'
 
@@ -7,6 +8,15 @@ const meta = {
   title: 'Widgets/GenderFilter',
   component: GenderFilter,
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <Provider store={mockStore}>
+        <div style={{ width: '324px' }}>
+          <Story />
+        </div>
+      </Provider>
+    ),
+  ],
 } satisfies Meta<typeof GenderFilter>
 
 export default meta
@@ -14,11 +24,5 @@ export default meta
 export const Default: StoryObj = {
   args: {
     name: 'gender',
-    options: [
-      { label: 'Не имеет значения', value: 'any' },
-      { label: 'Мужской', value: 'male' },
-      { label: 'Женский', value: 'female' },
-    ],
-    onChange: action('onChange'),
   },
 }

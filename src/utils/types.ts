@@ -25,6 +25,7 @@ export type TUser = {
   createdAt: string // "2025-01-15T10:30:00Z"
   updatedAt: string // "2025-03-30T15:20:00Z"
   favorites?: string[] // Массив TSkill.id навыков, добавленных в избранное
+  likes?: number // Количество лайков (Популярные на главной)
 }
 
 export type TSkill = {
@@ -35,7 +36,7 @@ export type TSkill = {
   subcategory: string // Название подкатегории (из TSubcategory.name) — для отображения в карточке
   title: string // "Английский язык"
   description?: string // "Научу свободно говорить на английском"
-  image?: string // ["english_course.jpg"]
+  images?: string[] // ["english_course.jpg"]
   createdAt: string // Дата создания навыка
   updatedAt: string // Дата последнего обновления навыка
 }
@@ -44,3 +45,11 @@ export type TCity = {
   id: string
   name: string
 }
+
+export type TSkillFormData = Pick<
+  TSkill,
+  'title' | 'category' | 'subcategory' | 'description' | 'images'
+>
+
+export type TRole = 'all' | 'teach' | 'learn'
+export type TGender = 'any' | 'male' | 'female'

@@ -33,6 +33,13 @@ export const Tertiary: StoryObj = {
   },
 }
 
+export const Auth: StoryObj = {
+  args: {
+    variant: 'auth',
+    children: 'Auth',
+  },
+}
+
 export const WithIconRight: StoryObj = {
   args: {
     variant: 'secondary',

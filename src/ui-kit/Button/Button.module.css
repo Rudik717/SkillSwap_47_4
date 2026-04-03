@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   height: 48px;
+  max-height: 48px;
   padding: 12px 24px;
   font-family: Roboto, sans-serif;
   font-size: 16px;
@@ -35,7 +36,8 @@
 }
 
 .primary,
-.secondary {
+.secondary,
+.auth {
   flex: 1;
 }
 
@@ -93,4 +95,11 @@
 .tertiary:disabled {
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+/* auth */
+.auth {
+  color: rgb(37 48 23 / 100%);
+  background-color: white;
+  border: 1px solid rgb(105 115 93 / 100%);
 }

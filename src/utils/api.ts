@@ -1,4 +1,4 @@
-import { type TCategory, type TCity, type TSubcategory } from './types'
+import { type TCategory, type TCity, type TSubcategory, type TUser } from './types'
 
 const URL = import.meta.env.VITE_API_URL
 
@@ -33,6 +33,20 @@ type TCitiesResponse = TServerResponse<{
 export const getCitiesApi = () =>
   fetch(`${URL}/cities`)
     .then((res) => checkResponse<TCitiesResponse>(res))
+    .then((data) => {
+      if (data?.success) return data.data
+      return Promise.reject(data)
+    })
+
+type TUsersResponse = TServerResponse<{
+  data: {
+    users: TUser[]
+  }
+}>
+
+export const getUsersApi = () =>
+  fetch(`${URL}/users`)
+    .then((res) => checkResponse<TUsersResponse>(res))
     .then((data) => {
       if (data?.success) return data.data
       return Promise.reject(data)

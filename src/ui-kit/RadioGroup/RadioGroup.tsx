@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import type { ReactNode } from 'react'
 
 import styles from './RadioGroup.module.css'
 
@@ -15,7 +15,7 @@ type OptionProps = {
   onChange: (value: string) => void
 }
 
-const Option = (props: OptionProps): React.ReactNode => {
+const Option = (props: OptionProps): ReactNode => {
   const { label, value, groupName, checked, onChange } = props
 
   const handleChange = () => onChange(value)
@@ -42,18 +42,15 @@ const Option = (props: OptionProps): React.ReactNode => {
 
 type RadioGroupsProps = {
   name: string
+  value?: string
   options: OptionType[]
   onChange: (value: string) => void
 }
 
-export const RadioGroup = (props: RadioGroupsProps): React.ReactNode => {
-  const { name, options, onChange } = props
-
-  // Устанавливаем первый элемент как выбранный по умолчанию
-  const [selectedInput, setSelectedInput] = useState(options[0]?.value ?? '')
+export const RadioGroup = ({ name, value, options, onChange }: RadioGroupsProps): ReactNode => {
+  const selectedValue = value ?? options[0]?.value
 
   const handleChange = (value: string) => {
-    setSelectedInput(value)
     onChange(value)
   }
 
@@ -65,7 +62,7 @@ export const RadioGroup = (props: RadioGroupsProps): React.ReactNode => {
           groupName={name}
           value={value}
           label={label}
-          checked={selectedInput === value}
+          checked={selectedValue === value}
           onChange={handleChange}
         />
       ))}
