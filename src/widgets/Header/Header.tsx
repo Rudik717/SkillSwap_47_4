@@ -1,9 +1,8 @@
 import { Button, Icon, Logo, MenuButton, SearchInput, Text, UserAvatar } from '@/ui-kit'
+import { useOutsideClick } from '@/utils'
 import { CategoriesMenu } from '@/widgets/CategoriesMenu/CategoriesMenu'
 import { type FC, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-
-import { useOutsideClick } from '@utils/hooks'
 
 import styles from './Header.module.css'
 import { type THeaderProps } from './type'

@@ -1,9 +1,7 @@
-//import { MenuButton } from '@/ui-kit'
+import { useOutsideClick } from '@/utils'
 import { CategoriesMenu } from '@/widgets/CategoriesMenu/CategoriesMenu'
 import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-
-import { useOutsideClick } from '@utils/hooks'
 
 import { Logo } from '../../ui-kit/Logo/Logo'
 import { Text } from '../../ui-kit/Text/Text'
