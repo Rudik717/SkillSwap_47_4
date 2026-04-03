@@ -21,19 +21,19 @@ export const Home = () => {
 
   return (
     <div className={styles.container}>
-      <div>
-        <FilterPanel />
+      <FilterPanel />
+      <div className={styles.main}>
         <ActiveFilterChips />
+        {isFilterActive ? (
+          <UsersGrid users={filteredUsers} title="Подходящие предложения:" />
+        ) : (
+          <div className={styles.cards}>
+            <UsersGrid users={popularUsers} title="Популярное" />
+            <UsersGrid users={newUsers} title="Новое" />
+            <UsersGrid users={recommendedUsers} title="Рекомендуем" />
+          </div>
+        )}
       </div>
-      {isFilterActive ? (
-        <UsersGrid users={filteredUsers} title="Подходящие предложения:" />
-      ) : (
-        <div className={styles.cards}>
-          <UsersGrid users={popularUsers} title="Популярное" />
-          <UsersGrid users={newUsers} title="Новое" />
-          <UsersGrid users={recommendedUsers} title="Рекомендуем" />
-        </div>
-      )}
     </div>
   )
 }
