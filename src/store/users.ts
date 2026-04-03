@@ -1,6 +1,9 @@
 import { type TUser, getUsersApi } from '@/utils'
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 
+import { getAllCities } from './cities'
+import { getFilterState } from './filter'
+
 type UsersState = {
   users: TUser[]
   loading: boolean
@@ -20,7 +23,7 @@ const initialState: UsersState = {
 export const getUsers = createAsyncThunk('users/getAll', async () => getUsersApi())
 
 const usersSlice = createSlice({
-  name: 'cities',
+  name: 'users',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -73,10 +76,48 @@ export const recommendedUsersSelector = createSelector([getUsersState], (state) 
   return users.slice(0, 9)
 })
 
-export const filteredUsersSelector = createSelector([getUsersState], (state) => {
-  const { users } = state
+export const filteredUsersSelector = createSelector(
+  [getUsersState, getFilterState, getAllCities],
+  (usersState, filter, cities) => {
+    let filtered = usersState.users
 
-  return users.slice(0, 9)
-})
+    // Фильтр по полу
+    if (filter.gender !== 'any') {
+      filtered = filtered.filter((user) => user.gender && user.gender === filter.gender)
+    }
+
+    // Фильтр по городам
+    if (filter.cities.length) {
+      const filterCityNames = cities
+        .filter(({ id }) => filter.cities.includes(id))
+        .map(({ name }) => name)
+      filtered = filtered.filter((user) => user.city && filterCityNames.includes(user.city))
+    }
+
+    // Фильтр по роли (через skills)
+    if (filter.role !== 'all') {
+      filtered = filtered.filter((user) => {
+        if (filter.role === 'teach') {
+          return user.skills?.some((s) => s.type === 'teach') ?? false
+        }
+
+        if (filter.role === 'learn') {
+          return user.skills?.some((s) => s.type === 'learn') ?? false
+        }
+
+        return true
+      })
+    }
+
+    // Фильтр по подкатегориям
+    if (filter.subcategories.length) {
+      filtered = filtered.filter((user) =>
+        user.skills?.some((skill) => filter.subcategories.includes(skill.subcategory))
+      )
+    }
+
+    return filtered
+  }
+)
 
 export const usersReducer = usersSlice.reducer
