@@ -1,6 +1,9 @@
 import { type TUser, getUsersApi } from '@/utils'
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 
+import { getAllCities } from './cities'
+import { getFilterState } from './filter'
+
 type UsersState = {
   users: TUser[]
   loading: boolean
@@ -9,12 +12,6 @@ type UsersState = {
 
 type RootState = {
   users: UsersState
-  filter: {
-    role: string
-    subcategories: string[]
-    gender: string
-    cities: string[]
-  }
 }
 
 const initialState: UsersState = {
@@ -80,8 +77,8 @@ export const recommendedUsersSelector = createSelector([getUsersState], (state) 
 })
 
 export const filteredUsersSelector = createSelector(
-  [getUsersState, (state: RootState) => state.filter],
-  (usersState, filter) => {
+  [getUsersState, getFilterState, getAllCities],
+  (usersState, filter, cities) => {
     let filtered = usersState.users
 
     // Фильтр по полу
@@ -91,16 +88,23 @@ export const filteredUsersSelector = createSelector(
 
     // Фильтр по городам
     if (filter.cities.length) {
-      filtered = filtered.filter((user) => user.city && filter.cities.includes(user.city))
+      const filterCityNames = cities
+        .filter(({ id }) => filter.cities.includes(id))
+        .map(({ name }) => name)
+      filtered = filtered.filter((user) => user.city && filterCityNames.includes(user.city))
     }
 
     // Фильтр по роли (через skills)
     if (filter.role !== 'all') {
       filtered = filtered.filter((user) => {
-        const hasTeach = user.skills?.some((s) => s.type === 'teach') ?? false
-        const hasLearn = user.skills?.some((s) => s.type === 'learn') ?? false
-        if (filter.role === 'can_teach') return hasTeach
-        if (filter.role === 'want_to_learn') return hasLearn
+        if (filter.role === 'teach') {
+          return user.skills?.some((s) => s.type === 'teach') ?? false
+        }
+
+        if (filter.role === 'learn') {
+          return user.skills?.some((s) => s.type === 'learn') ?? false
+        }
+
         return true
       })
     }
