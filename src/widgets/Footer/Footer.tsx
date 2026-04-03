@@ -1,7 +1,9 @@
-import { MenuButton } from '@/ui-kit'
+//import { MenuButton } from '@/ui-kit'
 import { CategoriesMenu } from '@/widgets/CategoriesMenu/CategoriesMenu'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+
+import { useOutsideClick } from '@utils/hooks'
 
 import { Logo } from '../../ui-kit/Logo/Logo'
 import { Text } from '../../ui-kit/Text/Text'
@@ -12,6 +14,11 @@ export const Footer = () => {
   const handlePlaceholderClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
   }
+  const allCategoriesRef = useRef<HTMLDivElement | null>(null)
+  useOutsideClick({
+    ref: allCategoriesRef,
+    handler: () => setCategoriesMenuVisible(false),
+  })
 
   return (
     <footer className={styles.footer}>
@@ -45,13 +52,13 @@ export const Footer = () => {
           >
             <Text>Политика конфиденциальности</Text>
           </Link>
-          <div>
-            <MenuButton
-              onPress={() => setCategoriesMenuVisible(!categoriesMenuVisible)}
-              iconName={categoriesMenuVisible ? 'arrow-down' : 'arrow-up'}
+          <div ref={allCategoriesRef}>
+            <button
+              className={styles.allCategoriesButton}
+              onClick={() => setCategoriesMenuVisible(!categoriesMenuVisible)}
             >
               Все навыки
-            </MenuButton>
+            </button>
             <div
               className={`${styles.categoriesMenu} ${categoriesMenuVisible ? styles.active : ''}`}
             >
