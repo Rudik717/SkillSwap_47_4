@@ -111,9 +111,15 @@ export const filteredUsersSelector = createSelector(
 
     // Фильтр по подкатегориям
     if (filter.subcategories.length) {
-      filtered = filtered.filter((user) =>
-        user.skills?.some((skill) => filter.subcategories.includes(skill.subcategory))
-      )
+      filtered = filtered.filter((user) => {
+        if (filter.role === 'all') {
+          return user.skills?.some((skill) => filter.subcategories.includes(skill.subcategory))
+        }
+
+        return user.skills?.some(
+          (skill) => filter.subcategories.includes(skill.subcategory) && skill.type === filter.role
+        )
+      })
     }
 
     return filtered

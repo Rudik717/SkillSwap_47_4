@@ -22,7 +22,10 @@ export const Home = () => {
     <div className={styles.container}>
       <FilterPanel />
       {isFilterActive ? (
-        <UsersGrid users={filteredUsers} title="Подходящие предложения:" />
+        <UsersGrid
+          users={filteredUsers}
+          title={`Подходящие предложения: ${filteredUsers.length}`}
+        />
       ) : (
         <div className={styles.cards}>
           <UsersGrid users={popularUsers} title="Популярное" />
