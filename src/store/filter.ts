@@ -49,7 +49,7 @@ export const getFilterState = (state: RootState) => state.filter
 export const isFilterActiveSelector = createSelector([getFilterState], (state) => {
   const { cities, subcategories, role, gender } = state
 
-  return cities.length || subcategories.length || role !== 'all' || gender !== 'any'
+  return Boolean(cities.length || subcategories.length || role !== 'all' || gender !== 'any')
 })
 
 export const filterCountSelector = createSelector([getFilterState], (state) => {
