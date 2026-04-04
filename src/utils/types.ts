@@ -58,22 +58,24 @@ export type TRegisterData = {
   email: string //[step 1]
   password: string // [step 1]
   name: string //[step 2]
-  birthDate: string //[step 2]
+  birthDate: Date | null //[step 2]
   gender: 'male' | 'female' | 'unspecified' //[step 2]
-  city: string //[step 2]
-  avatar?: string //[step 2]
+  city: string | null //[step 2]
+  avatar: string | null //[step 2]
   learnSkill: {
-    type: 'learn' //[step 2]
-    category: string //[step 2]
-    subcategory: string //[step 2]
+    //[step 2]
+    type: 'learn'
+    category: string
+    subcategory: string
   }
   teachSkill: {
-    type: 'teach' //[step 3]
+    //[step 3]
+    type: 'teach'
     title: string
-    category: string //[step 3]
-    subcategory: string //[step 3]
-    description?: string //[step 3]
-    images?: string[] //[step 3]
+    category: string
+    subcategory: string
+    description: string
+    images: string[] | null
   }
 }
 
