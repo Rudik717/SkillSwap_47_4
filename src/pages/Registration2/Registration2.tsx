@@ -35,6 +35,7 @@ export const Registration2 = () => {
             type="file"
             accept="image/jpeg, image/png"
             className={styles.avatarInput}
+            multiple
           />
         </div>
         <TextInput
