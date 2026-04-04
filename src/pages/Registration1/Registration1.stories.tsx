@@ -35,6 +35,7 @@ export const WithPrefilledData: Story = {
     data: {
       email: 'user@example.com',
       password: '',
+      name: '',
       birthDate: '',
       gender: 'unspecified',
       city: '',
