@@ -134,6 +134,7 @@ const iconParams: IconParams = {
   palette: { disableFill: true, disableStroke: true },
   share: { disableFill: true },
   'user-circle': { disableFill: true },
+  done: { disableFill: true },
 }
 
 /** Icon component: `<Icon name="moon" size={48} color="green" />` */
