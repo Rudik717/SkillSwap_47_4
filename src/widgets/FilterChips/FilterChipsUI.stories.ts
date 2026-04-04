@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { action } from 'storybook/actions'
 
-import { FilterChips } from './FilterChips'
+import { FilterChipsUI } from './FilterChipsUI'
 
 const mockChips = [
   { id: '1', label: 'Хочу научиться' },
@@ -10,9 +10,9 @@ const mockChips = [
   { id: '4', label: 'Дом и уют' },
 ]
 
-const meta: Meta<typeof FilterChips> = {
+const meta: Meta<typeof FilterChipsUI> = {
   title: 'Widgets/FilterChips',
-  component: FilterChips,
+  component: FilterChipsUI,
   tags: ['autodocs'],
 }
 

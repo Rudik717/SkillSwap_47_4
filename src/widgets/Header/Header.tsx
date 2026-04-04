@@ -1,13 +1,27 @@
 import { Button, Icon, Logo, MenuButton, SearchInput, Text, UserAvatar } from '@/ui-kit'
-import { type FC, useState } from 'react'
+import { useOutsideClick } from '@/utils'
+import { CategoriesMenu } from '@/widgets/CategoriesMenu/CategoriesMenu'
+import { type FC, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
+import { UserMenu } from '../UserMenu/UserMenu'
 import styles from './Header.module.css'
 import { type THeaderProps } from './type'
 
 export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unauth' }) => {
   const navigate = useNavigate()
   const [searchValue, setSearchValue] = useState('')
+
+  const [categoriesMenuVisible, setCategoriesMenuVisible] = useState(false)
+  const allCategoriesRef = useRef<HTMLDivElement | null>(null)
+
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
+  const avatarRef = useRef<HTMLDivElement>(null)
+
+  useOutsideClick({
+    ref: allCategoriesRef,
+    handler: () => setCategoriesMenuVisible(false),
+  })
 
   const handleLogin = () => {
     navigate('/login')
@@ -27,9 +41,20 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
               <Link className={styles.link} to="/about">
                 <Text variant="Body">О проекте</Text>
               </Link>
-              <MenuButton onPress={() => {}} iconName="arrow-down">
-                Все навыки
-              </MenuButton>
+              <div ref={allCategoriesRef}>
+                <MenuButton
+                  onPress={() => setCategoriesMenuVisible(!categoriesMenuVisible)}
+                  iconName="arrow-down"
+                  color={`var(--text)`}
+                >
+                  Все навыки
+                </MenuButton>
+                <div
+                  className={`${styles.categoriesMenu} ${categoriesMenuVisible ? styles.active : ''}`}
+                >
+                  <CategoriesMenu />
+                </div>
+              </div>
             </nav>
             <SearchInput
               value={searchValue}
@@ -66,7 +91,19 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
                   <Icon name="like"></Icon>
                 </button>
               </div>
-              <UserAvatar name={userName} url={avatarUrl}></UserAvatar>
+              <div>
+                <div onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} ref={avatarRef}>
+                  <UserAvatar name={userName} url={avatarUrl} />
+                </div>
+                <UserMenu
+                  isOpen={isUserMenuOpen}
+                  onClose={() => setIsUserMenuOpen(false)}
+                  triggerRef={avatarRef}
+                  onLogout={() => {
+                    // Логика выхода
+                  }}
+                />
+              </div>
             </section>
           </>
         )}
