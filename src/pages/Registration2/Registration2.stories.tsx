@@ -51,5 +51,5 @@ export const WithPrefilledData: Story = {
       },
     } as TRegisterData,
   } as RegisterDataSet,
-  render: (args) => <Registration2 {...args} />,
+  render: () => <Registration2 />,
 }
