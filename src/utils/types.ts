@@ -57,12 +57,13 @@ export type TGender = 'any' | 'male' | 'female'
 export type TRegisterData = {
   email: string //[step 1]
   password: string // [step 1]
+  name: string //[step 2]
   birthDate: string //[step 2]
   gender: 'male' | 'female' | 'unspecified' //[step 2]
   city: string //[step 2]
   avatar?: string //[step 2]
   learnSkill: {
-    type: 'learn'
+    type: 'learn' //[step 2]
     category: string //[step 2]
     subcategory: string //[step 2]
   }
