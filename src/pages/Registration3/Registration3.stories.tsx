@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { type RegisterDataSet, type TRegisterData } from '../../utils/types'
-import { Registration2 } from './Registration2'
+import { Registration3 } from './Registration3'
 
-type Story = StoryObj<typeof Registration2>
+type Story = StoryObj<typeof Registration3>
 
-const meta: Meta<typeof Registration2> = {
-  title: 'Pages/Registration2',
-  component: Registration2,
+const meta: Meta<typeof Registration3> = {
+  title: 'Pages/Registration3',
+  component: Registration3,
   tags: ['autodocs'],
   argTypes: {
     data: {
@@ -51,5 +51,5 @@ export const Default: Story = {
       },
     } as TRegisterData,
   } as RegisterDataSet,
-  render: () => <Registration2 />,
+  render: () => <Registration3 />,
 }
