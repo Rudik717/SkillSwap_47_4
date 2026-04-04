@@ -31,10 +31,10 @@ export const Registration2 = () => {
             </div>
           </div>
           <input
-            id="avatar"
             type="file"
             accept="image/jpeg, image/png"
             className={styles.avatarInput}
+            onChange={() => {}}
           />
         </div>
         <TextInput
