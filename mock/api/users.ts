@@ -1,4 +1,6 @@
-export const data = {
+import type { TUser } from '@/utils'
+
+export const data: { users: TUser[] } = {
   users: [
     {
       id: '1',
@@ -22,7 +24,7 @@ export const data = {
           subcategory: '25',
           title: 'Курс игры на барабанах',
           description: 'Обучаю с нуля. Постановка рук, работа с ритмом и первые грувы.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -40,7 +42,7 @@ export const data = {
           subcategory: '2',
           title: 'Контекстная реклама (PPC)',
           description: 'Настройка Google Ads и Яндекс.Директ с нуля до первых лидов.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -57,7 +59,7 @@ export const data = {
           category: '4',
           subcategory: '31',
           title: 'Как учить JS',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -74,7 +76,7 @@ export const data = {
           category: '1',
           subcategory: '3',
           title: 'SPIN-продажи',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -92,7 +94,7 @@ export const data = {
           subcategory: '11',
           title: 'Испанский для путешествий',
           description: 'Хочу выучить базу, чтобы комфортно чувствовать себя в Барселоне.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -125,7 +127,7 @@ export const data = {
           subcategory: '22',
           title: 'Цифровая иллюстрация',
           description: 'Покажу, как работать в Procreate и создавать персонажей.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -143,7 +145,7 @@ export const data = {
           subcategory: '1',
           title: 'Менеджмент для дизайнеров',
           description: 'Перехожу на позицию лида, нужны навыки управления.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -176,7 +178,7 @@ export const data = {
           subcategory: '23',
           title: 'Студийный свет',
           description: 'Научу работать с импульсным светом и настраивать камеру.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -194,7 +196,7 @@ export const data = {
           subcategory: '33',
           title: 'Техники быстрого чтения',
           description: 'Слишком много технической литературы, хочу читать быстрее.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -226,7 +228,7 @@ export const data = {
           subcategory: '36',
           title: 'Утренняя медитация',
           description: 'Практики для настройки на продуктивный день.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -244,7 +246,7 @@ export const data = {
           subcategory: '29',
           title: 'Создание свечей ручной работы',
           description: 'Мастер-класс по соевому воску и подбору ароматов.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -262,7 +264,7 @@ export const data = {
           subcategory: '24',
           title: 'Монтаж коротких видео',
           description: 'Хочу красиво оформлять свои занятия для соцсетей.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -294,7 +296,7 @@ export const data = {
           subcategory: '5',
           title: 'Подготовка к интервью',
           description: 'Разберем сложные вопросы и составим продающее резюме.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -312,7 +314,7 @@ export const data = {
           subcategory: '12',
           title: 'Немецкий для переезда',
           description: 'Интенсивная подготовка к уровню A1-A2 для визы.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -330,7 +332,7 @@ export const data = {
           subcategory: '19',
           title: 'Уход за тропическими растениями',
           description: 'Хочу превратить балкон в джунгли.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -362,7 +364,7 @@ export const data = {
           subcategory: '10',
           title: 'Разговорный французский',
           description: 'Ставим произношение и учим живой язык.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -380,7 +382,7 @@ export const data = {
           subcategory: '30',
           title: 'Эффективная коммуникация',
           description: 'Учимся договариваться и экологично отстаивать границы.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -398,7 +400,7 @@ export const data = {
           subcategory: '26',
           title: 'Ораторское искусство',
           description: 'Убираем страх публичных выступлений и работаем над дикцией.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -416,7 +418,7 @@ export const data = {
           subcategory: '37',
           title: 'Основы нутрициологии',
           description: 'Хочу сбалансировать свой рацион.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -448,7 +450,7 @@ export const data = {
           subcategory: '17',
           title: 'Личный бюджет',
           description: 'Система учета расходов и планирование накоплений.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -466,7 +468,7 @@ export const data = {
           subcategory: '4',
           title: 'Продвижение эксперта',
           description: 'Нужно научиться заявлять о себе в медиа-пространстве.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -498,7 +500,7 @@ export const data = {
           subcategory: '38',
           title: 'Борьба с тревожностью',
           description: 'Техники самопомощи при стрессе и панике.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -516,7 +518,7 @@ export const data = {
           subcategory: '20',
           title: 'Основы реставрации мебели',
           description: 'Как подарить вторую жизнь старому комоду или стулу.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -534,7 +536,7 @@ export const data = {
           subcategory: '41',
           title: 'Гигиена сна',
           description: 'Настраиваем циркадные ритмы для глубокого восстановления.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -552,7 +554,7 @@ export const data = {
           subcategory: '18',
           title: 'Домашняя кондитерская',
           description: 'Хочу научиться печь торты для семьи.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -584,7 +586,7 @@ export const data = {
           subcategory: '8',
           title: 'Запуск стартапа',
           description: 'От идеи до первой выручки. Юнит-экономика и поиск ниши.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -602,7 +604,7 @@ export const data = {
           subcategory: '39',
           title: 'Практики Mindfulness',
           description: 'Ежедневные упражнения для снижения уровня стресса.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -620,7 +622,7 @@ export const data = {
           subcategory: '13',
           title: 'Китайский для бизнеса',
           description: 'Начинаю работать с партнерами из Китая.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -652,7 +654,7 @@ export const data = {
           subcategory: '35',
           title: 'Целеполагание',
           description: 'Техники SMART и декомпозиция больших целей.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -670,7 +672,7 @@ export const data = {
           subcategory: '12',
           title: '12 А1',
           description: 'Хочу начать учить язык с основ.',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -701,7 +703,7 @@ export const data = {
           category: '1',
           subcategory: '1',
           title: 'Лидерство в IT',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -718,7 +720,7 @@ export const data = {
           category: '1',
           subcategory: '7',
           title: 'Agile и Scrum',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -735,7 +737,7 @@ export const data = {
           category: '1',
           subcategory: '3',
           title: 'B2B продажи',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -752,7 +754,7 @@ export const data = {
           category: '3',
           subcategory: '13',
           title: 'Основы мандарина',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -783,7 +785,7 @@ export const data = {
           category: '2',
           subcategory: '22',
           title: 'Скетчинг персонажей',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -800,7 +802,7 @@ export const data = {
           category: '2',
           subcategory: '29',
           title: 'Создание украшений',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -817,7 +819,7 @@ export const data = {
           category: '2',
           subcategory: '28',
           title: 'Ресурсное рисование',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -834,7 +836,7 @@ export const data = {
           category: '1',
           subcategory: '4',
           title: 'Продвижение артиста',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -865,7 +867,7 @@ export const data = {
           category: '5',
           subcategory: '40',
           title: 'Кроссфит дома',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -882,7 +884,7 @@ export const data = {
           category: '5',
           subcategory: '37',
           title: 'Рацион для набора массы',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -899,7 +901,7 @@ export const data = {
           category: '5',
           subcategory: '41',
           title: 'Биохакинг сна',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -916,7 +918,7 @@ export const data = {
           category: '2',
           subcategory: '24',
           title: 'Монтаж Reels',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -947,7 +949,7 @@ export const data = {
           category: '1',
           subcategory: '5',
           title: 'Карьерное консультирование',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -964,7 +966,7 @@ export const data = {
           category: '1',
           subcategory: '6',
           title: 'Эффективность на удаленке',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -981,7 +983,7 @@ export const data = {
           category: '1',
           subcategory: '4',
           title: 'Профиль в LinkedIn',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -998,7 +1000,7 @@ export const data = {
           category: '3',
           subcategory: '9',
           title: 'Business English',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1029,7 +1031,7 @@ export const data = {
           category: '4',
           subcategory: 'Когнитивные техники',
           title: 'Критическое мышление',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1046,7 +1048,7 @@ export const data = {
           category: '4',
           subcategory: 'Личностное развитие',
           title: 'Радикальная честность',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1063,7 +1065,7 @@ export const data = {
           category: '5',
           subcategory: '39',
           title: 'Цифровой детокс',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1080,7 +1082,7 @@ export const data = {
           category: '2',
           subcategory: '2',
           title: 'Игра на фортепиано',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1121,7 +1123,7 @@ export const data = {
           category: '6',
           subcategory: 'Хранение вещей',
           title: 'Организация гардероба',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1138,7 +1140,7 @@ export const data = {
           category: '6',
           subcategory: '19',
           title: 'Зимний сад в квартире',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1155,7 +1157,7 @@ export const data = {
           category: '5',
           subcategory: '36',
           title: 'Йога Нидра',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1196,7 +1198,7 @@ export const data = {
           category: '3',
           subcategory: 'Подготовка к экзаменам (IELTS, TOEFL)',
           title: 'IELTS 7.5+',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1213,7 +1215,7 @@ export const data = {
           category: '4',
           subcategory: '34',
           title: 'Методика ESL',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1230,7 +1232,7 @@ export const data = {
           category: '1',
           subcategory: '6',
           title: 'GTD система',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1261,7 +1263,7 @@ export const data = {
           category: '2',
           subcategory: '24',
           title: 'Динамичный монтаж',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1278,7 +1280,7 @@ export const data = {
           category: '2',
           subcategory: '27',
           title: 'Сценарии для Reels',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1295,7 +1297,7 @@ export const data = {
           category: '1',
           subcategory: '2',
           title: 'SMM стратегия',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1312,7 +1314,7 @@ export const data = {
           category: '5',
           subcategory: '38',
           title: 'Самооценка',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1343,7 +1345,7 @@ export const data = {
           category: '1',
           subcategory: '7',
           title: 'Управление рисками',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1360,7 +1362,7 @@ export const data = {
           category: '1',
           subcategory: 'Резюме и собеседование',
           title: 'Live Coding',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1377,7 +1379,7 @@ export const data = {
           category: '2',
           subcategory: '2',
           title: 'Синтезаторы',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1408,7 +1410,7 @@ export const data = {
           category: '4',
           subcategory: '34',
           title: 'Дизайн обучения',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1425,7 +1427,7 @@ export const data = {
           category: '4',
           subcategory: '35',
           title: 'Executive-35',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1442,7 +1444,7 @@ export const data = {
           category: '1',
           subcategory: '1',
           title: 'Работа с конфликтами',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1459,7 +1461,7 @@ export const data = {
           category: '3',
           subcategory: '14',
           title: 'Кандзи для начинающих',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1500,7 +1502,7 @@ export const data = {
           category: '5',
           subcategory: '37',
           title: 'Безглютеновая диета',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1517,7 +1519,7 @@ export const data = {
           category: '6',
           subcategory: '6',
           title: 'Кухонный эргономика',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1534,7 +1536,7 @@ export const data = {
           category: '1',
           subcategory: '8',
           title: 'Франшиза ресторана',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1565,7 +1567,7 @@ export const data = {
           category: '5',
           subcategory: '36',
           title: 'Хатха-йога',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1582,7 +1584,7 @@ export const data = {
           category: '5',
           subcategory: '39',
           title: 'Дыхательные техники',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1599,7 +1601,7 @@ export const data = {
           category: '5',
           subcategory: '42',
           title: 'Тайм-баланс',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1616,7 +1618,7 @@ export const data = {
           category: '2',
           subcategory: '23',
           title: 'Лайтрум профили',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1647,7 +1649,7 @@ export const data = {
           category: '6',
           subcategory: '17',
           title: 'Акции и облигации',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1664,7 +1666,7 @@ export const data = {
           category: '4',
           subcategory: 'Когнитивные техники',
           title: 'Логические ошибки',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
@@ -1681,7 +1683,7 @@ export const data = {
           category: '3',
           subcategory: '12',
           title: 'Goethe-Zertifikat',
-          image: [
+          images: [
             'https://cataas.com/cat',
             'https://cataas.com/cat',
             'https://cataas.com/cat',
