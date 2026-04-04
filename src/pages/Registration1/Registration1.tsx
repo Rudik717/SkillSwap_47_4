@@ -2,21 +2,13 @@ import { Text } from '@/ui-kit'
 import { TextInput } from '@/ui-kit'
 import { Button } from '@/ui-kit'
 import { Icon } from '@/ui-kit'
+import type { RegisterDataSet } from '@/utils'
 import { Stepper } from '@/widgets'
 import { FormLayout } from '@/widgets'
 
-//import { useEffect, useState } from 'react';
-import type { TUser } from '../../utils/types'
 import styles from './Registration1.module.css'
 
-export type TRegisterData = {
-  data?: TUser
-  setData?: () => void
-  nextStep?: () => void
-  prevStep?: () => void
-}
-
-export const Registration1 = (/*{data, setData, nextStep, prevStep}: TRegisterData*/) => {
+export const Registration1 = ({ data }: RegisterDataSet) => {
   const Form = () => {
     return (
       <div className={styles.container}>
@@ -36,6 +28,7 @@ export const Registration1 = (/*{data, setData, nextStep, prevStep}: TRegisterDa
             label="Email"
             placeholder="Введите email"
             error=""
+            value={data.email}
             onChange={() => {}}
           />
           <TextInput
@@ -45,6 +38,7 @@ export const Registration1 = (/*{data, setData, nextStep, prevStep}: TRegisterDa
             placeholder="Придумайте надежный пароль"
             info="Пароль должен содержать не менее 8 знаков"
             icon="eye"
+            value={data.password}
             onChange={() => {}}
           />
           <Button
