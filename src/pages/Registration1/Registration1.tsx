@@ -21,7 +21,7 @@ export const Registration1 = ({ data }: RegisterDataSet) => {
             или
           </Text>
         </div>
-        <form className={styles.form} name="register-1" onSubmit={() => {}}>
+        <div className={styles.form}>
           <TextInput
             name="email"
             type="email"
@@ -47,7 +47,7 @@ export const Registration1 = ({ data }: RegisterDataSet) => {
             className={styles.buttonSubmit}
             onClick={() => {}}
           />
-        </form>
+        </div>
       </div>
     )
   }

@@ -2,7 +2,7 @@ import { Button, Icon, Logo, MenuButton, SearchInput, Text, UserAvatar } from '@
 import { useOutsideClick } from '@/utils'
 import { CategoriesMenu } from '@/widgets/CategoriesMenu/CategoriesMenu'
 import { type FC, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { UserMenu } from '../UserMenu/UserMenu'
 import styles from './Header.module.css'
@@ -10,11 +10,12 @@ import { type THeaderProps } from './type'
 
 export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unauth' }) => {
   const navigate = useNavigate()
-  const [searchValue, setSearchValue] = useState('')
+  const { pathname } = useLocation()
+  const isSearchVisible = pathname === '/'
 
+  const [searchValue, setSearchValue] = useState('')
   const [categoriesMenuVisible, setCategoriesMenuVisible] = useState(false)
   const allCategoriesRef = useRef<HTMLDivElement | null>(null)
-
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const avatarRef = useRef<HTMLDivElement>(null)
 
@@ -60,7 +61,8 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
               value={searchValue}
               onChange={setSearchValue}
               placeholder="Искать навык"
-            ></SearchInput>
+              className={isSearchVisible ? '' : styles.searchHidden}
+            />
           </>
         )}
         {variant === 'unauth' && (
