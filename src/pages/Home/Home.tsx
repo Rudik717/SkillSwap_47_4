@@ -6,7 +6,7 @@ import {
   recommendedUsersSelector,
 } from '@/store/users'
 import { UsersGrid } from '@/widgets'
-import { ActiveFilterChips } from '@/widgets/FilterPanel/ActiveFilterChips'
+import { FilterChips } from '@/widgets'
 import { FilterPanel } from '@/widgets/FilterPanel/FilterPanel'
 import { useSelector } from 'react-redux'
 
@@ -29,7 +29,7 @@ const WithFilters = () => {
 
   return (
     <div className={styles.main}>
-      <ActiveFilterChips />
+      <FilterChips />
       <UsersGrid users={filteredUsers} title={`Подходящие предложения: ${matchCount}`} />
     </div>
   )
@@ -42,7 +42,6 @@ const WithoutFilters = () => {
 
   return (
     <div className={styles.main}>
-      <ActiveFilterChips />
       <div className={styles.cards}>
         <UsersGrid users={popularUsers} title="Популярное" />
         <UsersGrid users={newUsers} title="Новое" />
