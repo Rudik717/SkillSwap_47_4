@@ -86,3 +86,7 @@
   opacity: 1;
   transform: translateY();
 }
+
+.searchHidden {
+  visibility: hidden;
+}
