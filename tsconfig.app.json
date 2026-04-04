@@ -38,6 +38,8 @@
   "include": [
     "src/**/*",
     "mock/**/*.ts",
+    "jest.config.ts",
+    "__tests__/**/*",
     "./eslint.config.js",
     "./stylelint.config.js",
     "./vite.config.ts",
