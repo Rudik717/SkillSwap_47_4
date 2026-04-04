@@ -1,0 +1,69 @@
+.container {
+  width: 100%;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin-bottom: 24px;
+}
+
+.textDivider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 22px;
+  text-align: center;
+}
+
+.textDivider::before {
+  position: absolute;
+  right: 0;
+  left: 0;
+  content: '';
+  border-bottom: 1px solid rgb(228 232 223);
+}
+
+.textDivider span {
+  z-index: 2;
+  flex: 1;
+  margin: 0 10px;
+  content: '';
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+}
+
+.textBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  align-items: center;
+  width: 100%;
+}
+
+.textAlign {
+  margin-bottom: 2px;
+  text-align: center;
+}
+
+.buttonSubmit {
+  margin-top: 15px;
+}
+
+.header {
+  letter-spacing: -0.3px;
+}
