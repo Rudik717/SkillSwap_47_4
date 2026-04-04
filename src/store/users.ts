@@ -1,6 +1,7 @@
-import { type TUser, getUsersApi } from '@/utils'
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 
+import { getUsersApi } from '../utils/api'
+import type { TSkill, TUser } from '../utils/types'
 import { getAllCities } from './cities'
 import { getFilterState } from './filter'
 
@@ -20,7 +21,7 @@ const initialState: UsersState = {
   error: null,
 }
 
-export const getUsers = createAsyncThunk('users/getAll', async () => getUsersApi())
+export const getUsers = createAsyncThunk<{ users: TUser[] }, void>('users/getAll', getUsersApi)
 
 const usersSlice = createSlice({
   name: 'users',
@@ -34,7 +35,7 @@ const usersSlice = createSlice({
       })
       .addCase(getUsers.rejected, (state, action) => {
         state.loading = false
-        state.error = action.error.message || 'Unknown error'
+        state.error = action.error.message ?? 'Unknown error'
       })
       .addCase(getUsers.fulfilled, (state, action) => {
         state.loading = false
@@ -46,7 +47,7 @@ const usersSlice = createSlice({
 export const getUsersState = (state: RootState) => state.users
 export const getAllUsers = (state: RootState) => state.users.users
 
-export const popularUsersSelector = createSelector([getUsersState], (state) => {
+export const popularUsersSelector = createSelector(getUsersState, (state) => {
   const { users } = state
 
   return users
@@ -58,7 +59,7 @@ export const popularUsersSelector = createSelector([getUsersState], (state) => {
     .slice(0, 3)
 })
 
-export const newUsersSelector = createSelector([getUsersState], (state) => {
+export const newUsersSelector = createSelector(getUsersState, (state) => {
   const { users } = state
 
   return users
@@ -70,23 +71,23 @@ export const newUsersSelector = createSelector([getUsersState], (state) => {
     .slice(0, 3)
 })
 
-export const recommendedUsersSelector = createSelector([getUsersState], (state) => {
+export const recommendedUsersSelector = createSelector(getUsersState, (state) => {
   const { users } = state
 
   return users.slice(0, 9)
 })
 
 export const filteredUsersSelector = createSelector(
-  [getUsersState, getFilterState, getAllCities],
+  getUsersState,
+  getFilterState,
+  getAllCities,
   (usersState, filter, cities) => {
     let filtered = usersState.users
 
-    // Фильтр по полу
     if (filter.gender !== 'any') {
       filtered = filtered.filter((user) => user.gender && user.gender === filter.gender)
     }
 
-    // Фильтр по городам
     if (filter.cities.length) {
       const filterCityNames = cities
         .filter(({ id }) => filter.cities.includes(id))
@@ -94,31 +95,58 @@ export const filteredUsersSelector = createSelector(
       filtered = filtered.filter((user) => user.city && filterCityNames.includes(user.city))
     }
 
-    // Фильтр по роли (через skills)
     if (filter.role !== 'all') {
       filtered = filtered.filter((user) => {
         if (filter.role === 'teach') {
-          return user.skills?.some((s) => s.type === 'teach') ?? false
+          return user.skills?.some((s: TSkill) => s.type === 'teach') ?? false
         }
 
         if (filter.role === 'learn') {
-          return user.skills?.some((s) => s.type === 'learn') ?? false
+          return user.skills?.some((s: TSkill) => s.type === 'learn') ?? false
         }
 
         return true
       })
     }
 
-    // Фильтр по подкатегориям
     if (filter.subcategories.length) {
       filtered = filtered.filter((user) => {
         if (filter.role === 'all') {
-          return user.skills?.some((skill) => filter.subcategories.includes(skill.subcategory))
+          return (
+            user.skills?.some((skill: TSkill) =>
+              filter.subcategories.includes(skill.subcategory)
+            ) ?? false
+          )
         }
 
-        return user.skills?.some(
-          (skill) => filter.subcategories.includes(skill.subcategory) && skill.type === filter.role
+        return (
+          user.skills?.some(
+            (skill: TSkill) =>
+              filter.subcategories.includes(skill.subcategory) && skill.type === filter.role
+          ) ?? false
         )
+      })
+    }
+
+    if (filter.search.trim()) {
+      const query = filter.search.trim().toLowerCase()
+
+      filtered = filtered.filter((user) => {
+        const inName = user.name.toLowerCase().includes(query)
+        const inCity = user.city?.toLowerCase().includes(query) ?? false
+        const inAbout = user.about?.toLowerCase().includes(query) ?? false
+
+        const inSkills =
+          user.skills?.some((skill: TSkill) => {
+            const titleMatch = skill.title.toLowerCase().includes(query)
+            const descMatch = skill.description?.toLowerCase().includes(query) ?? false
+            const categoryMatch = skill.category.toLowerCase().includes(query)
+            const subcategoryMatch = skill.subcategory.toLowerCase().includes(query)
+
+            return titleMatch || descMatch || categoryMatch || subcategoryMatch
+          }) ?? false
+
+        return inName || inCity || inAbout || inSkills
       })
     }
 

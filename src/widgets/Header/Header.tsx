@@ -1,7 +1,10 @@
+import type { AppDispatch } from '@/store'
+import { setSearch } from '@/store/filter'
 import { Button, Icon, Logo, MenuButton, SearchInput, Text, UserAvatar } from '@/ui-kit'
 import { useOutsideClick } from '@/utils'
 import { CategoriesMenu } from '@/widgets/CategoriesMenu/CategoriesMenu'
-import { type FC, useRef, useState } from 'react'
+import { type FC, useEffect, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { UserMenu } from '../UserMenu/UserMenu'
@@ -19,10 +22,16 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const avatarRef = useRef<HTMLDivElement>(null)
 
+  const dispatch = useDispatch<AppDispatch>()
+
   useOutsideClick({
     ref: allCategoriesRef,
     handler: () => setCategoriesMenuVisible(false),
   })
+
+  useEffect(() => {
+    dispatch(setSearch(searchValue))
+  }, [dispatch, searchValue])
 
   const handleLogin = () => {
     navigate('/login')
@@ -30,7 +39,9 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
 
   return (
     <header
-      className={`${styles.header} ${variant === 'registration' ? styles['header--registration'] : ''}`}
+      className={`${styles.header} ${
+        variant === 'registration' ? styles['header--registration'] : ''
+      }`}
     >
       <div className={styles.container}>
         <Link className={styles.logo} to="/">
@@ -51,7 +62,9 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
                   Все навыки
                 </MenuButton>
                 <div
-                  className={`${styles.categoriesMenu} ${categoriesMenuVisible ? styles.active : ''}`}
+                  className={`${styles.categoriesMenu} ${
+                    categoriesMenuVisible ? styles.active : ''
+                  }`}
                 >
                   <CategoriesMenu />
                 </div>
@@ -68,7 +81,7 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
         {variant === 'unauth' && (
           <>
             <button className={styles.header__button} onClick={() => {}}>
-              <Icon name="moon"></Icon>
+              <Icon name="moon" />
             </button>
             <div className={styles.header__anauth}>
               <Button variant="secondary" onClick={handleLogin}>
@@ -84,13 +97,13 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
             <section className={styles.header__auth}>
               <div className={styles.auth__buttons}>
                 <button className={styles.header__button} onClick={() => {}}>
-                  <Icon name="moon"></Icon>
+                  <Icon name="moon" />
                 </button>
                 <button className={styles.header__button} onClick={() => {}}>
-                  <Icon name="bell"></Icon>
+                  <Icon name="bell" />
                 </button>
                 <button className={styles.header__button} onClick={() => {}}>
-                  <Icon name="like"></Icon>
+                  <Icon name="like" />
                 </button>
               </div>
               <div>
