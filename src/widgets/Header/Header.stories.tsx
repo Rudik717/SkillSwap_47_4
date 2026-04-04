@@ -1,110 +1,51 @@
+import { mockStore } from '@/utils/store'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
 import { Header } from './Header'
 
-const meta = {
+const meta: Meta<typeof Header> = {
   title: 'Widgets/Header',
   component: Header,
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <BrowserRouter>
-        <Story />
-      </BrowserRouter>
+      <Provider store={mockStore}>
+        <BrowserRouter>
+          <Story />
+        </BrowserRouter>
+      </Provider>
     ),
   ],
-  parameters: {
-    layout: 'fullscreen',
-  },
+  parameters: { layout: 'fullscreen' },
   argTypes: {
-    variant: {
-      control: {
-        type: 'select',
-        options: ['unauth', 'auth', 'registration'],
-      },
-      description: 'Состояние хедера',
-      table: {
-        defaultValue: { summary: 'unauth' },
-      },
-    },
-    userName: {
-      control: 'text',
-      description: 'Имя пользователя (для авторизованного состояния)',
-    },
+    variant: { control: { type: 'select', options: ['unauth', 'auth', 'registration'] } },
+    userName: { control: 'text' },
+    avatarUrl: { control: 'text' },
   },
-} satisfies Meta<typeof Header>
+}
 
 export default meta
 
 type Story = StoryObj<typeof Header>
 
-export const Unauthorized: Story = {
-  args: {
-    variant: 'unauth',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Хедер для неавторизованного пользователя. Показывает кнопки "Войти" и "Зарегистрироваться"',
-      },
-    },
-  },
-}
+export const Unauthorized: Story = { args: { variant: 'unauth' } }
 
 export const Authorized: Story = {
-  args: {
-    variant: 'auth',
-    userName: 'Мария',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Хедер для авторизованного пользователя. Показывает имя пользователя и кнопку выхода',
-      },
-    },
-  },
+  args: { variant: 'auth', userName: 'Мария', avatarUrl: 'https://i.pravatar.cc/40' },
 }
 
-export const Registration: Story = {
-  args: {
-    variant: 'registration',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Хедер для страницы регистрации. Скрывает навигационное меню и поиск',
-      },
-    },
-  },
-}
+export const Registration: Story = { args: { variant: 'registration' } }
 
 export const WithLongUserName: Story = {
   args: {
     variant: 'auth',
     userName: 'Мария Ивановна Петрова',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Длинное имя пользователя корректно отображается',
-      },
-    },
+    avatarUrl: 'https://i.pravatar.cc/40',
   },
 }
 
 export const WithoutUserName: Story = {
-  args: {
-    variant: 'auth',
-    userName: undefined,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Если имя пользователя не передано — показывается заглушка',
-      },
-    },
-  },
+  args: { variant: 'auth', userName: undefined, avatarUrl: undefined },
 }

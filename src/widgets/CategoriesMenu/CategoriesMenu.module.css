@@ -5,6 +5,7 @@
   padding: 60px;
   overflow: hidden;
   background-color: #fff;
+  border: 1px solid #69735d;
   border-radius: 24px;
 }
 
@@ -52,7 +53,6 @@
 
 .categoryHeader {
   margin-bottom: 12px;
-  cursor: pointer;
 }
 
 .categoryTitle {
@@ -72,10 +72,6 @@
   margin: 0;
 }
 
-.subcategory {
-  cursor: pointer;
-}
-
 .subcategoryText {
   margin: 0;
   font-family: Roboto, sans-serif;
@@ -84,8 +80,4 @@
   line-height: 24px;
   color: #4a4a4a;
   letter-spacing: 0.02em;
-}
-
-.subcategoryText:hover {
-  color: #000;
 }

@@ -7,6 +7,7 @@ import ArrowSquareLeft from '@/assets/svg/arrow-square-left.svg?react'
 import ArrowSquareRight from '@/assets/svg/arrow-square-right.svg?react'
 import ArrowUp from '@/assets/svg/arrow-up.svg?react'
 import Bell from '@/assets/svg/bell.svg?react'
+import BigBell from '@/assets/svg/big-bell.svg?react'
 import Book from '@/assets/svg/book.svg?react'
 import Briefcase from '@/assets/svg/briefcase.svg?react'
 import Calendar from '@/assets/svg/calendar.svg?react'
@@ -26,8 +27,8 @@ import GalleryAdd from '@/assets/svg/gallery-add.svg?react'
 import GalleryEdit from '@/assets/svg/gallery-edit.svg?react'
 import Home from '@/assets/svg/home.svg?react'
 import Idea from '@/assets/svg/idea.svg?react'
-import LightBubble from '@/assets/svg/light-bulb.svg?react'
 import LeftSwitch from '@/assets/svg/left-switch.svg?react'
+import LightBubble from '@/assets/svg/light-bulb.svg?react'
 import LikeFilled from '@/assets/svg/like-filled.svg?react'
 import Like from '@/assets/svg/like.svg?react'
 import List from '@/assets/svg/list.svg?react'
@@ -61,6 +62,7 @@ export const icons = {
   'arrow-square-left': ArrowSquareLeft,
   'arrow-square-right': ArrowSquareRight,
   bell: Bell,
+  'big-bell': BigBell,
   book: Book,
   briefcase: Briefcase,
   calendar: Calendar,
@@ -123,6 +125,7 @@ type IconParams = Partial<Record<IconName, IconParam>>
 
 const iconParams: IconParams = {
   bell: { disableFill: true },
+  'big-bell': { disableFill: true },
   book: { disableFill: true, disableStroke: true },
   briefcase: { disableFill: true, disableStroke: true },
   earth: { disableFill: true, disableStroke: true },
@@ -131,6 +134,7 @@ const iconParams: IconParams = {
   palette: { disableFill: true, disableStroke: true },
   share: { disableFill: true },
   'user-circle': { disableFill: true },
+  done: { disableFill: true },
 }
 
 /** Icon component: `<Icon name="moon" size={48} color="green" />` */

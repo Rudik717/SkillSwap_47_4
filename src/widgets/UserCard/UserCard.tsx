@@ -58,8 +58,8 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
     return `${age} лет`
   }
 
-  const getBadgeColor = (categoryName: string) => {
-    const category = categories.find((category) => category.name === categoryName)
+  const getBadgeColor = (categoryId: string) => {
+    const category = categories.find((category) => category.id === categoryId)
     return category?.color || '#F5F5F5'
   }
 
@@ -68,9 +68,11 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
       <div className={styles['user-card__header']}>
         <Avatar url={avatar} alt={`Аватар ${name}`}></Avatar>
         <div className={styles['user-card__info']}>
-          <button className={styles['user-card__like-button']} onClick={toggleLike}>
-            <Icon name={like ? 'like-filled' : 'like'} color={textColor}></Icon>
-          </button>
+          <div className={styles['user-card__like-button-wrapper']}>
+            <button className={styles['user-card__like-button']} onClick={toggleLike}>
+              <Icon name={like ? 'like-filled' : 'like'} color={textColor}></Icon>
+            </button>
+          </div>
           <div className={styles['user-card__info_title']}>
             <Text variant="H3" style={{ fontWeight: 600, color: textColor }}>
               {name}
@@ -119,10 +121,10 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
             </div>
           </div>
         </div>
-        <Button variant="primary" className={styles['user-card__details-button']}>
-          Подробнее
-        </Button>
       </section>
+      <Button variant="primary" className={styles['user-card__details-button']}>
+        Подробнее
+      </Button>
     </article>
   )
 })
