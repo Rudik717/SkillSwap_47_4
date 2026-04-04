@@ -27,8 +27,8 @@ import GalleryAdd from '@/assets/svg/gallery-add.svg?react'
 import GalleryEdit from '@/assets/svg/gallery-edit.svg?react'
 import Home from '@/assets/svg/home.svg?react'
 import Idea from '@/assets/svg/idea.svg?react'
-import LightBubble from '@/assets/svg/light-bulb.svg?react'
 import LeftSwitch from '@/assets/svg/left-switch.svg?react'
+import LightBubble from '@/assets/svg/light-bulb.svg?react'
 import LikeFilled from '@/assets/svg/like-filled.svg?react'
 import Like from '@/assets/svg/like.svg?react'
 import List from '@/assets/svg/list.svg?react'
@@ -134,6 +134,7 @@ const iconParams: IconParams = {
   palette: { disableFill: true, disableStroke: true },
   share: { disableFill: true },
   'user-circle': { disableFill: true },
+  done: { disableFill: true },
 }
 
 /** Icon component: `<Icon name="moon" size={48} color="green" />` */
