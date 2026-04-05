@@ -11,7 +11,7 @@ interface SearchInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, '
   disabled?: boolean
 }
 
-const SearchInput = ({
+export const SearchInput = ({
   value,
   onChange,
   placeholder = 'Искать навык',
@@ -60,5 +60,3 @@ const SearchInput = ({
 }
 
 SearchInput.displayName = 'SearchInput'
-
-export default SearchInput
