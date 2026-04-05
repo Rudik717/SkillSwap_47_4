@@ -49,6 +49,7 @@ import Share from '@/assets/svg/share.svg?react'
 import Sort from '@/assets/svg/sort.svg?react'
 import Sun from '@/assets/svg/sun.svg?react'
 import UserCircle from '@/assets/svg/user-circle.svg?react'
+import UserInfo from '@/assets/svg/user-info.svg?react'
 import User from '@/assets/svg/user.svg?react'
 
 export const icons = {
@@ -104,6 +105,7 @@ export const icons = {
   sun: Sun,
   user: User,
   'user-circle': UserCircle,
+  'user-info': UserInfo,
 }
 
 export type IconName = keyof typeof icons
