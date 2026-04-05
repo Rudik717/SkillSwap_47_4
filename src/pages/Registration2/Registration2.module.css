@@ -15,6 +15,10 @@
   cursor: pointer;
 }
 
+.avatarContainer:hover {
+  opacity: 0.8;
+}
+
 .avatarInput {
   position: absolute;
   top: 0;

@@ -1,3 +1,5 @@
+import { type Dispatch, type SetStateAction } from 'react'
+
 export type TCategory = {
   id: string
   name: string
@@ -81,7 +83,7 @@ export type TRegisterData = {
 
 export type RegisterDataSet = {
   data: TRegisterData
-  setData?: () => void
-  nextStep?: () => void // обработчик для перемещения на следующий шаг регистрации
+  setData: Dispatch<SetStateAction<TRegisterData>>
+  nextStep: () => void // обработчик для перемещения на следующий шаг регистрации
   prevStep?: () => void // обработчик для перемещения на следующий шаг регистрации
 }
