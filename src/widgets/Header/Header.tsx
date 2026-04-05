@@ -1,7 +1,7 @@
 import type { AppDispatch } from '@/store'
 import { setSearch } from '@/store/filter'
+import { useOutsideClick } from '@/hooks'
 import { Button, Icon, Logo, MenuButton, SearchInput, Text, UserAvatar } from '@/ui-kit'
-import { useOutsideClick } from '@/utils'
 import { CategoriesMenu } from '@/widgets/CategoriesMenu/CategoriesMenu'
 import { type FC, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'

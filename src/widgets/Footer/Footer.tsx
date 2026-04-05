@@ -1,4 +1,4 @@
-import { useOutsideClick } from '@/utils'
+import { useOutsideClick } from '@/hooks'
 import { CategoriesMenu } from '@/widgets/CategoriesMenu/CategoriesMenu'
 import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'

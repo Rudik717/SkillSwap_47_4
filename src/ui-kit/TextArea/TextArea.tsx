@@ -17,6 +17,7 @@ interface TextAreaProps {
   placeholder?: string
   disabled?: boolean
   maxLength?: number
+  className?: string
   onChange: (value: string) => void
   onIconClick?: () => void
 }
@@ -32,6 +33,7 @@ export const TextArea = ({
   maxLength,
   onChange,
   onIconClick,
+  className,
 }: TextAreaProps) => {
   // Состояние для управления доступностью поля ввода
   const [isTextAreaDisabled, setIsTextAreaDisabled] = useState(true)
@@ -59,8 +61,13 @@ export const TextArea = ({
   }
 
   const buttonIconClass = clsx(styles.button, disabled && styles.disabled)
-  const textareaClass = clsx(styles.textArea, error && styles.error, disabled && styles.disabled)
-  const textareaStyle = { height: icon ? '120px' : 'auto' }
+  const textareaClass = clsx(
+    styles.textArea,
+    error && styles.error,
+    disabled && styles.disabled,
+    className
+  )
+  const textareaStyle = { height: icon ? '120px' : '95px' }
 
   const renderIcon = (): React.ReactNode => {
     if (!icon) return null
