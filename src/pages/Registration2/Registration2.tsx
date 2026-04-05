@@ -1,3 +1,7 @@
+//import { useState } from 'react'
+//import type { AppDispatch } from '@/store'
+import { getCategoriesState } from '@/store/categories'
+import { getCitiesState } from '@/store/cities'
 import { Text } from '@/ui-kit'
 import { TextInput } from '@/ui-kit'
 import { Button } from '@/ui-kit'
@@ -7,8 +11,12 @@ import { DateInput } from '@/ui-kit'
 import type { Option } from '@/ui-kit/Select/Select'
 import { Stepper } from '@/widgets'
 import { FormLayout } from '@/widgets'
+import { useSelector } from 'react-redux'
 
+///import type { RegisterDataSet } from '@/utils'
 import styles from './Registration2.module.css'
+
+//import { useCallback } from 'react'
 
 // Опции для выбора пола
 const genderOptions: Option[] = [
@@ -16,10 +24,71 @@ const genderOptions: Option[] = [
   { label: 'Мужской', value: 'male' },
   { label: 'Женский', value: 'female' },
 ]
+/*
+interface FieldErrors {
+  name?: string;
+  birthDate?: string;
+  gender?: string;
+  city?: string;
+  category?: string;
+  subcategory?: string;
+}
 
-/*TODO: использовать тип RegisterDataSet */
+type InputsState = {
+  avatar: string | null;
+  name: string;
+  birthDate: Date | null;
+  city: string;
+  gender: string;
+  category: string;
+  subCategory: string;
+};
+*/
 
-export const Registration2 = () => {
+export const Registration2 = (/*{data, setData, nextStep, prevStep}: RegisterDataSet*/) => {
+  // const dispatch = useDispatch<AppDispatch>;
+  const { categories, subcategories } = useSelector(getCategoriesState)
+  const { cities } = useSelector(getCitiesState)
+
+  if (!categories || !subcategories) {
+    return null
+  }
+
+  const cityOptions: Option[] = cities.map((city) => ({
+    value: city.id,
+    label: city.name,
+  }))
+
+  const categoryOptions: Option[] = categories.map((category) => ({
+    value: category.id,
+    label: category.name,
+  }))
+
+  const subcategoryOptions: Option[] = subcategories.map((subcategory) => ({
+    value: subcategory.id,
+    label: subcategory.name,
+  }))
+  /*
+  const [errors, setErrors] = useState({
+    name: '',
+    birthDate: '',
+    gender: '',
+    city: '',
+    category: '',
+    subcategory: ''
+  });
+  
+  const [inputs, setInputs] = useState<InputsState>({
+    avatar: '', //Аватарку выбирать не обязательно
+    name: '',
+    birthDate: null,
+    city: '',
+    gender: '',
+    category: '',
+    subCategory: ''
+  });
+*/
+
   return (
     <>
       <Stepper currentStep={2} />
@@ -74,7 +143,7 @@ export const Registration2 = () => {
                   label="Город"
                   placeholder="Не указан"
                   value={null}
-                  options={[]}
+                  options={cityOptions}
                   onChange={() => {}}
                 />
               </div>
@@ -83,7 +152,7 @@ export const Registration2 = () => {
                   label="Категория навыка, которому хотите научиться"
                   placeholder="Выберете категорию"
                   value={null}
-                  options={[]}
+                  options={categoryOptions}
                   error=""
                   onChange={() => {}}
                 />
@@ -93,7 +162,7 @@ export const Registration2 = () => {
                   label="Подкатегория навыка, которому хотите научиться"
                   placeholder="Выберете подкатегорию"
                   value={null}
-                  options={[]}
+                  options={subcategoryOptions}
                   error=""
                   onChange={() => {}}
                 />
