@@ -60,7 +60,7 @@ export type TRegisterData = {
   name: string //[step 2]
   birthDate: Date | null //[step 2]
   gender: 'male' | 'female' | 'unspecified' //[step 2]
-  city: string | null //[step 2]
+  city: string //[step 2]
   avatar: string | null //[step 2]
   learnSkill: {
     //[step 2]
