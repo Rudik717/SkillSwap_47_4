@@ -36,10 +36,10 @@ export const WithPrefilledData: Story = {
       email: 'user@example.com',
       password: '',
       name: '',
-      birthDate: '',
+      birthDate: null,
       gender: 'unspecified',
       city: '',
-      avatar: undefined,
+      avatar: null,
       learnSkill: { type: 'learn', category: '', subcategory: '' },
       teachSkill: {
         type: 'teach',
