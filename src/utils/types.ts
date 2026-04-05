@@ -80,8 +80,8 @@ export type TRegisterData = {
 }
 
 export type RegisterDataSet = {
-  data?: TRegisterData
-  setData?: Dispatch<SetStateAction<TRegisterData>>
-  nextStep?: () => void // обработчик для перемещения на следующий шаг регистрации
+  data: TRegisterData
+  setData: Dispatch<SetStateAction<TRegisterData>>
+  nextStep: () => void // обработчик для перемещения на следующий шаг регистрации
   prevStep?: () => void // обработчик для перемещения на следующий шаг регистрации
 }

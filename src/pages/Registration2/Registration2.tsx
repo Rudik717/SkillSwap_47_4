@@ -1,5 +1,3 @@
-//import { useState } from 'react'
-//import type { AppDispatch } from '@/store'
 import { getCategoriesState } from '@/store/categories'
 import { getCitiesState } from '@/store/cities'
 import { Text } from '@/ui-kit'
@@ -9,14 +7,15 @@ import { Icon } from '@/ui-kit'
 import { Select } from '@/ui-kit'
 import { DateInput } from '@/ui-kit'
 import type { Option } from '@/ui-kit/Select/Select'
+import type { RegisterDataSet } from '@/utils'
 import { Stepper } from '@/widgets'
 import { FormLayout } from '@/widgets'
+import { skillFilterOptions } from '@/widgets/FilterPanel/utils'
+import { useEffect, useState } from 'react'
+import { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 
-///import type { RegisterDataSet } from '@/utils'
 import styles from './Registration2.module.css'
-
-//import { useCallback } from 'react'
 
 // Опции для выбора пола
 const genderOptions: Option[] = [
@@ -24,70 +23,137 @@ const genderOptions: Option[] = [
   { label: 'Мужской', value: 'male' },
   { label: 'Женский', value: 'female' },
 ]
-/*
+
 interface FieldErrors {
-  name?: string;
-  birthDate?: string;
-  gender?: string;
-  city?: string;
-  category?: string;
-  subcategory?: string;
+  name: string
 }
 
 type InputsState = {
-  avatar: string | null;
-  name: string;
-  birthDate: Date | null;
-  city: string;
-  gender: string;
-  category: string;
-  subCategory: string;
-};
-*/
+  avatar: string | null
+  name: string
+  birthDate: Date | null
+  city: string
+  gender: string
+  category: string
+  subcategory: string
+}
 
-export const Registration2 = (/*{data, setData, nextStep, prevStep}: RegisterDataSet*/) => {
-  // const dispatch = useDispatch<AppDispatch>;
-  const { categories, subcategories } = useSelector(getCategoriesState)
+export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDataSet) => {
   const { cities } = useSelector(getCitiesState)
-
-  if (!categories || !subcategories) {
-    return null
-  }
+  const { categories, subcategories } = useSelector(getCategoriesState)
+  const options = skillFilterOptions({ categories, subcategories })
+  const [errors, setErrors] = useState<FieldErrors>({ name: '' })
+  const [subcategoryOptions, setSubcategoryOptions] = useState<Option[]>([])
+  const [isVerified, setIsVerified] = useState<boolean>(false)
+  const [inputs, setInputs] = useState<InputsState>({
+    avatar: data.avatar, //Аватарку пока не сделала
+    name: data.name,
+    birthDate: data.birthDate,
+    city: data.city,
+    gender: data.gender,
+    category: data.learnSkill.category,
+    subcategory: data.learnSkill.subcategory,
+  })
 
   const cityOptions: Option[] = cities.map((city) => ({
     value: city.id,
     label: city.name,
   }))
 
-  const categoryOptions: Option[] = categories.map((category) => ({
+  const categoryOptions: Option[] = options.map((category) => ({
     value: category.id,
-    label: category.name,
+    label: category.label,
   }))
 
-  const subcategoryOptions: Option[] = subcategories.map((subcategory) => ({
-    value: subcategory.id,
-    label: subcategory.name,
-  }))
-  /*
-  const [errors, setErrors] = useState({
-    name: '',
-    birthDate: '',
-    gender: '',
-    city: '',
-    category: '',
-    subcategory: ''
-  });
-  
-  const [inputs, setInputs] = useState<InputsState>({
-    avatar: '', //Аватарку выбирать не обязательно
-    name: '',
-    birthDate: null,
-    city: '',
-    gender: '',
-    category: '',
-    subCategory: ''
-  });
-*/
+  useEffect(() => {
+    // Находим категорию по id
+    const selectedCategory = options.find((item) => item.id === inputs.category)
+
+    // Получаем массив подкатегорий в формате Option
+    const newSubcategoryOptions: Option[] = selectedCategory
+      ? selectedCategory.items.map((item) => ({
+          value: item.id,
+          label: item.label,
+        }))
+      : []
+
+    // Сохраняем в стейте
+    setSubcategoryOptions(newSubcategoryOptions)
+  }, [inputs.category])
+
+  // Обработчик для поля name
+  const handlTextChange = useCallback(
+    (value: string) => {
+      const forbiddenChars = /[@.]/
+      if (forbiddenChars.test(value)) {
+        setErrors((prev) => ({ ...prev, name: 'Имя не должно содержать символы @ и .' }))
+      } else if (!value) {
+        setErrors((prev) => ({ ...prev, name: 'Введите ваше имя' }))
+      } else setErrors((prev) => ({ ...prev, name: '' }))
+
+      setInputs((prev) => ({ ...prev, name: value }))
+    },
+    [setErrors, setInputs]
+  )
+
+  const minDate = new Date('1900-01-01')
+  const maxDate = new Date() // сегодня
+
+  // Обработчик для даты  рождения
+  const handleDateChange = useCallback(
+    (date: Date | null) => {
+      setInputs((prev) => ({ ...prev, birthDate: date }))
+    },
+    [setInputs]
+  )
+
+  // Универсальный обработчик для select
+  const createSelectHandler = useCallback(
+    (fieldName: string) => (option: Option | Option[] | null) => {
+      const selectedOption = Array.isArray(option) ? option[0] : option
+
+      if (!selectedOption) {
+        setInputs((prev) => ({ ...prev, [fieldName]: '' }))
+        return
+      }
+      setInputs((prev) => ({ ...prev, [fieldName]: selectedOption.value }))
+    },
+    [setInputs]
+  )
+
+  const handleCityChange = createSelectHandler('city')
+  const handleGenderChange = createSelectHandler('gender')
+  const handleCategoryChange = createSelectHandler('category')
+  const handleSubcategoryChange = createSelectHandler('subcategory')
+
+  // Обработчик перехода на следующий шаг регистрации
+  const handleNextStep = () => {
+    setData((prev) => ({
+      ...prev,
+      avatar: inputs.avatar,
+      name: inputs.name,
+      birthDate: inputs.birthDate,
+      city: inputs.city,
+      gender: inputs.gender,
+      learnSkill: {
+        category: inputs.category,
+        subcategory: inputs.subcategory,
+      },
+    }))
+    nextStep()
+  }
+
+  useEffect(() => {
+    setIsVerified(
+      inputs.name !== '' &&
+        !errors.name &&
+        inputs.birthDate !== null &&
+        inputs.city !== '' &&
+        inputs.gender !== '' &&
+        inputs.category !== '' &&
+        inputs.subcategory !== ''
+    )
+  }, [errors.name, inputs])
 
   return (
     <>
@@ -115,26 +181,30 @@ export const Registration2 = (/*{data, setData, nextStep, prevStep}: RegisterDat
                 type="text"
                 label="Имя"
                 placeholder="Введите ваше имя"
-                error=""
-                value={''}
-                onChange={() => {}}
+                error={errors.name ? errors.name : ''}
+                value={inputs.name}
+                onChange={handlTextChange}
               />
               <div className={styles.dateGenderBlock}>
                 <div className={styles.field}>
                   <DateInput
                     label="Дата рождения"
                     placeholder="дд.мм.гггг"
-                    value={null}
-                    onChange={() => {}}
+                    minDate={minDate}
+                    maxDate={maxDate}
+                    value={inputs.birthDate}
+                    onChange={handleDateChange}
                   />
                 </div>
                 <div className={styles.field}>
                   <Select
                     label="Пол"
                     placeholder="Не указан"
-                    value={null}
+                    value={
+                      inputs.gender ? genderOptions.find((el) => el.value === inputs.gender) : null
+                    }
                     options={genderOptions}
-                    onChange={() => {}}
+                    onChange={handleGenderChange}
                   />
                 </div>
               </div>
@@ -142,38 +212,43 @@ export const Registration2 = (/*{data, setData, nextStep, prevStep}: RegisterDat
                 <Select
                   label="Город"
                   placeholder="Не указан"
-                  value={null}
+                  value={inputs.city ? cityOptions.find((el) => el.value === inputs.city) : null}
                   options={cityOptions}
-                  onChange={() => {}}
+                  onChange={handleCityChange}
                 />
               </div>
               <div className={styles.field}>
                 <Select
                   label="Категория навыка, которому хотите научиться"
                   placeholder="Выберете категорию"
-                  value={null}
+                  value={
+                    inputs.category ? cityOptions.find((el) => el.value === inputs.category) : null
+                  }
                   options={categoryOptions}
-                  error=""
-                  onChange={() => {}}
+                  onChange={handleCategoryChange}
                 />
               </div>
               <div className={styles.field}>
                 <Select
                   label="Подкатегория навыка, которому хотите научиться"
                   placeholder="Выберете подкатегорию"
-                  value={null}
+                  value={
+                    inputs.subcategory
+                      ? subcategoryOptions.find((el) => el.value === inputs.subcategory)
+                      : null
+                  }
                   options={subcategoryOptions}
                   error=""
-                  onChange={() => {}}
+                  onChange={handleSubcategoryChange}
                 />
               </div>
               <div className={styles.buttons}>
-                <Button variant="secondary" children="Назад" disabled={false} onClick={() => {}} />
+                <Button variant="secondary" children="Назад" disabled={false} onClick={prevStep} />
                 <Button
                   variant="primary"
                   children="Продолжить"
-                  disabled={false}
-                  onClick={() => {}}
+                  disabled={!isVerified}
+                  onClick={handleNextStep}
                 />
               </div>
             </div>
