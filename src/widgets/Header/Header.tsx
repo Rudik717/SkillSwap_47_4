@@ -1,6 +1,6 @@
+import { useDebounce, useOutsideClick } from '@/hooks'
 import type { AppDispatch } from '@/store'
 import { setSearch } from '@/store/filter'
-import { useOutsideClick } from '@/hooks'
 import { Button, Icon, Logo, MenuButton, SearchInput, Text, UserAvatar } from '@/ui-kit'
 import { CategoriesMenu } from '@/widgets/CategoriesMenu/CategoriesMenu'
 import { type FC, useEffect, useRef, useState } from 'react'
@@ -29,9 +29,13 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
     handler: () => setCategoriesMenuVisible(false),
   })
 
-  useEffect(() => {
+  const dibouncedSetSearch = useDebounce(() => {
     dispatch(setSearch(searchValue))
-  }, [dispatch, searchValue])
+  })
+
+  useEffect(() => {
+    dibouncedSetSearch()
+  }, [dibouncedSetSearch])
 
   const handleLogin = () => {
     navigate('/login')

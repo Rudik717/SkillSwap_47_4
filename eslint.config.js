@@ -31,6 +31,8 @@ export default [
         __dirname: true,
         document: true,
         fetch: false,
+        setTimeout: false,
+        clearTimeout: false,
       },
     },
     plugins: {
