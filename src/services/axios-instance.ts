@@ -32,7 +32,7 @@ apiClient.interceptors.request.use(
   }
 )
 
-// Response interceptor - перехватываем все ответы от сервера и смотрим, пришла ли ошибка 401
+// Response interceptor - перехватываем все ответы от сервера и смотрим, какая пришла ошибка по коду
 // в error.config — информация о том, какой запрос нужно будет повторить
 apiClient.interceptors.response.use(
   // ответ от сервера - успех - пропускаем
@@ -85,7 +85,7 @@ apiClient.interceptors.response.use(
 
           const authError = new Error('Authentication required')
           authError.name = 'AuthError'
-          authError.cause = refreshError // сохраняем исходную ошибку
+          authError.cause = refreshError // сохраняем исходную ошибку тоже
 
           return Promise.reject(authError)
         }
