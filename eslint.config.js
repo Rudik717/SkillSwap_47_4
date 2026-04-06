@@ -33,6 +33,8 @@ export default [
         fetch: false,
         atob: 'readonly',
         btoa: 'readonly',
+        setTimeout: false,
+        clearTimeout: false,
       },
     },
     plugins: {

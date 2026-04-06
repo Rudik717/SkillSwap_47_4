@@ -1,20 +1,22 @@
 import { Button, Text } from '@/ui-kit'
 import type { TUser } from '@/utils/types'
 import { UserCard } from '@/widgets'
+import { type Ref } from 'react'
 
 import styles from './UsersGrid.module.css'
 
 interface UsersGridProps {
-  users: TUser[] // ← используем готовый тип
+  users: TUser[]
   title?: string
   button?: {
     label: string
     onClick: () => void
   }
   columns?: number
+  loadMoreRef?: Ref<HTMLDivElement>
 }
 
-export const UsersGrid = ({ users, title, button, columns = 3 }: UsersGridProps) => {
+export const UsersGrid = ({ users, title, button, columns = 3, loadMoreRef }: UsersGridProps) => {
   return (
     <div className={styles.container}>
       {title || button ? (
@@ -32,6 +34,7 @@ export const UsersGrid = ({ users, title, button, columns = 3 }: UsersGridProps)
         {users.map((user) => (
           <UserCard key={user.id} user={user} />
         ))}
+        <div className={styles.loadMore} ref={loadMoreRef} />
       </div>
     </div>
   )
