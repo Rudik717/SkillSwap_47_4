@@ -7,6 +7,7 @@ import ArrowSquareLeft from '@/assets/svg/arrow-square-left.svg?react'
 import ArrowSquareRight from '@/assets/svg/arrow-square-right.svg?react'
 import ArrowUp from '@/assets/svg/arrow-up.svg?react'
 import Bell from '@/assets/svg/bell.svg?react'
+import BigBell from '@/assets/svg/big-bell.svg?react'
 import Book from '@/assets/svg/book.svg?react'
 import Briefcase from '@/assets/svg/briefcase.svg?react'
 import Calendar from '@/assets/svg/calendar.svg?react'
@@ -26,8 +27,8 @@ import GalleryAdd from '@/assets/svg/gallery-add.svg?react'
 import GalleryEdit from '@/assets/svg/gallery-edit.svg?react'
 import Home from '@/assets/svg/home.svg?react'
 import Idea from '@/assets/svg/idea.svg?react'
-import LightBubble from '@/assets/svg/light-bulb.svg?react'
 import LeftSwitch from '@/assets/svg/left-switch.svg?react'
+import LightBubble from '@/assets/svg/light-bulb.svg?react'
 import LikeFilled from '@/assets/svg/like-filled.svg?react'
 import Like from '@/assets/svg/like.svg?react'
 import List from '@/assets/svg/list.svg?react'
@@ -41,6 +42,7 @@ import RadioButtonActive from '@/assets/svg/radiobutton-active.svg?react'
 import RadioButtonEmpty from '@/assets/svg/radiobutton-empty.svg?react'
 import Request from '@/assets/svg/request.svg?react'
 import RightSwitch from '@/assets/svg/right-switch.svg?react'
+import SchoolBoard from '@/assets/svg/school-board.svg?react'
 import ScrollBig from '@/assets/svg/scroll-big.svg?react'
 import Scroll from '@/assets/svg/scroll.svg?react'
 import Search from '@/assets/svg/search.svg?react'
@@ -48,6 +50,7 @@ import Share from '@/assets/svg/share.svg?react'
 import Sort from '@/assets/svg/sort.svg?react'
 import Sun from '@/assets/svg/sun.svg?react'
 import UserCircle from '@/assets/svg/user-circle.svg?react'
+import UserInfo from '@/assets/svg/user-info.svg?react'
 import User from '@/assets/svg/user.svg?react'
 
 export const icons = {
@@ -61,6 +64,7 @@ export const icons = {
   'arrow-square-left': ArrowSquareLeft,
   'arrow-square-right': ArrowSquareRight,
   bell: Bell,
+  'big-bell': BigBell,
   book: Book,
   briefcase: Briefcase,
   calendar: Calendar,
@@ -102,6 +106,8 @@ export const icons = {
   sun: Sun,
   user: User,
   'user-circle': UserCircle,
+  'user-info': UserInfo,
+  'school-board': SchoolBoard,
 }
 
 export type IconName = keyof typeof icons
@@ -112,6 +118,7 @@ type Props = {
   size?: number
   width?: number
   height?: number
+  stroke?: string
 }
 
 type IconParam = {
@@ -123,6 +130,7 @@ type IconParams = Partial<Record<IconName, IconParam>>
 
 const iconParams: IconParams = {
   bell: { disableFill: true },
+  'big-bell': { disableFill: true },
   book: { disableFill: true, disableStroke: true },
   briefcase: { disableFill: true, disableStroke: true },
   earth: { disableFill: true, disableStroke: true },
@@ -131,10 +139,11 @@ const iconParams: IconParams = {
   palette: { disableFill: true, disableStroke: true },
   share: { disableFill: true },
   'user-circle': { disableFill: true },
+  done: { disableFill: true },
 }
 
 /** Icon component: `<Icon name="moon" size={48} color="green" />` */
-export const Icon = ({ name, color, size, width, height }: Props) => {
+export const Icon = ({ name, color, size, width, height, stroke }: Props) => {
   const IconComponent = icons[name]
   const { disableFill } = iconParams[name] ?? {}
   const widthProp = width ?? size ?? 24
@@ -143,6 +152,7 @@ export const Icon = ({ name, color, size, width, height }: Props) => {
   return (
     <IconComponent
       fill={disableFill ? 'none' : color}
+      stroke={stroke}
       style={{ width: widthProp, height: heightProp }}
     />
   )

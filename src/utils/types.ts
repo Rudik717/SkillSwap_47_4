@@ -27,6 +27,7 @@ export type TUser = {
   createdAt: string // "2025-01-15T10:30:00Z"
   updatedAt: string // "2025-03-30T15:20:00Z"
   favorites?: string[] // Массив TSkill.id навыков, добавленных в избранное
+  likes?: number // Количество лайков (Популярные на главной)
 }
 
 export type TSkill = {
@@ -60,18 +61,16 @@ export type TRegisterData = {
   password: string // [step 1]
   name: string //[step 2]
   birthDate: Date | null //[step 2]
-  gender: 'male' | 'female' | 'unspecified' //[step 2]
+  gender: string //[step 2]
   city: string //[step 2]
   avatar: string | null //[step 2]
   learnSkill: {
     //[step 2]
-    type: 'learn'
     category: string
     subcategory: string
   }
   teachSkill: {
     //[step 3]
-    type: 'teach'
     title: string
     category: string
     subcategory: string

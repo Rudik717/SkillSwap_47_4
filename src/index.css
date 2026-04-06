@@ -55,6 +55,7 @@
   --text-error: #bf3920;
   --bg: rgb(249 250 247);
   --bg-footer: rgb(255 255 255);
+  --bg-menu: rgb(255 255 255);
   --bg-gallery-overlay: rgb(255 255 255 / 50%);
   --border-input-main: rgb(105 115 93);
   --color-placeholder: rgb(105 115 93);
@@ -81,6 +82,7 @@
   --overlay-color: rgb(142 142 142 / 60%);
   --stepper-accent-color: rgb(171 210 122);
   --stepper-disabled-color: rgb(228 232 223 / 100%);
+  --register-accent-color: rgb(80 136 38);
 
   font: 18px / 145% var(--sans);
   font-synthesis: none;

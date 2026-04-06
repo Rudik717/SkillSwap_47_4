@@ -1,0 +1,15 @@
+.pageWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  width: 100%;
+}
+
+.menuWrapper {
+  flex: 1;
+  width: 100%;
+  min-width: 244px;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 24px;
+}

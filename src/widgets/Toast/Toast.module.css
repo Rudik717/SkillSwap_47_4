@@ -1,0 +1,58 @@
+.toast {
+  position: fixed;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  z-index: 1000;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 340px;
+  height: 72px;
+  padding: 0 30px 0 24px;
+  background-color: rgb(222 235 197 / 100%);
+  border-radius: 12px;
+  transform: translate(-50%, -50%);
+}
+
+.content {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.iconWrapper {
+  display: inline-flex;
+  color: rgb(37 48 23 / 100%);
+}
+
+.iconWrapper svg {
+  fill: currentcolor;
+  stroke: currentcolor;
+}
+
+.text {
+  font-family: Jost, sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  color: rgb(37 48 23 / 100%);
+  white-space: nowrap;
+}
+
+.closeButton {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: rgb(37 48 23 / 100%);
+  cursor: pointer;
+  background: none;
+  border: none;
+}

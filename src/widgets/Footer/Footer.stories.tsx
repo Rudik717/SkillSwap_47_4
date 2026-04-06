@@ -1,28 +1,32 @@
+import { mockStore } from '@/utils/store'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
 import { Footer } from './Footer'
 
-const meta = {
+const meta: Meta<typeof Footer> = {
   title: 'Widgets/Footer',
   component: Footer,
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <BrowserRouter>
-        <Story />
-      </BrowserRouter>
+      <Provider store={mockStore}>
+        <BrowserRouter>
+          <Story />
+        </BrowserRouter>
+      </Provider>
     ),
   ],
   parameters: {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'Виджет подвала страницы, содержит логотип, ссылки на разделы',
+        component: 'Виджет подвала страницы, содержит логотип, ссылки на разделы и меню навыков',
       },
     },
   },
-} satisfies Meta<typeof Footer>
+}
 
 export default meta
 type Story = StoryObj<typeof Footer>

@@ -11,7 +11,7 @@ const meta: Meta<typeof Registration1> = {
   tags: ['autodocs'],
   argTypes: {
     data: {
-      description: 'Данные регистрации для предзаполнения формы',
+      description: 'Данные регистрации',
     },
     setData: {
       action: 'setData called',
@@ -39,10 +39,9 @@ export const WithPrefilledData: Story = {
       birthDate: null,
       gender: 'unspecified',
       city: '',
-      avatar: null,
-      learnSkill: { type: 'learn', category: '', subcategory: '' },
+      avatar: '',
+      learnSkill: { category: '', subcategory: '' },
       teachSkill: {
-        type: 'teach',
         title: '',
         category: '',
         subcategory: '',
@@ -55,7 +54,7 @@ export const WithPrefilledData: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Форма с предзаполненным email и паролем. Остальные поля пустые.',
+        story: 'Форма с email и паролем',
       },
     },
   },

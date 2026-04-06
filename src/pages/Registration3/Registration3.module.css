@@ -1,0 +1,83 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  width: 100%;
+}
+
+.textArea {
+  resize: none;
+}
+
+.dropArea {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 1px dashed var(--border-input-main);
+  border-radius: 12px;
+}
+
+.textSpan {
+  margin-bottom: 8px;
+  color: var(--color-placeholder);
+}
+
+.textDescription {
+  color: var(--register-accent-color);
+}
+
+.imagesContainer {
+  position: relative;
+  display: flex;
+  gap: 4px;
+  height: 24px;
+}
+
+.imagesContainer:hover {
+  opacity: 0.8;
+}
+
+.imagesInput {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  content: '';
+  opacity: 0;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+}
+
+.textBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  align-items: center;
+  width: 100%;
+}
+
+.textAlign {
+  margin-bottom: 2px;
+  text-align: center;
+}
+
+.header {
+  letter-spacing: -0.3px;
+}
