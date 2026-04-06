@@ -137,8 +137,8 @@ export default defineMock([
       const newRefreshToken = generateRefreshToken()
 
       // Ротация
-      refreshSessions.delete(refreshToken)
       refreshSessions.set(newRefreshToken, userId)
+      refreshSessions.delete(refreshToken)
 
       return {
         status: 200,
@@ -175,7 +175,7 @@ export default defineMock([
     },
   },
   {
-    // для проверки истек ли access token - имитация случаев всех защищенных запросов
+    // для проверки истек ли access token - имитация случаев всех защищенных запросов - потом скопирую этот кусок
     // со стороны фронтенда буду добавлять при каждом защищенном запросе доставать access token из переменной,
     // и добавлять в заголовок Authorization перехватчиком interceptors
     url: '/api/auth/verify',
