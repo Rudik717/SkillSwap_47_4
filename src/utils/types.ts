@@ -1,3 +1,5 @@
+import { type Dispatch, type SetStateAction } from 'react'
+
 export type TCategory = {
   id: string
   name: string
@@ -58,28 +60,28 @@ export type TRegisterData = {
   email: string //[step 1]
   password: string // [step 1]
   name: string //[step 2]
-  birthDate: string //[step 2]
-  gender: 'male' | 'female' | 'unspecified' //[step 2]
+  birthDate: Date | null //[step 2]
+  gender: string //[step 2]
   city: string //[step 2]
-  avatar?: string //[step 2]
+  avatar: string | null //[step 2]
   learnSkill: {
-    type: 'learn' //[step 2]
-    category: string //[step 2]
-    subcategory: string //[step 2]
+    //[step 2]
+    category: string
+    subcategory: string
   }
   teachSkill: {
-    type: 'teach' //[step 3]
+    //[step 3]
     title: string
-    category: string //[step 3]
-    subcategory: string //[step 3]
-    description?: string //[step 3]
-    images?: string[] //[step 3]
+    category: string
+    subcategory: string
+    description: string
+    images: string[] | null
   }
 }
 
 export type RegisterDataSet = {
   data: TRegisterData
-  setData?: () => void
-  nextStep?: () => void // обработчик для перемещения на следующий шаг регистрации
+  setData: Dispatch<SetStateAction<TRegisterData>>
+  nextStep: () => void // обработчик для перемещения на следующий шаг регистрации
   prevStep?: () => void // обработчик для перемещения на следующий шаг регистрации
 }

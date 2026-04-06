@@ -24,7 +24,6 @@ export const App = () => {
       <Route path="/" element={<AppLayout />}>
         <Route path="*" element={<NotFound />} />
         <Route index element={<Home />} />
-        <Route path="/catalog" element={<Catalog />} />
         <Route path="login" element={<Login />} />
         <Route path="server-error" element={<ServerError />} />
         <Route path="/profile/user-data" element={<ProfilePage />} />

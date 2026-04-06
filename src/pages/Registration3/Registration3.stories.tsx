@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { type RegisterDataSet, type TRegisterData } from '../../utils/types'
-import { Registration1 } from './Registration1'
+import { Registration3 } from './Registration3'
 
-type Story = StoryObj<typeof Registration1>
+type Story = StoryObj<typeof Registration3>
 
-const meta: Meta<typeof Registration1> = {
-  title: 'Pages/Registration1',
-  component: Registration1,
+const meta: Meta<typeof Registration3> = {
+  title: 'Pages/Registration3',
+  component: Registration3,
   tags: ['autodocs'],
   argTypes: {
     data: {
@@ -30,10 +30,10 @@ const meta: Meta<typeof Registration1> = {
 
 export default meta
 
-export const WithPrefilledData: Story = {
+export const Default: Story = {
   args: {
     data: {
-      email: 'user@example.com',
+      email: '',
       password: '',
       name: '',
       birthDate: null,
@@ -51,12 +51,5 @@ export const WithPrefilledData: Story = {
       },
     } as TRegisterData,
   } as RegisterDataSet,
-  render: (args) => <Registration1 {...args} />,
-  parameters: {
-    docs: {
-      description: {
-        story: 'Форма с email и паролем',
-      },
-    },
-  },
+  render: () => <Registration3 />,
 }

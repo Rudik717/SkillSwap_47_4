@@ -10,7 +10,18 @@
 }
 
 .grid {
+  position: relative;
   display: grid;
   gap: 24px;
   justify-content: flex-start;
+}
+
+.loadMore {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  visibility: hidden;
+  height: 5px;
+  background-color: red;
 }
