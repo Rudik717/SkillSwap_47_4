@@ -2,15 +2,17 @@ import { getAllCategories } from '@/store/categories'
 import { Avatar, Badge, Button, Icon, Text } from '@/ui-kit'
 import { type FC, memo, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import styles from './UserCard.module.css'
 import type { TUserCardProps } from './type'
 
 export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
-  const { name, city = '', birthDate = '', avatar = '', skills } = user
+  const { name, city = '', birthDate = '', avatar = '', skills, id } = user
   const teachSkills = skills.filter((skill) => skill.type === 'teach')
   const learnSkills = skills.filter((skill) => skill.type === 'learn')
   const categories = useSelector(getAllCategories)
+  const navigate = useNavigate()
 
   const MAX_VISIBLE = 2
   const textColor = 'var(--text)'
@@ -24,6 +26,10 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
 
   const toggleLike = () => {
     setLike(!like)
+  }
+
+  const handleDetailsClick = () => {
+    navigate(`/skill/${id}`)
   }
 
   const calculateAge = (birthDate?: string) => {
@@ -122,7 +128,11 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
           </div>
         </div>
       </section>
-      <Button variant="primary" className={styles['user-card__details-button']}>
+      <Button
+        variant="primary"
+        onClick={handleDetailsClick}
+        className={styles['user-card__details-button']}
+      >
         Подробнее
       </Button>
     </article>
