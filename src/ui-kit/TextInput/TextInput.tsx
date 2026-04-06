@@ -36,14 +36,14 @@ export const TextInput = ({
   onIconClick,
   ...other
 }: TextInputProps) => {
-  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(true)
   const [currentType, setCurrentType] = useState(type)
 
   // Состояние для управления доступностью поля ввода
   const [isInputDisabled, setIsInputDisabled] = useState<boolean>(false)
 
   useEffect(() => {
-    setIsPasswordVisible(true)
+    setIsPasswordVisible(false)
 
     if (!icon) {
       setIsInputDisabled(false)

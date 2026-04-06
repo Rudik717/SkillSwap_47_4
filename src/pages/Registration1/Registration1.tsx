@@ -5,43 +5,51 @@ import { Icon } from '@/ui-kit'
 import type { RegisterDataSet } from '@/utils'
 import { Stepper } from '@/widgets'
 import { FormLayout } from '@/widgets'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import styles from './Registration1.module.css'
 
 export const Registration1 = ({ data, setData, nextStep }: RegisterDataSet) => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState(data.password)
-  const [errors, setErrors] = useState({
+  const [email, setEmail] = useState<string>(data.email)
+  const [password, setPassword] = useState<string>(data.password)
+  const [isVerified, setIsVerified] = useState<boolean>(false)
+  const [errors, setErrors] = useState<{ email: boolean; password: boolean }>({
     email: false,
     password: false,
   })
+
+  //Регулярное выражение для email input (вариант приближён к RFC 5322)
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+  const passwordRegex = /^.{8,}$/
 
   const handleEmailChange = useCallback(
     (value: string) => {
       setErrors((prev) => ({
         ...prev,
-        email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+        email: !emailRegex.test(value), // true, если email НЕвалиден
       }))
       setEmail(value)
     },
-    [setData]
+    [setErrors, setEmail]
   )
 
   const handlePasswordChange = useCallback(
     (value: string) => {
-      setErrors((prev) => ({ ...prev, password: !/^.{8,}$/.test(value) }))
+      setErrors((prev) => ({ ...prev, password: !passwordRegex.test(value) })) // true, если пароль НЕвалиден
       setPassword(value)
     },
-    [setData]
+    [setErrors, setPassword]
   )
 
-  // Определяем, можно ли перейти на следующий шаг
-  const isNextStepEnabled = !errors.email && !errors.password && email !== '' && password !== ''
+  useEffect(() => {
+    setIsVerified(!errors.email && !errors.password && email !== '' && password !== '')
+  }, [errors.email, errors.password, email, password])
 
   // Обработчик перехода на следующий шаг
   const handleNextStep = () => {
-    if (isNextStepEnabled) {
+    setData((prev) => ({ ...prev, email, password }))
+    if (isVerified) {
       nextStep()
     }
   }
@@ -87,7 +95,7 @@ export const Registration1 = ({ data, setData, nextStep }: RegisterDataSet) => {
                   children="Далее"
                   className={styles.buttonSubmit}
                   onClick={handleNextStep}
-                  disabled={!isNextStepEnabled}
+                  disabled={!isVerified}
                 />
               </div>
             </div>
