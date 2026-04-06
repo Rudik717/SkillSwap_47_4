@@ -31,7 +31,7 @@ export const Registration1 = ({ data, setData, nextStep }: RegisterDataSet) => {
       }))
       setEmail(value)
     },
-    [setErrors, setEmail]
+    [setErrors, setEmail, emailRegex]
   )
 
   const handlePasswordChange = useCallback(
@@ -39,7 +39,7 @@ export const Registration1 = ({ data, setData, nextStep }: RegisterDataSet) => {
       setErrors((prev) => ({ ...prev, password: !passwordRegex.test(value) })) // true, если пароль НЕвалиден
       setPassword(value)
     },
-    [setErrors, setPassword]
+    [setErrors, setPassword, passwordRegex]
   )
 
   useEffect(() => {

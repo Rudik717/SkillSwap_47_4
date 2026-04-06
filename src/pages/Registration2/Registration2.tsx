@@ -79,7 +79,7 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
 
     // Сохраняем в стейте
     setSubcategoryOptions(newSubcategoryOptions)
-  }, [inputs.category])
+  }, [inputs.category, options])
 
   // Обработчик для поля name
   const handlTextChange = useCallback(
@@ -120,11 +120,22 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
     },
     [setInputs]
   )
-
-  const handleCityChange = createSelectHandler('city')
   const handleGenderChange = createSelectHandler('gender')
+  const handleCityChange = createSelectHandler('city')
   const handleCategoryChange = createSelectHandler('category')
   const handleSubcategoryChange = createSelectHandler('subcategory')
+
+  useEffect(() => {
+    setIsVerified(
+      inputs.name !== '' &&
+        !errors.name &&
+        inputs.birthDate !== null &&
+        inputs.city !== '' &&
+        inputs.gender !== '' &&
+        inputs.category !== '' &&
+        inputs.subcategory !== ''
+    )
+  }, [errors.name, inputs])
 
   // Обработчик перехода на следующий шаг регистрации
   const handleNextStep = () => {
@@ -140,20 +151,10 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
         subcategory: inputs.subcategory,
       },
     }))
-    nextStep()
+    if (isVerified) {
+      nextStep()
+    }
   }
-
-  useEffect(() => {
-    setIsVerified(
-      inputs.name !== '' &&
-        !errors.name &&
-        inputs.birthDate !== null &&
-        inputs.city !== '' &&
-        inputs.gender !== '' &&
-        inputs.category !== '' &&
-        inputs.subcategory !== ''
-    )
-  }, [errors.name, inputs])
 
   return (
     <>

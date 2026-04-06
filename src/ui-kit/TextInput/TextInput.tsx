@@ -37,7 +37,7 @@ export const TextInput = ({
   ...other
 }: TextInputProps) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(true)
-  const [currentType, setCurrentType] = useState(type)
+  const [currentType, setCurrentType] = useState<string>(type)
 
   // Состояние для управления доступностью поля ввода
   const [isInputDisabled, setIsInputDisabled] = useState<boolean>(false)
