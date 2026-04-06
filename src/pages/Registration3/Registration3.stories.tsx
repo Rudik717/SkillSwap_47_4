@@ -1,7 +1,25 @@
+import { configureStore } from '@reduxjs/toolkit'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useState } from 'react'
+import { Provider } from 'react-redux'
 
-import { type RegisterDataSet, type TRegisterData } from '../../utils/types'
+import { data as categories } from '../../../mock/api/categories'
+import { data as cities } from '../../../mock/api/cities'
+import { type TRegisterData } from '../../utils/types'
 import { Registration3 } from './Registration3'
+
+// Тестовое хранилище с нужным срезом состояния
+const store = configureStore({
+  reducer: {
+    cities: (state = { cities: cities.cities, loading: false }) => state,
+    categories: (
+      state = {
+        categories: categories.categories,
+        subcategories: categories.subcategories,
+      }
+    ) => state,
+  },
+})
 
 type Story = StoryObj<typeof Registration3>
 
@@ -33,23 +51,42 @@ export default meta
 export const Default: Story = {
   args: {
     data: {
+      id: '',
+      name: '',
       email: '',
       password: '',
-      name: '',
       birthDate: null,
-      gender: 'unspecified',
+      gender: '',
       city: '',
       avatar: '',
-      learnSkill: { type: 'learn', category: '', subcategory: '' },
-      teachSkill: {
-        type: 'teach',
-        title: '',
-        category: '',
-        subcategory: '',
-        description: '',
-        images: [],
-      },
+      skills: [
+        {
+          id: '',
+          userId: '',
+          type: 'learn', /// будто уже есть данные с предыдущего этапа регистрации
+          category: '1',
+          subcategory: '1-1',
+          title: '',
+          description: '',
+          images: [],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      ],
     } as TRegisterData,
-  } as RegisterDataSet,
-  render: () => <Registration3 />,
+  },
+  render: (args) => {
+    const [data, setData] = useState<TRegisterData>(args.data)
+
+    return (
+      <Provider store={store}>
+        <Registration3
+          data={data}
+          setData={setData}
+          nextStep={() => console.log('Next step triggered')}
+          prevStep={() => console.log('Previous step triggered')}
+        />
+      </Provider>
+    )
+  },
 }

@@ -39,8 +39,8 @@ export type TSkill = {
   title: string // "Английский язык"
   description?: string // "Научу свободно говорить на английском"
   images?: string[] // ["english_course.jpg"]
-  createdAt: string // Дата создания навыка
-  updatedAt: string // Дата последнего обновления навыка
+  createdAt?: string // Дата создания навыка
+  updatedAt?: string // Дата последнего обновления навыка
 }
 
 export type TCity = {
@@ -56,32 +56,41 @@ export type TSkillFormData = Pick<
 export type TRole = 'all' | 'teach' | 'learn'
 export type TGender = 'any' | 'male' | 'female'
 
-export type TRegisterData = {
-  email: string //[step 1]
-  password: string // [step 1]
-  name: string //[step 2]
-  birthDate: Date | null //[step 2]
-  gender: string //[step 2]
-  city: string //[step 2]
-  avatar: string | null //[step 2]
-  learnSkill: {
-    //[step 2]
-    category: string
-    subcategory: string
-  }
-  teachSkill: {
-    //[step 3]
-    title: string
-    category: string
-    subcategory: string
-    description: string
-    images: string[] | null
-  }
+// ТОЛЬКО ДЛЯ РЕГИСТРАЦИИ (экспериентальные данные) //
+
+export type TUserData = {
+  id: string
+  name: string
+  email: string
+  password: string // обязательное поле
+  birthDate?: Date | null // Тут интерфейс Date, а не строка
+  gender?: 'male' | 'female' | 'unspecified' | '' // Добавлена пустая строка (нужно при выборе пола)
+  city?: string
+  avatar?: string
+  about?: string
+  skills: TSkillData[]
+  createdAt: string
+  updatedAt: string
 }
+
+export type TSkillData = {
+  id: string
+  userId: string
+  type: 'teach' | 'learn'
+  category: string // Тут id, а не имя категории
+  subcategory: string // Тут id, а не имя подкатегории
+  title?: string // необязательное поле
+  description?: string
+  images?: string[]
+  createdAt?: string
+  updatedAt?: string
+}
+
+export type TRegisterData = Omit<TUserData, 'favorites' | 'likes'>
 
 export type RegisterDataSet = {
   data: TRegisterData
   setData: Dispatch<SetStateAction<TRegisterData>>
-  nextStep: () => void // обработчик для перемещения на следующий шаг регистрации
-  prevStep?: () => void // обработчик для перемещения на следующий шаг регистрации
+  nextStep: () => void // Переход на следующий шаг регистрации
+  prevStep?: () => void // Переход на предыдущий шаг регистрации
 }

@@ -30,25 +30,25 @@ const meta: Meta<typeof Registration1> = {
 
 export default meta
 
-export const WithPrefilledData: Story = {
+// Создаём моковую функцию setData
+const mockSetData = (newData: TRegisterData) => {
+  console.log('setData called with:', newData)
+}
+
+// Создаём моковые функции для навигации
+const mockNextStep = () => {
+  console.log('nextStep called')
+}
+
+export const Default: Story = {
   args: {
     data: {
-      email: 'user@example.com',
+      id: '',
+      email: '',
       password: '',
-      name: '',
-      birthDate: null,
-      gender: 'unspecified',
-      city: '',
-      avatar: '',
-      learnSkill: { category: '', subcategory: '' },
-      teachSkill: {
-        title: '',
-        category: '',
-        subcategory: '',
-        description: '',
-        images: [],
-      },
     } as TRegisterData,
+    setData: mockSetData,
+    nextStep: mockNextStep,
   } as RegisterDataSet,
   render: (args) => <Registration1 {...args} />,
   parameters: {

@@ -51,6 +51,7 @@ export default meta
 export const Default: Story = {
   args: {
     data: {
+      id: '',
       email: '',
       password: '',
       name: '',
@@ -58,15 +59,9 @@ export const Default: Story = {
       gender: 'unspecified',
       city: '',
       avatar: '',
-      learnSkill: { type: 'learn', category: '', subcategory: '' },
-      teachSkill: {
-        type: 'teach',
-        title: '',
-        category: '',
-        subcategory: '',
-        description: '',
-        images: [],
-      },
+      skills: [],
+      createdAt: '',
+      updatedAt: '',
     } as TRegisterData,
   },
   render: (args) => {

@@ -9,11 +9,16 @@ import { useCallback, useEffect, useState } from 'react'
 
 import styles from './Registration1.module.css'
 
+interface FieldErrors {
+  email: boolean
+  password: boolean
+}
+
 export const Registration1 = ({ data, setData, nextStep }: RegisterDataSet) => {
   const [email, setEmail] = useState<string>(data.email)
   const [password, setPassword] = useState<string>(data.password)
   const [isVerified, setIsVerified] = useState<boolean>(false)
-  const [errors, setErrors] = useState<{ email: boolean; password: boolean }>({
+  const [errors, setErrors] = useState<FieldErrors>({
     email: false,
     password: false,
   })
