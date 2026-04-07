@@ -6,13 +6,13 @@ import { useSelector } from 'react-redux'
 import styles from './UserCard.module.css'
 import type { TUserCardProps } from './type'
 
-export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
+export const UserCard: FC<TUserCardProps> = memo(({ user, hideActions, showAbout }) => {
   const { name, city = '', birthDate = '', avatar = '', skills } = user
   const teachSkills = skills.filter((skill) => skill.type === 'teach')
   const learnSkills = skills.filter((skill) => skill.type === 'learn')
   const categories = useSelector(getAllCategories)
 
-  const MAX_VISIBLE = 2
+  const MAX_VISIBLE = 1
   const textColor = 'var(--text)'
 
   const displayedTeachSkills = teachSkills.slice(0, MAX_VISIBLE)
@@ -68,9 +68,13 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
       <div className={styles['user-card__header']}>
         <Avatar url={avatar} alt={`Аватар ${name}`}></Avatar>
         <div className={styles['user-card__info']}>
-          <div className={styles['user-card__like-button-wrapper']}>
+          <div
+            className={`${styles['user-card__like-button-wrapper']} ${
+              hideActions ? styles.hidden : ''
+            }`}
+          >
             <button className={styles['user-card__like-button']} onClick={toggleLike}>
-              <Icon name={like ? 'like-filled' : 'like'} color={textColor}></Icon>
+              <Icon name={like ? 'like-filled' : 'like'} color={textColor} />
             </button>
           </div>
           <div className={styles['user-card__info_title']}>
@@ -84,6 +88,13 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
           </div>
         </div>
       </div>
+      {showAbout && user.about && (
+        <div className={styles['user-card__about-wrapper']}>
+          <Text variant="Body" className={styles['user-card__about']}>
+            {user.about}
+          </Text>
+        </div>
+      )}
       <section className={styles['user-card__body']}>
         <div className={styles['body-skills']}>
           <div className={styles['body-skills_section']}>
@@ -122,9 +133,12 @@ export const UserCard: FC<TUserCardProps> = memo(({ user }) => {
           </div>
         </div>
       </section>
-      <Button variant="primary" className={styles['user-card__details-button']}>
-        Подробнее
-      </Button>
+
+      {!hideActions && (
+        <Button variant="primary" className={styles['user-card__details-button']}>
+          Подробнее
+        </Button>
+      )}
     </article>
   )
 })
