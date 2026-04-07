@@ -21,66 +21,13 @@ interface NotificationsMenuProps {
   notifications?: Notification[]
   onNotificationsUpdate?: (notifications: Notification[]) => void
 }
-const getMockNotifications = (): Notification[] => [
-  {
-    id: '1',
-    user: 'Николай',
-    text: 'принял ваш обмен',
-    date: 'сегодня',
-    isRead: false,
-    link: '/profile/1',
-  },
-  {
-    id: '2',
-    user: 'Татьяна',
-    text: 'предлагает вам обмен',
-    date: 'сегодня',
-    isRead: false,
-    link: '/profile/2',
-  },
-  {
-    id: '3',
-    user: 'Олег',
-    text: 'предлагает вам обмен',
-    date: 'вчера',
-    isRead: true,
-    link: '/profile/3',
-  },
-  {
-    id: '4',
-    user: 'Игорь',
-    text: 'принял ваш обмен',
-    date: '23 мая',
-    isRead: true,
-    link: '/profile/4',
-  },
-  {
-    id: '5',
-    user: 'Анна',
-    text: 'предлагает вам обмен',
-    date: '22 мая',
-    isRead: false,
-    link: '/profile/5',
-  },
-  {
-    id: '6',
-    user: 'Михаил',
-    text: 'принял ваш обмен',
-    date: '21 мая',
-    isRead: false,
-    link: '/profile/6',
-  },
-]
 const loadNotificationsFromStorage = (): Notification[] => {
   if (typeof window === 'undefined' || !window.localStorage) {
-    return getMockNotifications()
+    return []
   }
   const stored = localStorage.getItem('skillswap_notifications')
   const parsed = stored ? JSON.parse(stored) : null
-  if (parsed?.length) return parsed
-  const mockData = getMockNotifications()
-  localStorage.setItem('skillswap_notifications', JSON.stringify(mockData))
-  return mockData
+  return parsed?.length ? parsed : []
 }
 const saveNotificationsToStorage = (notifications: Notification[]) => {
   if (typeof window !== 'undefined' && window.localStorage) {
@@ -104,6 +51,7 @@ const BellBadge = ({ unreadCount }: { unreadCount: number }) => {
       bellButton.appendChild(badge)
     }
   }, [unreadCount])
+
   return null
 }
 export const NotificationsMenu = ({
@@ -136,6 +84,7 @@ export const NotificationsMenu = ({
       setShowToast(true)
     }
   }, [localNotifications, showToast])
+
   const handleMarkAllAsRead = () => {
     setLocalNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })))
     setShowToast(false)
@@ -154,6 +103,7 @@ export const NotificationsMenu = ({
     <>
       <Toast message={toastMessage} isVisible={showToast} onClose={() => setShowToast(false)} />
       {typeof document !== 'undefined' && <BellBadge unreadCount={unreadNotifications.length} />}
+
       <MenuWrapper
         isOpen={isOpen}
         onClose={onClose}
@@ -195,6 +145,7 @@ export const NotificationsMenu = ({
                 ))}
               </div>
             )}
+
             {readNotifications.length > 0 && (
               <div className={styles.section}>
                 <div className={styles.sectionHeader}>
