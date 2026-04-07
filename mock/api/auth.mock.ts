@@ -34,19 +34,21 @@ export default defineMock([
   {
     url: '/api/auth/login',
     method: 'POST',
-    body: (req) => {
+    response: (req, res) => {
       const { email, password } = req.body
 
       // нет логина и пароля
       if (!email || !password) {
-        return {
-          status: 400,
-          body: {
+        res.statusCode = 400
+        res.setHeader('Content-Type', 'application/json')
+        res.end(
+          JSON.stringify({
             success: false,
             message: 'Email and password are required',
             code: 'VALIDATION_ERROR',
-          },
-        }
+          })
+        )
+        return
       }
 
       // Ищем пользователя с таким email и паролем
@@ -54,14 +56,16 @@ export default defineMock([
 
       // Если не нашли — ошибка - неверный логин и пароль
       if (!user) {
-        return {
-          status: 401,
-          body: {
+        res.statusCode = 401
+        res.setHeader('Content-Type', 'application/json')
+        res.end(
+          JSON.stringify({
             success: false,
             message: 'Invalid email or password',
             code: 'INVALID_CREDENTIALS',
-          },
-        }
+          })
+        )
+        return
       }
 
       const accessToken = generateAccessToken(user)
@@ -69,13 +73,14 @@ export default defineMock([
 
       refreshSessions.set(refreshToken, user.id)
 
-      return {
-        status: 200,
-        // записываем refreshToken в куки с заголовком HttpOnly
-        headers: {
-          'Set-Cookie': `refreshToken=${refreshToken}; HttpOnly; Path=/api/auth; Max-Age=2592000; SameSite=Lax`,
-        },
-        body: {
+      res.statusCode = 200
+      res.setHeader(
+        'Set-Cookie',
+        `refreshToken=${refreshToken}; HttpOnly; Path=/api/auth; Max-Age=2592000; SameSite=Lax`
+      )
+      res.setHeader('Content-Type', 'application/json')
+      res.end(
+        JSON.stringify({
           success: true,
           accessToken,
           user: {
@@ -84,53 +89,73 @@ export default defineMock([
             email: user.email,
             avatar: user.avatar,
           },
-        },
-      }
+        })
+      )
     },
   },
   {
     url: '/api/auth/refresh',
     method: 'POST',
-    body: (req) => {
+    response: (req, res) => {
       const refreshToken = getCookieFromRequest(req, 'refreshToken')
+
+      // Проверяем, есть ли токен
+      if (!refreshToken) {
+        res.statusCode = 401
+        res.setHeader('Content-Type', 'application/json')
+        res.end(
+          JSON.stringify({
+            success: false,
+            message: 'No refresh token',
+            code: 'INVALID_REFRESH_TOKEN',
+          })
+        )
+        return
+      }
 
       // Проверяем, есть ли refresh токен в запросе и действителен ли он
       // Если токена нет или он не найден в хранилище — возвращаем ошибку 401
       if (!refreshToken || !refreshSessions.has(refreshToken)) {
-        return {
-          status: 401,
-          body: {
+        res.statusCode = 401
+        res.setHeader('Content-Type', 'application/json')
+        res.end(
+          JSON.stringify({
             success: false,
             message: 'Invalid refresh token',
             code: 'INVALID_REFRESH_TOKEN',
-          },
-        }
+          })
+        )
+        return
       }
 
       const userId = refreshSessions.get(refreshToken)
 
       if (!userId) {
-        return {
-          status: 401,
-          body: {
+        res.statusCode = 401
+        res.setHeader('Content-Type', 'application/json')
+        res.end(
+          JSON.stringify({
             success: false,
             message: 'Session not found',
             code: 'SESSION_NOT_FOUND',
-          },
-        }
+          })
+        )
+        return
       }
       const user = users.find((user) => user.id === userId)
 
       // пользователь не найден
       if (!user) {
-        return {
-          status: 401,
-          body: {
+        res.statusCode = 401
+        res.setHeader('Content-Type', 'application/json')
+        res.end(
+          JSON.stringify({
             success: false,
             message: 'User not found',
             code: 'USER_NOT_FOUND',
-          },
-        }
+          })
+        )
+        return
       }
 
       const newAccessToken = generateAccessToken(user)
@@ -140,22 +165,24 @@ export default defineMock([
       refreshSessions.set(newRefreshToken, userId)
       refreshSessions.delete(refreshToken)
 
-      return {
-        status: 200,
-        headers: {
-          'Set-Cookie': `refreshToken=${newRefreshToken}; HttpOnly; Path=/api/auth; Max-Age=2592000; SameSite=Lax`,
-        },
-        body: {
+      res.statusCode = 200
+      res.setHeader(
+        'Set-Cookie',
+        `refreshToken=${newRefreshToken}; HttpOnly; Path=/api/auth; Max-Age=2592000; SameSite=Lax`
+      )
+      res.setHeader('Content-Type', 'application/json')
+      res.end(
+        JSON.stringify({
           success: true,
           accessToken: newAccessToken,
-        },
-      }
+        })
+      )
     },
   },
   {
     url: '/api/auth/logout',
     method: 'POST',
-    body: (req) => {
+    response: (req, res) => {
       // Достаем refreshToken из cookie запроса
       const refreshToken = getCookieFromRequest(req, 'refreshToken')
       // Если токен есть — удаляем его из хранилища
@@ -163,24 +190,27 @@ export default defineMock([
         refreshSessions.delete(refreshToken)
       }
       // Возвращаем успешный ответ
-      return {
-        status: 200,
-        headers: {
-          'Set-Cookie': `refreshToken=; HttpOnly; Path=/api/auth; Max-Age=0; SameSite=Lax`,
-        },
-        body: {
+      res.statusCode = 200
+      res.setHeader(
+        'Set-Cookie',
+        `refreshToken=; HttpOnly; Path=/api/auth; Max-Age=0; SameSite=Lax`
+      )
+      res.setHeader('Content-Type', 'application/json')
+      res.end(
+        JSON.stringify({
           success: true,
-        },
-      }
+        })
+      )
     },
   },
   {
     // для проверки истек ли access token - имитация случаев всех защищенных запросов - потом скопирую этот кусок
     // со стороны фронтенда буду добавлять при каждом защищенном запросе доставать access token из переменной,
     // и добавлять в заголовок Authorization перехватчиком interceptors
-    url: '/api/auth/verify',
+    // Защищенный эндпойнт - данные залогиненного юзера.
+    url: '/api/auth/user',
     method: 'GET',
-    body: (req) => {
+    response: (req, res) => {
       // читаю заголовок
       const authHeader = req.headers.authorization
       // извлекаю access токен
@@ -188,64 +218,79 @@ export default defineMock([
 
       // токена нет
       if (!accessToken) {
-        return {
-          status: 401,
-          body: {
+        res.statusCode = 401
+        res.setHeader('Content-Type', 'application/json')
+        res.end(
+          JSON.stringify({
             success: false,
             message: 'No token',
             code: 'NO_TOKEN',
-          },
-        }
+          })
+        )
+        return
       }
 
       try {
         // проверяем не истек ли токен - достаю вторую часть токену между точками
         const payload = JSON.parse(base64Decode(accessToken.split('.')[1]))
         if (payload.exp * 1000 < Date.now()) {
-          return {
-            status: 401,
-            body: {
+          res.statusCode = 401
+          res.setHeader('Content-Type', 'application/json')
+          res.end(
+            JSON.stringify({
               success: false,
               message: 'Token expired',
               code: 'TOKEN_EXPIRED',
-            },
-          }
+            })
+          )
+          return
         }
 
         // достаю юзера из токена - проверяю есть ли он в нашей БД
         const user = users.find((user) => user.id === payload.userId)
         // юзер не найден
         if (!user) {
-          return {
-            status: 401,
-            body: {
+          res.statusCode = 401
+          res.setHeader('Content-Type', 'application/json')
+          res.end(
+            JSON.stringify({
               success: false,
               message: 'User not found',
               code: 'USER_NOT_FOUND',
-            },
-          }
+            })
+          )
+          return
         }
 
-        return {
-          status: 200,
-          body: {
+        res.statusCode = 200
+        res.setHeader('Content-Type', 'application/json')
+        res.end(
+          JSON.stringify({
             success: true,
             user: {
               id: user.id,
               name: user.name,
               email: user.email,
+              avatar: user.avatar,
+              birthDate: user.birthDate,
+              city: user.city,
+              about: user.about,
+              skills: user.skills,
+              createdAt: user.createdAt,
+              updatedAt: user.updatedAt,
             },
-          },
-        }
+          })
+        )
       } catch {
-        return {
-          status: 401,
-          body: {
+        res.statusCode = 401
+        res.setHeader('Content-Type', 'application/json')
+        res.end(
+          JSON.stringify({
             success: false,
             message: 'Invalid token',
             code: 'INVALID_TOKEN',
-          },
-        }
+          })
+        )
       }
     },
   },

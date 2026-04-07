@@ -8,7 +8,7 @@ import { deleteAccessToken, getAccessToken, setAccessToken } from './token-manag
 let isRefreshing = false
 // массив - очередь запросов, которые будут ждать когда завершится первый refreshUserApi()
 let promiseQueue: Array<{
-  resolve: () => void
+  resolve: (token: string) => void
   reject: (error: unknown) => void
 }> = []
 
@@ -48,9 +48,9 @@ apiClient.interceptors.response.use(
           return new Promise((resolve, reject) => {
             // Здесь мы сохраняем объект функций resolve и reject, чтобы вызвать их потом
             promiseQueue.push({
-              resolve: () => {
+              resolve: (token: string) => {
                 const queueRequest = error.config
-                queueRequest.headers.Authorization = `Bearer ${getAccessToken()}`
+                queueRequest.headers.Authorization = `Bearer ${token}`
                 resolve(apiClient(queueRequest))
               },
               reject: (error: unknown) => reject(error),
@@ -71,7 +71,7 @@ apiClient.interceptors.response.use(
           // Отправляем этот первым запросом заново и возвращаем результат
           const firstResult = apiClient(originalRequest)
           // запускаем остальные запросы заново
-          promiseQueue.forEach((item) => item.resolve())
+          promiseQueue.forEach((item) => item.resolve(accesstoken))
           promiseQueue = []
           isRefreshing = false
 

@@ -1,4 +1,4 @@
-export { Catalog } from './Catalog/Catalog'
+// export { Catalog } from './Catalog/Catalog'
 export { Home } from './Home/Home'
 export { Login } from './Login/Login'
 export { NotFound } from './NotFound/NotFound'
