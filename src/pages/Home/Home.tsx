@@ -6,8 +6,7 @@ import {
   popularUsersSelector,
   recommendedUsersSelector,
 } from '@/store/users'
-import { Spinner } from '@/ui-kit'
-import { UsersGrid } from '@/widgets'
+import { Loading, UsersGrid } from '@/widgets'
 import { FilterChips } from '@/widgets'
 import { FilterPanel } from '@/widgets/FilterPanel/FilterPanel'
 import { useEffect, useState } from 'react'
@@ -44,8 +43,8 @@ const WithFilters = () => {
 
   const loadMore = () => {
     setIsLoading(true)
+
     // Emulate loading for 3 seconds
-    // eslint-disable-next-line no-undef
     setTimeout(() => {
       setIsLoading(false)
       setPage((currentPage) => currentPage + 1)
@@ -62,12 +61,7 @@ const WithFilters = () => {
         title={`Подходящие предложения: ${users.length}`}
         loadMoreRef={loadMoreRef}
       />
-      {isLoading ? (
-        <div className={styles.loading}>
-          <Spinner />
-          Загрузка...
-        </div>
-      ) : null}
+      {isLoading ? <Loading /> : null}
     </div>
   )
 }

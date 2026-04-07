@@ -27,7 +27,7 @@ export const App = () => {
         <Route path="login" element={<Login />} />
         <Route path="server-error" element={<ServerError />} />
         <Route path="/profile/user-data" element={<ProfilePage />} />
-        <Route path="/skills-details" element={<SkillDetails />} />
+        <Route path="/skill/:id" element={<SkillDetails />} />
       </Route>
     </Routes>
   )

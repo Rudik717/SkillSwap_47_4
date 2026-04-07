@@ -1,28 +1,29 @@
 import { type RootState } from '@/store'
 import { getAllCategories, getAllSubcategories } from '@/store/categories'
-import { recommendedUsersSelector } from '@/store/users'
+import { getUser, recommendedUsersSelector } from '@/store/users'
 import { Button, Icon, Text } from '@/ui-kit'
-import { UserCard, UserGallery, UsersGrid } from '@/widgets'
+import { Loading, UserCard, UserGallery, UsersGrid } from '@/widgets'
 import { useRef } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { SwiperClass } from 'swiper/react'
 import 'swiper/swiper.css'
 
 import styles from './SkillDetails.module.css'
 
+const defaultImages = [
+  'https://i.pinimg.com/736x/18/13/63/1813631ee45a3612a6d9b4b116567a4b.jpg',
+  'https://i.pinimg.com/736x/04/20/c4/0420c4d695e7f04aa9f769ee9dca0878.jpg',
+  'https://i.pinimg.com/736x/ff/e3/2d/ffe32d8f5d5ca7fe2409ebfcd0fd9b28.jpg',
+  'https://i.pinimg.com/1200x/cc/04/78/cc0478ece26a04406fa2e50272d93144.jpg',
+]
+
 export const SkillDetails = () => {
   const navigate = useNavigate()
+  const { id } = useParams<{ id: string }>()
 
-  // Пока нет авторизации всегда редирект на логин
-  const handleOfferClick = () => {
-    navigate('/login')
-  }
-
-  // TODO: Проверка на авторизацию юзера и правильный редирект
-
-  // Получаем список пользователей и категорий
+  const { loading, user } = useSelector((state: RootState) => getUser(state, id))
   const similarUsers = useSelector((state: RootState) => recommendedUsersSelector(state))
   const categories = useSelector((state: RootState) => getAllCategories(state))
   const subcategories = useSelector((state: RootState) => getAllSubcategories(state))
@@ -30,32 +31,28 @@ export const SkillDetails = () => {
   // Ref для управления слайдером похожих предложений
   const similarSwiperRef = useRef<SwiperClass | null>(null)
 
-  // Отображаем первого пользователя и его навык
-  const user = similarUsers[0]
-  const skill = user?.skills?.[0] ?? null
+  if (loading) {
+    return <Loading />
+  }
+
+  if (!user) {
+    return <Navigate to="/not-found" />
+  }
+
+  // Пока нет авторизации всегда редирект на логин
+  const handleOfferClick = () => {
+    // TODO: Проверка на авторизацию юзера и правильный редирект
+    navigate('/login')
+  }
+
+  const skill = user?.skills?.filter((skill) => skill.type === 'teach')?.[0] ?? null
 
   // Находим объекты категорий по id
   const categoryObj = categories.find((cat) => cat.id === skill?.category)
   const subcategoryObj = subcategories.find((sub) => sub.id === skill?.subcategory)
 
   // Отображение дефолтных картинок, если не установлены свои
-  const skillImages = skill?.images?.length
-    ? skill.images
-    : [
-        'https://i.pinimg.com/736x/18/13/63/1813631ee45a3612a6d9b4b116567a4b.jpg',
-        'https://i.pinimg.com/736x/04/20/c4/0420c4d695e7f04aa9f769ee9dca0878.jpg',
-        'https://i.pinimg.com/736x/ff/e3/2d/ffe32d8f5d5ca7fe2409ebfcd0fd9b28.jpg',
-        'https://i.pinimg.com/1200x/cc/04/78/cc0478ece26a04406fa2e50272d93144.jpg',
-      ]
-
-  // Проверка данных перед рендером
-  if (!similarUsers || similarUsers.length === 0) {
-    return <Text variant="Body">Загрузка данных...</Text>
-  }
-
-  if (!skill) {
-    return <Text variant="Body">Навык пока недоступен</Text>
-  }
+  const skillImages = skill?.images?.length ? skill.images : defaultImages
 
   // Обработчики навигации слайдера
   const handlePrev = () => similarSwiperRef.current?.slidePrev()

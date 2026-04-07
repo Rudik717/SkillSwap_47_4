@@ -15,7 +15,7 @@ type RootState = {
 const initialState: CategoriesState = {
   categories: [],
   subcategories: [],
-  loading: false,
+  loading: true,
   error: null,
 }
 

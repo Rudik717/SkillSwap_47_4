@@ -17,7 +17,7 @@ type RootState = {
 
 const initialState: UsersState = {
   users: [],
-  loading: false,
+  loading: true,
   error: null,
 }
 
@@ -46,6 +46,11 @@ const usersSlice = createSlice({
 
 export const getUsersState = (state: RootState) => state.users
 export const getAllUsers = (state: RootState) => state.users.users
+export const getUser = (state: RootState, id?: string) => {
+  const { loading } = state.users
+  const user = state.users.users?.find((user) => user.id === id)
+  return { loading, user }
+}
 
 export const popularUsersSelector = createSelector(getUsersState, (state) => {
   const { users } = state
