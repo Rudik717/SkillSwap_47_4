@@ -8,7 +8,7 @@ import {
   setRole,
   setSubcategories,
 } from '@/store/filter'
-import type { TGender, TRole } from '@/utils'
+import type { SortState, TGender, TRole } from '@/utils'
 import { describe, expect, it } from '@jest/globals'
 
 type FilterState = {
@@ -16,6 +16,8 @@ type FilterState = {
   subcategories: string[]
   gender: TGender
   cities: string[]
+  search: string
+  sort: SortState
 }
 
 describe('filterSlice', () => {
@@ -24,6 +26,8 @@ describe('filterSlice', () => {
     subcategories: [],
     gender: 'any',
     cities: [],
+    search: '',
+    sort: { by: '', direction: 'desc' },
   }
 
   const createState = (filterState = initialState) => ({

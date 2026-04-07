@@ -33,6 +33,8 @@ export const mockStore = configureStore({
       subcategories: [],
       gender: 'female' as TGender,
       cities: [],
+      search: '',
+      sort: { by: '', direction: 'desc' },
     },
   },
 })
