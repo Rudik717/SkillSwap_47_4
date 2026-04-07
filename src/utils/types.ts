@@ -94,3 +94,11 @@ export type RegisterDataSet = {
   nextStep: () => void // Переход на следующий шаг регистрации
   prevStep?: () => void // Переход на предыдущий шаг регистрации
 }
+
+// Сортировка
+export type SortDirection = 'asc' | 'desc'
+
+export type SortState = {
+  by: string
+  direction: SortDirection
+}

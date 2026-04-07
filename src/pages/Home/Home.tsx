@@ -1,5 +1,6 @@
 import { useInfiniteScroll } from '@/hooks'
-import { getFilterState, isFilterActiveSelector } from '@/store/filter'
+import type { AppDispatch } from '@/store'
+import { getFilterState, isFilterActiveSelector, setSort } from '@/store/filter'
 import {
   filteredUsersSelector,
   newUsersSelector,
@@ -10,7 +11,7 @@ import { Loading, UsersGrid } from '@/widgets'
 import { FilterChips } from '@/widgets'
 import { FilterPanel } from '@/widgets/FilterPanel/FilterPanel'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import styles from './Home.module.css'
 
@@ -31,34 +32,61 @@ const WithFilters = () => {
   const [page, setPage] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
 
+  const dispatch = useDispatch<AppDispatch>()
   const filter = useSelector(getFilterState)
   const filteredUsers = useSelector(filteredUsersSelector)
+
   const count = PAGE_SIZE * page
   const users = filteredUsers.slice(0, count)
   const hasMore = filteredUsers.length > count
 
   useEffect(() => {
     setPage(1)
-  }, [filter])
+  }, [filteredUsers])
 
   const loadMore = () => {
     setIsLoading(true)
-
-    // Emulate loading for 3 seconds
     setTimeout(() => {
       setIsLoading(false)
       setPage((currentPage) => currentPage + 1)
     }, 3000)
   }
 
-  const loadMoreRef = useInfiniteScroll({ hasMore, loadMore, isLoading })
+  const loadMoreRef = useInfiniteScroll({
+    loadMore,
+    hasMore,
+    isLoading,
+  })
+
+  const isDesc = filter.sort.direction === 'desc'
+
+  const hasAppliedFilters =
+    filter.role !== 'all' ||
+    filter.gender !== 'any' ||
+    filter.cities.length > 0 ||
+    filter.subcategories.length > 0 ||
+    filter.search.trim().length > 0
+
+  const handleSortToggle = () => {
+    dispatch(setSort({ by: 'createdAt', direction: isDesc ? 'asc' : 'desc' }))
+  }
 
   return (
     <div className={styles.main}>
       <FilterChips />
       <UsersGrid
         users={users}
-        title={`Подходящие предложения: ${users.length}`}
+        title={users.length ? `Найдено пользователей: ${users.length}` : 'Ничего не найдено'}
+        button={
+          hasAppliedFilters
+            ? {
+                label: isDesc ? 'Сначала новые' : 'Сначала старые',
+                onClick: handleSortToggle,
+                variant: 'tertiary',
+                iconLeft: 'sort',
+              }
+            : undefined
+        }
         loadMoreRef={loadMoreRef}
       />
       {isLoading ? <Loading /> : null}
@@ -67,6 +95,7 @@ const WithFilters = () => {
 }
 
 const WithoutFilters = () => {
+  const dispatch = useDispatch<AppDispatch>()
   const popularUsers = useSelector(popularUsersSelector)
   const newUsers = useSelector(newUsersSelector)
   const recommendedUsers = useSelector(recommendedUsersSelector)
@@ -74,8 +103,28 @@ const WithoutFilters = () => {
   return (
     <div className={styles.main}>
       <div className={styles.cards}>
-        <UsersGrid users={popularUsers} title="Популярное" />
-        <UsersGrid users={newUsers} title="Новое" />
+        <UsersGrid
+          users={popularUsers}
+          title="Популярное"
+          button={{
+            label: 'Смотреть все',
+            onClick: () => dispatch(setSort({ by: 'likes', direction: 'desc' })),
+            variant: 'tertiary',
+            iconRight: 'right-switch',
+          }}
+        />
+
+        <UsersGrid
+          users={newUsers}
+          title="Новое"
+          button={{
+            label: 'Смотреть все',
+            onClick: () => dispatch(setSort({ by: 'createdAt', direction: 'desc' })),
+            variant: 'tertiary',
+            iconRight: 'right-switch',
+          }}
+        />
+
         <UsersGrid users={recommendedUsers} title="Рекомендуем" />
       </div>
     </div>
