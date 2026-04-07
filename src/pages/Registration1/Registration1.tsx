@@ -5,10 +5,60 @@ import { Icon } from '@/ui-kit'
 import type { RegisterDataSet } from '@/utils'
 import { Stepper } from '@/widgets'
 import { FormLayout } from '@/widgets'
+import { useCallback, useEffect, useState } from 'react'
 
 import styles from './Registration1.module.css'
 
-export const Registration1 = ({ data }: RegisterDataSet) => {
+interface FieldErrors {
+  email: boolean
+  password: boolean
+}
+
+export const Registration1 = ({ data, setData, nextStep }: RegisterDataSet) => {
+  const [email, setEmail] = useState<string>(data.email)
+  const [password, setPassword] = useState<string>(data.password)
+  const [isVerified, setIsVerified] = useState<boolean>(false)
+  const [errors, setErrors] = useState<FieldErrors>({
+    email: false,
+    password: false,
+  })
+
+  //Регулярное выражение для email input (вариант приближён к RFC 5322)
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+  const passwordRegex = /^.{8,}$/
+
+  const handleEmailChange = useCallback(
+    (value: string) => {
+      setErrors((prev) => ({
+        ...prev,
+        email: !emailRegex.test(value), // true, если email НЕвалиден
+      }))
+      setEmail(value)
+    },
+    [setErrors, setEmail, emailRegex]
+  )
+
+  const handlePasswordChange = useCallback(
+    (value: string) => {
+      setErrors((prev) => ({ ...prev, password: !passwordRegex.test(value) })) // true, если пароль НЕвалиден
+      setPassword(value)
+    },
+    [setErrors, setPassword, passwordRegex]
+  )
+
+  useEffect(() => {
+    setIsVerified(!errors.email && !errors.password && email !== '' && password !== '')
+  }, [errors.email, errors.password, email, password])
+
+  // Обработчик перехода на следующий шаг
+  const handleNextStep = () => {
+    setData((prev) => ({ ...prev, email, password }))
+    if (isVerified) {
+      nextStep()
+    }
+  }
+
   return (
     <>
       <Stepper currentStep={1} />
@@ -31,25 +81,26 @@ export const Registration1 = ({ data }: RegisterDataSet) => {
                   type="email"
                   label="Email"
                   placeholder="Введите email"
-                  error=""
-                  value={data.email}
-                  onChange={() => {}}
+                  error={errors.email ? 'Введите корректный email' : ''}
+                  value={email}
+                  onChange={handleEmailChange}
                 />
                 <TextInput
                   name="password"
                   type="password"
                   label="Пароль"
                   placeholder="Придумайте надежный пароль"
-                  info="Пароль должен содержать не менее 8 знаков"
+                  error={errors.password ? 'Пароль должен содержать не менее 8 знаков' : ''}
                   icon="eye"
-                  value={data.password}
-                  onChange={() => {}}
+                  value={password}
+                  onChange={handlePasswordChange}
                 />
                 <Button
                   variant="primary"
                   children="Далее"
                   className={styles.buttonSubmit}
-                  onClick={() => {}}
+                  onClick={handleNextStep}
+                  disabled={!isVerified}
                 />
               </div>
             </div>
