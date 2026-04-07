@@ -6,7 +6,7 @@ import { Registration1 } from './Registration1'
 type Story = StoryObj<typeof Registration1>
 
 const meta: Meta<typeof Registration1> = {
-  title: 'Pages/Registration1',
+  title: 'Widgets/Registration1',
   component: Registration1,
   tags: ['autodocs'],
   argTypes: {
