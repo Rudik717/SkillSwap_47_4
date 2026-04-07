@@ -13,7 +13,7 @@ type RootState = {
 
 const initialState: CitiesState = {
   cities: [],
-  loading: false,
+  loading: true,
   error: null,
 }
 

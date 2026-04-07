@@ -1,0 +1,119 @@
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  width: 100%;
+}
+
+.topElement {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  width: 100%;
+}
+
+.detailsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  padding: 32px 52px 40px;
+  background-color: #fff;
+  border-radius: 12px;
+}
+
+.topButtons {
+  display: flex;
+  gap: 16px;
+  align-self: flex-end;
+}
+
+.topButton {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: #253017;
+  cursor: pointer;
+}
+
+.skillDetails {
+  display: flex;
+  flex-direction: row;
+  gap: 77px;
+  width: 100%;
+}
+
+.skillInfo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+.skillHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skillDescriptionWrapper {
+  flex: 1;
+}
+
+.skillDescription {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.bottomElement {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+}
+
+.similarSwiperWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.similarSwiper {
+  width: 100%;
+}
+
+.navButton {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  background-color: #e4e8df;
+  border: none;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.2s;
+}
+
+.prevButton {
+  left: -16px;
+}
+
+.nextButton {
+  right: -16px;
+}
+
+.navButton:hover {
+  transform: translateY(-50%) scale(1.05);
+}
+
+.navButton:active {
+  transform: translateY(-50%) scale(0.95);
+}
