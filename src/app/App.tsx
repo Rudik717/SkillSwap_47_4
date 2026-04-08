@@ -1,4 +1,5 @@
 import {
+  About,
   Home,
   Login,
   NotFound,
@@ -35,8 +36,9 @@ export const App = () => {
       <Route path="/" element={<AppLayout />}>
         <Route path="*" element={<NotFound />} />
         <Route index element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="server-error" element={<ServerError />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/server-error" element={<ServerError />} />
         <Route path="/register" element={<Registration />} />
         <Route
           path="/profile"
