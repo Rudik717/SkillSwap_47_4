@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
+    "axios": "^1.14.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "modern-normalize": "^3.0.1",

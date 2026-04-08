@@ -31,8 +31,11 @@ export default [
         __dirname: true,
         document: true,
         fetch: false,
+        atob: 'readonly',
+        btoa: 'readonly',
         setTimeout: false,
         clearTimeout: false,
+        localStorage: 'readonly',
       },
     },
     plugins: {
@@ -95,6 +98,27 @@ export default [
 
       // Prettier
       'prettier/prettier': 'error',
+    },
+  },
+  // 2. Конфиг для моков (Node.js окружение)
+  {
+    files: ['**/__mocks__/**/*.ts', '**/*.mock.ts', '**/mock/**/*.ts'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        module: 'readonly',
+        __dirname: true,
+        Buffer: 'readonly',
+        crypto: 'readonly',
+        require: 'readonly',
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-var-requires': 'off',
+      'no-undef': 'off',
     },
   },
   eslintConfigPrettier,

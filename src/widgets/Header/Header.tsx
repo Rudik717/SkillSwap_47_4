@@ -1,6 +1,7 @@
 import { useDebounce, useOutsideClick } from '@/hooks'
 import type { AppDispatch } from '@/store'
 import { setSearch } from '@/store/filter'
+import { logoutUser } from '@/store/user-slice'
 import { Button, Icon, Logo, MenuButton, SearchInput, Text, UserAvatar } from '@/ui-kit'
 import { CategoriesMenu } from '@/widgets/CategoriesMenu/CategoriesMenu'
 import { type FC, useEffect, useRef, useState } from 'react'
@@ -39,6 +40,10 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
 
   const handleLogin = () => {
     navigate('/login')
+  }
+
+  const handleRegister = () => {
+    navigate('/register')
   }
 
   return (
@@ -91,7 +96,9 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
               <Button variant="secondary" onClick={handleLogin}>
                 Войти
               </Button>
-              <Button variant="primary">Зарегистрироваться</Button>
+              <Button variant="primary" onClick={handleRegister}>
+                Зарегистрироваться
+              </Button>
             </div>
           </>
         )}
@@ -119,7 +126,8 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
                   onClose={() => setIsUserMenuOpen(false)}
                   triggerRef={avatarRef}
                   onLogout={() => {
-                    // Логика выхода
+                    dispatch(logoutUser())
+                    navigate('/')
                   }}
                 />
               </div>

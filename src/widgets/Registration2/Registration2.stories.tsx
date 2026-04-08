@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import { data as categories } from '../../../mock/api/categories'
 import { data as cities } from '../../../mock/api/cities'
 import { type TRegisterData } from '../../utils/types'
-import { Registration3 } from './Registration3'
+import { Registration2 } from './Registration2'
 
 // Тестовое хранилище с нужным срезом состояния
 const store = configureStore({
@@ -21,11 +21,11 @@ const store = configureStore({
   },
 })
 
-type Story = StoryObj<typeof Registration3>
+type Story = StoryObj<typeof Registration2>
 
-const meta: Meta<typeof Registration3> = {
-  title: 'Pages/Registration3',
-  component: Registration3,
+const meta: Meta<typeof Registration2> = {
+  title: 'Widgets/Registration2',
+  component: Registration2,
   tags: ['autodocs'],
   argTypes: {
     data: {
@@ -52,27 +52,16 @@ export const Default: Story = {
   args: {
     data: {
       id: '',
-      name: '',
       email: '',
       password: '',
+      name: '',
       birthDate: null,
-      gender: '',
+      gender: 'unspecified',
       city: '',
       avatar: '',
-      skills: [
-        {
-          id: '',
-          userId: '',
-          type: 'learn', /// будто уже есть данные с предыдущего этапа регистрации
-          category: '1',
-          subcategory: '1-1',
-          title: '',
-          description: '',
-          images: [],
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      ],
+      skills: [],
+      createdAt: '',
+      updatedAt: '',
     } as TRegisterData,
   },
   render: (args) => {
@@ -80,7 +69,7 @@ export const Default: Story = {
 
     return (
       <Provider store={store}>
-        <Registration3
+        <Registration2
           data={data}
           setData={setData}
           nextStep={() => console.log('Next step triggered')}

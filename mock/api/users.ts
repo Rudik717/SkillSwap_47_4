@@ -1,4 +1,6 @@
-export const data = {
+import type { TUser } from '@/utils'
+
+export const data: { users: TUser[] } = {
   users: [
     {
       id: '1',
