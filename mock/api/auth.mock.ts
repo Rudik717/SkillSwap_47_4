@@ -83,12 +83,7 @@ export default defineMock([
         JSON.stringify({
           success: true,
           accessToken,
-          user: {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            avatar: user.avatar,
-          },
+          user: user,
         })
       )
     },
@@ -267,18 +262,7 @@ export default defineMock([
         res.end(
           JSON.stringify({
             success: true,
-            user: {
-              id: user.id,
-              name: user.name,
-              email: user.email,
-              avatar: user.avatar,
-              birthDate: user.birthDate,
-              city: user.city,
-              about: user.about,
-              skills: user.skills,
-              createdAt: user.createdAt,
-              updatedAt: user.updatedAt,
-            },
+            user: user,
           })
         )
       } catch {
