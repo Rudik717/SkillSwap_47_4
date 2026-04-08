@@ -1,7 +1,7 @@
-//export { Catalog } from './Catalog/Catalog'
 export { Home } from './Home/Home'
 export { Login } from './Login/Login'
 export { NotFound } from './NotFound/NotFound'
 export { ProfilePage } from './ProfilePage/ProfilePage'
 export { ServerError } from './ServerError/ServerError'
 export { Registration } from './Registration/Registration'
+export { SkillDetails } from './SkillDetails/SkillDetails'
