@@ -1,6 +1,10 @@
+import { getCategoriesState } from '@/store/categories'
 import { Button, Text } from '@/ui-kit'
 import { Modal, UserGallery } from '@/widgets'
+import { skillFilterOptions } from '@/widgets/FilterPanel/utils'
 import { type FC, memo } from 'react'
+import { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 
 import styles from './RegistrationPreview.module.css'
 import type { TRegistrationPreview } from './type'
@@ -8,6 +12,19 @@ import type { TRegistrationPreview } from './type'
 export const RegistrationPreview: FC<TRegistrationPreview> = memo(
   ({ data, isOpen, onEdit, onConfirm }) => {
     const { title, category, subcategory, description, images } = data
+    const { categories, subcategories } = useSelector(getCategoriesState)
+
+    const { categoryName, subcategoryName } = useMemo(() => {
+      const options = skillFilterOptions({ categories, subcategories })
+
+      const cat = options.find((item) => item.id === category)
+      const subcat = cat?.items?.find((subitem) => subitem.id === subcategory)
+
+      return {
+        categoryName: cat?.label ?? 'Не указана',
+        subcategoryName: subcat?.label ?? 'Не указана',
+      }
+    }, [category, subcategory, categories, subcategories])
 
     if (!isOpen) {
       return null
@@ -34,7 +51,7 @@ export const RegistrationPreview: FC<TRegistrationPreview> = memo(
                     {title}
                   </Text>
                   <Text style={{ color: 'var(--border-input-main)' }}>
-                    {category}/{subcategory}
+                    {categoryName}/{subcategoryName}
                   </Text>
                 </div>
                 <Text variant="Body" color={textColor}>
