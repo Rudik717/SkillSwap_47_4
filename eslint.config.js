@@ -36,6 +36,7 @@ export default [
         setTimeout: false,
         clearTimeout: false,
         localStorage: 'readonly',
+        Audio: false,
       },
     },
     plugins: {
