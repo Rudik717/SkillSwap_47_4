@@ -33,6 +33,7 @@ export default [
         fetch: false,
         setTimeout: false,
         clearTimeout: false,
+        localStorage: 'readonly',
       },
     },
     plugins: {

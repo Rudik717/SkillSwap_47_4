@@ -63,22 +63,31 @@ export const Registration = () => {
   const { openModal, closeModal, isModalOpen } = useModal()
 
   const handleConfirm = async () => {
-    // Сборка всех данных (пример)
-    /* const finalData: TRegisterData = {
-      ...data,
-      updatedAt: new Date().toISOString(),
-      skills: data.skills
-        .filter(skill => {
-          if (skill.type === 'learn') return skill.category && skill.subcategory;
-          if (skill.type === 'teach')
-            return skill.title && skill.description && skill.category && skill.subcategory;
-          return false;
-        })
-        .map(skill => ({ ...skill, updatedAt: new Date().toISOString() }))
-    };
+    const currentTimestamp = new Date().toISOString()
 
-    // Дальше finalData передаются в стор
-    */
+    // Сборка всех данных
+    const userData: TRegisterData = {
+      ...data,
+      createdAt: data.createdAt || currentTimestamp,
+      updatedAt: currentTimestamp,
+      skills: data.skills
+        .filter((skill) => {
+          if (skill.type === 'learn') {
+            return skill.category && skill.subcategory
+          }
+          if (skill.type === 'teach') {
+            return skill.title && skill.description && skill.category && skill.subcategory
+          }
+          return false
+        })
+        .map((skill) => ({
+          ...skill,
+          updatedAt: currentTimestamp,
+        })),
+    }
+    localStorage.setItem('user', JSON.stringify(userData))
+    const savedData = localStorage.getItem('user')
+    console.log(savedData)
     setIsSuccessModalOpen(true)
     closeModal()
   }

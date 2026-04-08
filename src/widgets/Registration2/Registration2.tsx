@@ -37,8 +37,8 @@ type InputsState = {
   gender?: 'male' | 'female' | 'unspecified' | ''
   category: string
   subcategory: string
-  createdAt: string
-  updatedAt: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDataSet) => {
