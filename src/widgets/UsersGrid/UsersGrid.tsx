@@ -49,9 +49,8 @@ export const UsersGrid = ({ users, title, button, columns = 3, loadMoreRef }: Us
         {users.map((user) => (
           <UserCard key={user.id} user={user} />
         ))}
+        <div className={styles.loadMore} ref={loadMoreRef} />
       </div>
-
-      <div className={styles.loadMore} ref={loadMoreRef} />
     </div>
   )
 }

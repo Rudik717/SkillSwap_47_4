@@ -35,6 +35,7 @@ const WithFilters = () => {
   const dispatch = useDispatch<AppDispatch>()
   const filter = useSelector(getFilterState)
   const filteredUsers = useSelector(filteredUsersSelector)
+  const isFilterActive = useSelector(isFilterActiveSelector)
 
   const count = PAGE_SIZE * page
   const users = filteredUsers.slice(0, count)
@@ -45,6 +46,7 @@ const WithFilters = () => {
   }, [filteredUsers])
 
   const loadMore = () => {
+    console.log(' *** load more')
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
@@ -60,13 +62,6 @@ const WithFilters = () => {
 
   const isDesc = filter.sort.direction === 'desc'
 
-  const hasAppliedFilters =
-    filter.role !== 'all' ||
-    filter.gender !== 'any' ||
-    filter.cities.length > 0 ||
-    filter.subcategories.length > 0 ||
-    filter.search.trim().length > 0
-
   const handleSortToggle = () => {
     dispatch(setSort({ by: 'createdAt', direction: isDesc ? 'asc' : 'desc' }))
   }
@@ -78,7 +73,7 @@ const WithFilters = () => {
         users={users}
         title={users.length ? `Найдено пользователей: ${users.length}` : 'Ничего не найдено'}
         button={
-          hasAppliedFilters
+          isFilterActive
             ? {
                 label: isDesc ? 'Сначала новые' : 'Сначала старые',
                 onClick: handleSortToggle,
