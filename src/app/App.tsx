@@ -39,7 +39,7 @@ export const App = () => {
         <Route path="server-error" element={<ServerError />} />
         <Route path="/register" element={<Registration />} />
         <Route
-          path="/profile/user-data"
+          path="/profile"
           element={
             <ProtectedRoute>
               <ProfilePage />
