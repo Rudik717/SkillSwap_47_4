@@ -51,6 +51,16 @@
   gap: 20px;
 }
 
+.user-card__about-wrapper {
+  margin-bottom: 4px;
+}
+
+.user-card__about {
+  font-size: 16px;
+  line-height: 24px;
+  color: #253017;
+}
+
 .body-skills {
   display: flex;
   flex-direction: column;
@@ -94,4 +104,8 @@
   white-space: nowrap;
   background: #e8ecf7;
   border-radius: 20px;
+}
+
+.hidden {
+  visibility: hidden;
 }

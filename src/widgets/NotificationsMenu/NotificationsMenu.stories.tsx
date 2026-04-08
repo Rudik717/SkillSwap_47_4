@@ -5,83 +5,11 @@ import { BrowserRouter } from 'react-router-dom'
 
 import { NotificationsMenu } from './NotificationsMenu'
 
-const mockNotifications = [
-  {
-    id: '1',
-    user: 'Николай',
-    text: 'принял ваш обмен',
-    date: 'сегодня',
-    isRead: false,
-    link: '/profile/1',
-  },
-  {
-    id: '2',
-    user: 'Татьяна',
-    text: 'предлагает вам обмен',
-    date: 'сегодня',
-    isRead: false,
-    link: '/profile/2',
-  },
-  {
-    id: '3',
-    user: 'Олег',
-    text: 'предлагает вам обмен',
-    date: 'вчера',
-    isRead: true,
-    link: '/profile/3',
-  },
-  {
-    id: '4',
-    user: 'Игорь',
-    text: 'принял ваш обмен',
-    date: '23 мая',
-    isRead: true,
-    link: '/profile/4',
-  },
-]
-
 const meta: Meta<typeof NotificationsMenu> = {
   title: 'Widgets/NotificationsMenu',
   component: NotificationsMenu,
   tags: ['autodocs'],
-  parameters: {
-    layout: 'centered',
-  },
-  argTypes: {
-    isOpen: {
-      control: 'boolean',
-      description: 'Открыто ли меню',
-      table: {
-        defaultValue: { summary: 'false' },
-      },
-    },
-    onClose: {
-      action: 'closed',
-      description: 'Колбэк закрытия меню',
-    },
-    triggerRef: {
-      description: 'Ref элемента, относительно которого позиционируется меню',
-      table: {
-        type: { summary: 'React.RefObject<HTMLElement | null>' },
-      },
-    },
-    notifications: {
-      description: 'Массив уведомлений для отображения',
-      table: {
-        type: {
-          summary: 'Notification[]',
-          detail: `{
-  id: string
-  user: string
-  text: string
-  date: string
-  isRead: boolean
-  link?: string
-}`,
-        },
-      },
-    },
-  },
+  parameters: { layout: 'centered' },
   decorators: [
     (Story) => (
       <BrowserRouter>
@@ -100,22 +28,46 @@ const meta: Meta<typeof NotificationsMenu> = {
     ),
   ],
 }
-
 export default meta
-
-type Story = StoryObj<typeof NotificationsMenu>
-
-export const Default: Story = {
-  args: {
-    isOpen: true,
-    notifications: mockNotifications,
-  },
-  render: (args) => {
+export const Default: StoryObj = {
+  render: () => {
     const [isOpen, setIsOpen] = useState(true)
     const buttonRef = useRef<HTMLButtonElement>(null)
-
-    const unreadCount = args.notifications?.filter((n) => !n.isRead).length || 0
-
+    const notifications = [
+      {
+        id: '1',
+        user: 'Олег',
+        text: 'предлагает вам обмен',
+        date: 'сегодня',
+        isRead: false,
+        link: '/profile/1',
+      },
+      {
+        id: '2',
+        user: 'Николай',
+        text: 'принял ваш обмен',
+        date: 'сегодня',
+        isRead: false,
+        link: '/profile/2',
+      },
+      {
+        id: '3',
+        user: 'Татьяна',
+        text: 'предлагает вам обмен',
+        date: 'вчера',
+        isRead: true,
+        link: '/profile/3',
+      },
+      {
+        id: '4',
+        user: 'Игорь',
+        text: 'принял ваш обмен',
+        date: '23 мая',
+        isRead: true,
+        link: '/profile/4',
+      },
+    ]
+    const unreadCount = notifications.filter((n) => !n.isRead).length
     return (
       <div style={{ position: 'relative', display: 'inline-block' }}>
         <button
@@ -125,12 +77,12 @@ export const Default: Story = {
             background: 'white',
             border: 'none',
             cursor: 'pointer',
-            padding: '12px',
-            borderRadius: '8px',
+            padding: 12,
+            borderRadius: 8,
             boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
+            gap: 8,
             position: 'relative',
           }}
         >
@@ -139,14 +91,14 @@ export const Default: Story = {
             <span
               style={{
                 position: 'absolute',
-                top: '-4px',
-                right: '-4px',
+                top: -4,
+                right: -4,
                 background: '#dc3545',
                 color: 'white',
                 borderRadius: '50%',
-                width: '18px',
-                height: '18px',
-                fontSize: '12px',
+                width: 18,
+                height: 18,
+                fontSize: 12,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -158,10 +110,10 @@ export const Default: Story = {
           )}
         </button>
         <NotificationsMenu
-          {...args}
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           triggerRef={buttonRef}
+          notifications={notifications}
         />
       </div>
     )

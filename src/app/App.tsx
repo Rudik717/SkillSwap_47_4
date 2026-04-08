@@ -1,4 +1,4 @@
-import { Home, Login, NotFound, ProfilePage, ServerError } from '@/pages'
+import { Home, Login, NotFound, ProfilePage, ServerError, SkillDetails } from '@/pages'
 import { ProtectedRoute } from '@/protected-route'
 import { initSession } from '@/services/session.init'
 import type { AppDispatch } from '@/store'
@@ -37,6 +37,7 @@ export const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route path="/skill/:id" element={<SkillDetails />} />
       </Route>
     </Routes>
   )
