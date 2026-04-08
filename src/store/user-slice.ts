@@ -1,0 +1,125 @@
+import { getUserApi, loginUserApi, logoutUserApi } from '@/services/auth.api'
+import type { TLoginData } from '@/services/auth.api'
+import { deleteAccessToken, getAccessToken, setAccessToken } from '@/services/token-manager'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { AxiosError } from 'axios'
+
+import type { TUser } from '@utils/types'
+
+export type TUserState = {
+  user: TUser | null
+  isAuthChecked: boolean
+  loading: boolean
+  error: string | null
+}
+
+export const initialState: TUserState = {
+  user: null,
+  isAuthChecked: false,
+  loading: false,
+  error: null,
+}
+
+//Логин пользователя  - вводит данные - запрос на сервер - получаем юзера
+export const loginUser = createAsyncThunk(
+  'user/loginUser',
+  async (data: TLoginData, { rejectWithValue }) => {
+    try {
+      const response = await loginUserApi(data)
+      setAccessToken(response.accessToken)
+      return response.user
+    } catch (err) {
+      const errorData = (err as AxiosError)?.response?.data
+      // Передаём их в rejected с помощью rejectWithValue
+      return rejectWithValue(errorData || { message: 'Ошибка входа' })
+    }
+  }
+)
+
+//выход пользователя - браузер сам удалить refresh, удаляем access
+export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
+  await logoutUserApi()
+  deleteAccessToken()
+})
+
+//запрос на сервер с токеном - получаем юзера или ошибку, если оба токена истекли
+export const getUserWithToken = createAsyncThunk(
+  'user/getUserWithToken',
+  async (_, { dispatch }) => {
+    const token = getAccessToken()
+
+    if (!token) {
+      dispatch(authChecked())
+      return null
+    }
+    try {
+      const response = await getUserApi()
+      return response
+    } catch (error) {
+      dispatch(authChecked())
+      throw error
+    }
+  }
+)
+
+export const userSlice = createSlice({
+  name: 'user',
+  initialState,
+  reducers: {
+    authChecked: (state) => {
+      state.isAuthChecked = true
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      //loginUser
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.isAuthChecked = true
+        state.loading = false
+        const errorData = action.payload as { message?: string }
+        state.error = errorData?.message || 'Ошибка входа'
+      })
+      .addCase(loginUser.fulfilled, (state, action: PayloadAction<TUser>) => {
+        state.user = action.payload
+        state.isAuthChecked = true
+        state.loading = false
+      })
+      //logoutUser
+      .addCase(logoutUser.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.isAuthChecked = true
+        state.loading = false
+        state.error = action.error.message ?? null
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null
+        state.isAuthChecked = true
+        state.loading = false
+      })
+      //getUserWithToken
+      .addCase(getUserWithToken.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(getUserWithToken.rejected, (state) => {
+        state.isAuthChecked = true
+        state.loading = false
+      })
+      .addCase(getUserWithToken.fulfilled, (state, action: PayloadAction<TUser | null>) => {
+        state.user = action.payload
+        state.isAuthChecked = true
+        state.loading = false
+      })
+  },
+})
+
+export const { authChecked } = userSlice.actions
+export const userSliceReducer = userSlice.reducer

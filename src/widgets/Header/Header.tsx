@@ -1,6 +1,7 @@
 import { useDebounce, useOutsideClick } from '@/hooks'
 import type { AppDispatch } from '@/store'
 import { setSearch } from '@/store/filter'
+import { logoutUser } from '@/store/user-slice'
 import { Button, Icon, Logo, MenuButton, SearchInput, Text, UserAvatar } from '@/ui-kit'
 import { CategoriesMenu } from '@/widgets/CategoriesMenu/CategoriesMenu'
 import { type FC, useEffect, useRef, useState } from 'react'
@@ -119,7 +120,8 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
                   onClose={() => setIsUserMenuOpen(false)}
                   triggerRef={avatarRef}
                   onLogout={() => {
-                    // Логика выхода
+                    dispatch(logoutUser())
+                    navigate('/')
                   }}
                 />
               </div>
