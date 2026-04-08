@@ -3,6 +3,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { categoriesReducer } from './categories'
 import { citiesReducer } from './cities'
 import { filterReducer } from './filter'
+import { userSliceReducer } from './user-slice'
 import { usersReducer } from './users'
 
 export const rootReducer = combineReducers({
@@ -10,6 +11,7 @@ export const rootReducer = combineReducers({
   cities: citiesReducer,
   filter: filterReducer,
   users: usersReducer,
+  user: userSliceReducer,
 })
 
 export const store = configureStore({

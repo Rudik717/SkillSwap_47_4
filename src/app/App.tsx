@@ -1,12 +1,6 @@
-import {
-  Home,
-  Login,
-  NotFound,
-  ProfilePage,
-  Registration,
-  ServerError,
-  SkillDetails,
-} from '@/pages'
+import { Home, Login, NotFound, ProfilePage, ServerError, SkillDetails } from '@/pages'
+import { ProtectedRoute } from '@/protected-route'
+import { initSession } from '@/services/session.init'
 import type { AppDispatch } from '@/store'
 import { getCategories } from '@/store/categories'
 import { getCities } from '@/store/cities'
@@ -22,6 +16,7 @@ export const App = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
+    initSession()
     dispatch(getCategories())
     dispatch(getCities())
     dispatch(getUsers())
@@ -34,8 +29,15 @@ export const App = () => {
         <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="server-error" element={<ServerError />} />
-        <Route path="/profile/user-data" element={<ProfilePage />} />
         <Route path="/register" element={<Registration />} />
+        <Route
+          path="/profile/user-data"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/skill/:id" element={<SkillDetails />} />
       </Route>
     </Routes>
