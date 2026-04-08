@@ -1,6 +1,6 @@
 import { type PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit'
 
-import type { TGender, TRole } from '../utils/types'
+import type { SortState, TGender, TRole } from '../utils/types'
 
 type FilterState = {
   role: TRole
@@ -8,6 +8,7 @@ type FilterState = {
   gender: TGender
   cities: string[]
   search: string
+  sort: SortState
 }
 
 type RootState = {
@@ -20,6 +21,11 @@ const initialState: FilterState = {
   gender: 'any',
   cities: [],
   search: '',
+  // сортировка по умолчанию выключена
+  sort: {
+    by: '',
+    direction: 'desc',
+  },
 }
 
 const filterSlice = createSlice({
@@ -41,12 +47,16 @@ const filterSlice = createSlice({
     setSearch(state, action: PayloadAction<string>) {
       state.search = action.payload
     },
+    setSort(state, action: PayloadAction<SortState>) {
+      state.sort = action.payload
+    },
     resetFilter(state) {
       state.role = 'all'
       state.subcategories = []
       state.gender = 'any'
       state.cities = []
       state.search = ''
+      state.sort = { by: '', direction: 'desc' }
     },
   },
 })
@@ -54,20 +64,20 @@ const filterSlice = createSlice({
 export const getFilterState = (state: RootState) => state.filter
 
 export const isFilterActiveSelector = createSelector(getFilterState, (state) => {
-  const { cities, subcategories, role, gender, search } = state
+  const { cities, subcategories, role, gender, search, sort } = state
 
   return Boolean(
     cities.length ||
     subcategories.length ||
     role !== 'all' ||
     gender !== 'any' ||
-    search.trim().length
+    search.trim().length ||
+    sort.by // сортировка тоже включает режим каталога
   )
 })
 
 export const filterCountSelector = createSelector(getFilterState, (state) => {
   const { cities, subcategories, role, gender } = state
-
   let count = 0
 
   if (role !== 'all') count += 1
@@ -80,5 +90,5 @@ export const filterCountSelector = createSelector(getFilterState, (state) => {
 })
 
 export const filterReducer = filterSlice.reducer
-export const { setRole, setSubcategories, setGender, setCities, setSearch, resetFilter } =
+export const { setRole, setSubcategories, setGender, setCities, setSearch, setSort, resetFilter } =
   filterSlice.actions

@@ -26,7 +26,7 @@ export const FilterPanel = () => {
       <div className={styles.headingContainer}>
         <Text variant="H2">{`Фильтры ${count}`}</Text>
 
-        {count ? (
+        {isFilterActive ? (
           <button className={styles.reset} onClick={onResetClick}>
             <Text>Сбросить</Text>
             <Icon name="cross" />
