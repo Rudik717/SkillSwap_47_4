@@ -86,8 +86,7 @@ export const Registration = () => {
         })),
     }
     localStorage.setItem('user', JSON.stringify(userData))
-    const savedData = localStorage.getItem('user')
-    console.log(savedData)
+
     setIsSuccessModalOpen(true)
     closeModal()
   }
@@ -99,8 +98,6 @@ export const Registration = () => {
     subcategory: data.skills[1]?.subcategory ?? '',
     images: Images,
   }
-
-  console.log(data)
 
   return (
     <>
