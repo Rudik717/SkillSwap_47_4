@@ -42,6 +42,10 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
     navigate('/login')
   }
 
+  const handleRegister = () => {
+    navigate('/register')
+  }
+
   return (
     <header
       className={`${styles.header} ${
@@ -92,7 +96,9 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
               <Button variant="secondary" onClick={handleLogin}>
                 Войти
               </Button>
-              <Button variant="primary">Зарегистрироваться</Button>
+              <Button variant="primary" onClick={handleRegister}>
+                Зарегистрироваться
+              </Button>
             </div>
           </>
         )}

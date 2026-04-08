@@ -82,8 +82,8 @@ export type TSkillData = {
   title?: string // необязательное поле
   description?: string
   images?: string[]
-  createdAt: string // обязательное поле
-  updatedAt: string // обязательное поле
+  createdAt?: string
+  updatedAt?: string
 }
 
 export type TRegisterData = Omit<TUserData, 'favorites' | 'likes'>

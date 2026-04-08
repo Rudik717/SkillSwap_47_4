@@ -35,6 +35,7 @@ export default [
         btoa: 'readonly',
         setTimeout: false,
         clearTimeout: false,
+        localStorage: 'readonly',
       },
     },
     plugins: {

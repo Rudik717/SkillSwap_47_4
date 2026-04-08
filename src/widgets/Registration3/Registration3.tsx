@@ -7,7 +7,6 @@ import { Select } from '@/ui-kit'
 import { TextArea } from '@/ui-kit'
 import type { Option } from '@/ui-kit/Select/Select'
 import type { RegisterDataSet } from '@/utils'
-import { type TSkillData } from '@/utils'
 import { Stepper } from '@/widgets'
 import { FormLayout } from '@/widgets'
 import { skillFilterOptions } from '@/widgets/FilterPanel/utils'
@@ -41,16 +40,15 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
   const [errors, setErrors] = useState<FieldErrors>({ title: '', description: '' })
   const [subcategoryOptions, setSubcategoryOptions] = useState<Option[]>([])
   const [isVerified, setIsVerified] = useState<boolean>(false)
-  const [skills, setSkills] = useState<TSkillData[]>(data.skills || [])
 
   const [inputs, setInputs] = useState<InputsState>({
-    title: '',
-    category: '',
-    subcategory: '',
-    description: '',
-    images: [],
-    createdAt: '',
-    updatedAt: '',
+    title: data.skills[1].title,
+    category: data.skills[1].category,
+    subcategory: data.skills[1].subcategory,
+    description: data.skills[1].description,
+    images: data.skills[1].images,
+    createdAt: data.skills[1].createdAt,
+    updatedAt: data.skills[1].updatedAt,
   })
 
   // ПРОИЗВОДНЫЕ ДАННЫЕ
@@ -74,35 +72,7 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
       : []
 
     setSubcategoryOptions(newSubcategoryOptions)
-  }, [inputs.category])
-
-  useEffect(() => {
-    if (!inputs.title || !inputs.description || !inputs.category || !inputs.subcategory) return
-
-    const selectedCategory = options.find((item) => item.id === inputs.category)
-    const skillExists = skills.some(
-      (skill) =>
-        skill.title === inputs.title &&
-        skill.category === inputs.category &&
-        skill.subcategory === inputs.subcategory
-    )
-
-    if (!skillExists && selectedCategory) {
-      const newSkill: TSkillData = {
-        id: '',
-        userId: data.id,
-        type: 'teach',
-        category: selectedCategory.id,
-        subcategory: inputs.subcategory,
-        title: inputs.title,
-        description: inputs.description,
-        images: [],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      }
-      setSkills((prev) => [...prev, newSkill])
-    }
-  }, [inputs.title, inputs.description, inputs.category, inputs.subcategory, skills, data.id])
+  }, [inputs.category, data.id])
 
   useEffect(() => {
     setIsVerified(
@@ -171,14 +141,45 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
   const handleCategoryChange = createSelectHandler('category')
   const handleSubcategoryChange = createSelectHandler('subcategory')
 
-  // Обработчик перехода на следующий шаг регистрации
   const handleNextStep = () => {
-    setData((prev) => ({
-      ...prev,
-      skills: skills,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    }))
+    setData((prev) => {
+      // Создаём новый массив навыков
+      const updatedSkills = [...prev.skills]
+
+      if (updatedSkills.length > 0) {
+        // Обновляем первый навык
+        updatedSkills[1] = {
+          ...updatedSkills[1],
+          category: inputs.category,
+          subcategory: inputs.subcategory,
+          title: inputs.title,
+          description: inputs.description,
+          images: [],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        }
+      } else {
+        // Если навыков нет, создаём новый
+        updatedSkills.push({
+          id: '',
+          userId: data.id,
+          type: 'teach',
+          category: inputs.category,
+          subcategory: inputs.subcategory,
+          title: inputs.title,
+          description: inputs.description,
+          images: [],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        })
+      }
+
+      return {
+        ...prev,
+        skills: updatedSkills,
+      }
+    })
+
     if (isVerified) {
       nextStep()
     }
@@ -218,7 +219,7 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
                 placeholder="Выберете подкатегорию навыка"
                 value={
                   inputs.category
-                    ? subcategoryOptions.find((el) => el.value === inputs.category)
+                    ? subcategoryOptions.find((el) => el.value === inputs.subcategory)
                     : null
                 }
                 options={subcategoryOptions}
@@ -231,6 +232,7 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
                   placeholder="Коротко опишите, чему хотите научить"
                   error={errors.description}
                   className={styles.textArea}
+                  value={inputs.description}
                   onChange={handleDescriptionChange}
                 />
               </div>

@@ -29,6 +29,7 @@ export const App = () => {
         <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="server-error" element={<ServerError />} />
+        <Route path="/register" element={<Registration />} />
         <Route
           path="/profile/user-data"
           element={

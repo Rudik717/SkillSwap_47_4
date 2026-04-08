@@ -8,7 +8,6 @@ import { Select } from '@/ui-kit'
 import { DateInput } from '@/ui-kit'
 import type { Option } from '@/ui-kit/Select/Select'
 import type { RegisterDataSet } from '@/utils'
-import { type TSkillData } from '@/utils'
 import { Stepper } from '@/widgets'
 import { FormLayout } from '@/widgets'
 import { skillFilterOptions } from '@/widgets/FilterPanel/utils'
@@ -38,6 +37,8 @@ type InputsState = {
   gender?: 'male' | 'female' | 'unspecified' | ''
   category: string
   subcategory: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDataSet) => {
@@ -50,7 +51,6 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
   const [errors, setErrors] = useState<FieldErrors>({ name: '' })
   const [subcategoryOptions, setSubcategoryOptions] = useState<Option[]>([])
   const [isVerified, setIsVerified] = useState<boolean>(false)
-  const [skills, setSkills] = useState<TSkillData[]>(data.skills || [])
 
   const [inputs, setInputs] = useState<InputsState>({
     avatar: data.avatar, //Аватарку пока не сделала
@@ -58,8 +58,10 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
     birthDate: data.birthDate,
     city: data.city,
     gender: data.gender,
-    category: '',
-    subcategory: '',
+    category: data.skills[0].category,
+    subcategory: data.skills[0].subcategory,
+    createdAt: data.skills[0].createdAt,
+    updatedAt: data.skills[0].updatedAt,
   })
 
   // ПРОИЗВОДНЫЕ ДАННЫЕ
@@ -95,21 +97,7 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
       : []
 
     setSubcategoryOptions(newSubcategoryOptions)
-
-    // Создаём новый навык и добавляем в массив
-    if (selectedCategory && inputs.subcategory) {
-      const newSkill: TSkillData = {
-        id: '',
-        userId: data.id,
-        type: 'learn',
-        category: selectedCategory.id,
-        subcategory: inputs.subcategory,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      }
-      setSkills((prev) => [...prev, newSkill])
-    }
-  }, [inputs.category, data.id, inputs.subcategory])
+  }, [inputs.category, data.id])
 
   useEffect(() => {
     setIsVerified(
@@ -177,17 +165,44 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
   const handleCategoryChange = createSelectHandler('category')
   const handleSubcategoryChange = createSelectHandler('subcategory')
 
-  // Обработчик перехода на следующий шаг регистрации
   const handleNextStep = () => {
-    setData((prev) => ({
-      ...prev,
-      avatar: inputs.avatar,
-      name: inputs.name,
-      birthDate: inputs.birthDate,
-      city: inputs.city,
-      gender: inputs.gender,
-      skills: skills,
-    }))
+    setData((prev) => {
+      // Создаём новый массив навыков
+      const updatedSkills = [...prev.skills]
+
+      if (updatedSkills.length > 0) {
+        // Обновляем первый навык
+        updatedSkills[0] = {
+          ...updatedSkills[0],
+          category: inputs.category,
+          subcategory: inputs.subcategory,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        }
+      } else {
+        // Если навыков нет, создаём новый
+        updatedSkills.push({
+          id: '',
+          userId: data.id,
+          type: 'learn',
+          category: inputs.category,
+          subcategory: inputs.subcategory,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        })
+      }
+
+      return {
+        ...prev,
+        avatar: inputs.avatar,
+        name: inputs.name,
+        birthDate: inputs.birthDate,
+        city: inputs.city,
+        gender: inputs.gender,
+        skills: updatedSkills,
+      }
+    })
+
     if (isVerified) {
       nextStep()
     }
