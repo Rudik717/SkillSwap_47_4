@@ -1,4 +1,12 @@
-import { Home, Login, NotFound, ProfilePage, ServerError, SkillDetails } from '@/pages'
+import {
+  Home,
+  Login,
+  NotFound,
+  ProfilePage,
+  Registration,
+  ServerError,
+  SkillDetails,
+} from '@/pages'
 import { ProtectedRoute } from '@/protected-route'
 import { initSession } from '@/services/session.init'
 import type { AppDispatch } from '@/store'
