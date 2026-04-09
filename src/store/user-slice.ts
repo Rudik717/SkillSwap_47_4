@@ -22,6 +22,17 @@ export const initialState: TUserState = {
   error: null,
 }
 
+// Сохраняем favorites в localStorage
+export const saveFavorites = (userId: string, favorites: string[]) => {
+  localStorage.setItem(`favorites_${userId}`, JSON.stringify(favorites))
+}
+
+// Загружаем favorites при старте приложения
+export const loadFavorites = (userId: string): string[] => {
+  const stored = localStorage.getItem(`favorites_${userId}`)
+  return stored ? JSON.parse(stored) : []
+}
+
 //Логин пользователя  - вводит данные - запрос на сервер - получаем юзера
 export const loginUser = createAsyncThunk(
   'user/loginUser',
@@ -86,6 +97,22 @@ export const userSlice = createSlice({
   reducers: {
     authChecked: (state) => {
       state.isAuthChecked = true
+    },
+    setUser: (state, action: PayloadAction<TUser>) => {
+      state.user = action.payload
+      state.user.favorites = loadFavorites(action.payload.id)
+    },
+    toggleFavorite: (state, action: PayloadAction<string>) => {
+      if (!state.user) return
+      if (!state.user.favorites) state.user.favorites = []
+
+      const likedUserId = action.payload
+      const index = state.user.favorites.indexOf(likedUserId)
+
+      if (index > -1) state.user.favorites.splice(index, 1)
+      else state.user.favorites.push(likedUserId)
+
+      saveFavorites(state.user.id, state.user.favorites)
     },
   },
   extraReducers: (builder) => {
@@ -154,5 +181,5 @@ export const userSlice = createSlice({
   },
 })
 
-export const { authChecked } = userSlice.actions
+export const { authChecked, setUser, toggleFavorite } = userSlice.actions
 export const userSliceReducer = userSlice.reducer

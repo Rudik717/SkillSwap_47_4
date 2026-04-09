@@ -40,9 +40,14 @@
 .user-card__like-button {
   place-self: start end;
   padding: 0;
+  color: var(--text);
   cursor: pointer;
   background: none;
   border: none;
+}
+
+.user-card__like-button.liked {
+  color: #abd27a;
 }
 
 .user-card__body {
