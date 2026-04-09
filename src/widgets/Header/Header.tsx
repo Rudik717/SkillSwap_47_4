@@ -113,7 +113,10 @@ export const Header: FC<THeaderProps> = ({ userName, avatarUrl, variant = 'unaut
                 <button className={styles.header__button} onClick={() => {}}>
                   <Icon name="bell" />
                 </button>
-                <button className={styles.header__button} onClick={() => {}}>
+                <button
+                  className={styles.header__button}
+                  onClick={() => navigate('/profile/favorites')}
+                >
                   <Icon name="like" />
                 </button>
               </div>

@@ -13,7 +13,7 @@ export const data: { users: TUser[] } = {
       about: 'Привет! Люблю ритм, кофе по утрам и людей, которые не боятся пробовать новое.',
       createdAt: '2025-01-15T10:30:00Z',
       updatedAt: '2025-03-30T15:20:00Z',
-      favorites: ['skill_10', 'skill_22'],
+      favorites: ['5', '11'],
       likes: 1,
       skills: [
         {
