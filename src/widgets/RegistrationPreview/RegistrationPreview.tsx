@@ -10,7 +10,7 @@ import styles from './RegistrationPreview.module.css'
 import type { TRegistrationPreview } from './type'
 
 export const RegistrationPreview: FC<TRegistrationPreview> = memo(
-  ({ data, isOpen, onEdit, onConfirm }) => {
+  ({ data, isOpen, onEdit, onConfirm, error }) => {
     const { title, category, subcategory, description, images } = data
     const { categories, subcategories } = useSelector(getCategoriesState)
 
@@ -42,6 +42,7 @@ export const RegistrationPreview: FC<TRegistrationPreview> = memo(
             <Text variant="Caption" color={textColor} className={styles.centered}>
               Пожалуйста, проверьте и подтвердите правильность данных
             </Text>
+            {error && <div className={styles.error}>{error}</div>}
           </section>
           <article className={styles.card}>
             <section className={styles.infoSkill}>
