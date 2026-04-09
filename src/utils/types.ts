@@ -86,7 +86,7 @@ export type TSkillData = {
   updatedAt?: string
 }
 
-export type TRegisterData = Omit<TUserData, 'favorites' | 'likes'>
+export type TRegisterData = Omit<TUserData, 'about' | 'favorites' | 'likes'>
 
 export type RegisterDataSet = {
   data: TRegisterData
