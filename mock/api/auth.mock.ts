@@ -220,7 +220,7 @@ export default defineMock([
     url: '/api/auth/register',
     method: 'POST',
     response: (req, res) => {
-      const { name, email, password, birthDate, gender, city, avatar, about, skills } = req.body
+      const { name, email, password, birthDate, gender, city, avatar, skills } = req.body
 
       // логин - занят - на всякий случай провреим еще раз  хоть и планирую отдельный запрос при регистрации
       if (users.find((user) => user.email === email)) {
@@ -266,7 +266,7 @@ export default defineMock([
         gender: gender === 'male' || gender === 'female' ? gender : 'unspecified',
         city: transformCity,
         avatar: avatar || '',
-        about: about || '',
+        about: '',
         skills: transformSkills,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -361,18 +361,7 @@ export default defineMock([
         res.end(
           JSON.stringify({
             success: true,
-            user: {
-              id: user.id,
-              name: user.name,
-              email: user.email,
-              avatar: user.avatar,
-              birthDate: user.birthDate,
-              city: user.city,
-              about: user.about,
-              skills: user.skills,
-              createdAt: user.createdAt,
-              updatedAt: user.updatedAt,
-            },
+            user,
           })
         )
       } catch {
