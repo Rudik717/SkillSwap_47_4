@@ -1,10 +1,11 @@
-import { getUserApi, loginUserApi, logoutUserApi } from '@/services/auth.api'
+import { getUserApi, loginUserApi, logoutUserApi, registerUserApi } from '@/services/auth.api'
 import type { TLoginData } from '@/services/auth.api'
 import { deleteAccessToken, getAccessToken, setAccessToken } from '@/services/token-manager'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
+import type { TRegisterData } from '@utils/types'
 import type { TUser } from '@utils/types'
 
 export type TUserState = {
@@ -27,6 +28,22 @@ export const loginUser = createAsyncThunk(
   async (data: TLoginData, { rejectWithValue }) => {
     try {
       const response = await loginUserApi(data)
+      setAccessToken(response.accessToken)
+      return response.user
+    } catch (err) {
+      const errorData = (err as AxiosError)?.response?.data
+      // Передаём их в rejected с помощью rejectWithValue
+      return rejectWithValue(errorData || { message: 'Ошибка входа' })
+    }
+  }
+)
+
+//Регистрация пользователя  - вводит данные - запрос на сервер - получаем юзера
+export const registerUser = createAsyncThunk(
+  'user/registerUser',
+  async (data: TRegisterData, { rejectWithValue }) => {
+    try {
+      const response = await registerUserApi(data)
       setAccessToken(response.accessToken)
       return response.user
     } catch (err) {
@@ -85,6 +102,22 @@ export const userSlice = createSlice({
         state.error = errorData?.message || 'Ошибка входа'
       })
       .addCase(loginUser.fulfilled, (state, action: PayloadAction<TUser>) => {
+        state.user = action.payload
+        state.isAuthChecked = true
+        state.loading = false
+      })
+      //registerUser
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.isAuthChecked = true
+        state.loading = false
+        const errorData = action.payload as { message?: string }
+        state.error = errorData?.message || 'Ошибка регистрации'
+      })
+      .addCase(registerUser.fulfilled, (state, action: PayloadAction<TUser>) => {
         state.user = action.payload
         state.isAuthChecked = true
         state.loading = false

@@ -48,3 +48,9 @@
   display: flex;
   gap: 12px;
 }
+
+.error {
+  margin-bottom: 10px;
+  color: var(--text-error);
+  text-align: center;
+}

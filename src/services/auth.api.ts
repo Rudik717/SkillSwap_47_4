@@ -1,4 +1,4 @@
-import type { TUser } from '@utils/types'
+import type { TRegisterData, TUser } from '@utils/types'
 
 import { apiClient } from './axios-instance'
 
@@ -71,6 +71,22 @@ export const getUserApi = () =>
   apiClient.get<TUserResponse>('/auth/user').then((response) => {
     if (response.data.success) {
       return response.data.user
+    }
+    return Promise.reject(response.data)
+  })
+
+export type TRegisterSuccessResponse = {
+  success: true
+  accessToken: string
+  user: TUser
+}
+
+export type TRegisterResponse = TRegisterSuccessResponse | TApiErrorResponse
+
+export const registerUserApi = (data: TRegisterData) =>
+  apiClient.post<TRegisterResponse>('/auth/register', data).then((response) => {
+    if (response.data.success) {
+      return response.data
     }
     return Promise.reject(response.data)
   })

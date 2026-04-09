@@ -5,4 +5,5 @@ export type TRegistrationPreview = {
   isOpen: boolean
   onEdit: () => void
   onConfirm: () => void
+  error?: string | null
 }
