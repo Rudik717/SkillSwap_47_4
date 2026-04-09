@@ -3,6 +3,7 @@ import type { Option } from '@/ui-kit/Select/Select'
 import type { TCity, TUser } from '@/utils'
 import React from 'react'
 import { useEffect, useRef, useState } from 'react'
+import { useOutletContext } from 'react-router-dom'
 
 import styles from './ProfileInfo.module.css'
 
@@ -11,7 +12,8 @@ interface ProfileInfoProps {
   user?: TUser | null
 }
 
-export const ProfileInfo = ({ cities, user }: ProfileInfoProps) => {
+export const ProfileInfo = () => {
+  const { user, cities } = useOutletContext<ProfileInfoProps>()
   const cityOptions: Option[] = cities.map((c) => ({ label: c.name, value: c.id }))
 
   // Опции для селекта выбора пола

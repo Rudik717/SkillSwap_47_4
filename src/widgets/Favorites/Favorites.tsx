@@ -35,7 +35,7 @@ export const Favorites = () => {
       {favoriteUsers.length === 0 ? (
         <Text variant="Body">Список избранного пуст</Text>
       ) : (
-        <UsersGrid users={favoriteUsers} columns={4} />
+        <UsersGrid users={favoriteUsers} columns={3} />
       )}
     </div>
   )
