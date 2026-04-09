@@ -42,7 +42,6 @@ export const Registration = () => {
     gender: '',
     city: '',
     avatar: '',
-    about: '',
     skills: [
       {
         id: '',

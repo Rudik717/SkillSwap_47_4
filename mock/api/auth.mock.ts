@@ -2,6 +2,7 @@ import type { TSkillData, TUser } from '@/utils'
 import { defineMock } from 'vite-plugin-mock-dev-server'
 
 import { data as categoriesData } from './categories'
+import { data as citiesData } from './cities'
 import { data as usersData } from './users'
 import { base64Decode, base64Encode, generateUUID, getCookieFromRequest } from './utils'
 
@@ -12,6 +13,7 @@ const users = usersData.users.map((item) => {
 
 const categories = categoriesData.categories
 const subcategories = categoriesData.subcategories
+const cities = citiesData.cities
 
 // имитируем генерацию Access токена - преобразуем объекты в строки для 3 частей - кодируем, отдаем строку в нужном виде
 const generateAccessToken = (user: TUser) => {
@@ -254,13 +256,15 @@ export default defineMock([
         }
       })
 
+      const transformCity = cities.find((itemCity) => itemCity.id === city)?.name || city || ''
+
       const user: TUser = {
         id: newIdUser,
         name,
         email,
         birthDate: birthDate || '',
         gender: gender === 'male' || gender === 'female' ? gender : 'unspecified',
-        city: city || '',
+        city: transformCity,
         avatar: avatar || '',
         about: about || '',
         skills: transformSkills,
