@@ -1,3 +1,7 @@
+import type { AppDispatch } from '@/store'
+import type { RootState } from '@/store'
+import { registerUser } from '@/store/user-slice'
+import { Spinner } from '@/ui-kit'
 import type { TRegisterData } from '@/utils'
 import type { TSkillFormData } from '@/utils'
 import { Registration1 } from '@/widgets'
@@ -6,7 +10,10 @@ import { Registration3 } from '@/widgets'
 import { RegistrationPreview } from '@/widgets'
 import { RegistrationSuccess } from '@/widgets'
 import { useModal } from '@/widgets/Modal/useModal'
+import { AxiosError } from 'axios'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 const Images = [
@@ -21,7 +28,9 @@ const Images = [
 ]
 
 export const Registration = () => {
+  const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
+  const { loading } = useSelector((state: RootState) => state.user)
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
   const [step, setStep] = useState<1 | 2 | 3>(1)
   const [data, setData] = useState<TRegisterData>({
@@ -33,6 +42,7 @@ export const Registration = () => {
     gender: '',
     city: '',
     avatar: '',
+    about: '',
     skills: [
       {
         id: '',
@@ -61,34 +71,34 @@ export const Registration = () => {
   })
 
   const { openModal, closeModal, isModalOpen } = useModal()
+  // для ошибки
+  const [registrationError, setRegistrationError] = useState<string | null>(null)
 
   const handleConfirm = async () => {
-    const currentTimestamp = new Date().toISOString()
-
+    setRegistrationError(null)
     // Сборка всех данных
     const userData: TRegisterData = {
       ...data,
-      createdAt: data.createdAt || currentTimestamp,
-      updatedAt: currentTimestamp,
-      skills: data.skills
-        .filter((skill) => {
-          if (skill.type === 'learn') {
-            return skill.category && skill.subcategory
-          }
-          if (skill.type === 'teach') {
-            return skill.title && skill.description && skill.category && skill.subcategory
-          }
-          return false
-        })
-        .map((skill) => ({
-          ...skill,
-          updatedAt: currentTimestamp,
-        })),
+      skills: data.skills.filter((skill) => {
+        if (skill.type === 'learn') {
+          return skill.category && skill.subcategory
+        }
+        if (skill.type === 'teach') {
+          return skill.title && skill.description && skill.category && skill.subcategory
+        }
+        return false
+      }),
     }
-    localStorage.setItem('user', JSON.stringify(userData))
-
-    setIsSuccessModalOpen(true)
-    closeModal()
+    try {
+      await dispatch(registerUser(userData)).unwrap()
+      setIsSuccessModalOpen(true)
+      closeModal()
+    } catch (error) {
+      const errorData =
+        ((error as AxiosError)?.response?.data as { message?: string })?.message ||
+        'Ошибка регистрации'
+      setRegistrationError(errorData)
+    }
   }
 
   const extractedSkill: TSkillFormData = {
@@ -97,6 +107,10 @@ export const Registration = () => {
     category: data.skills[1]?.category ?? '',
     subcategory: data.skills[1]?.subcategory ?? '',
     images: Images,
+  }
+
+  if (loading) {
+    return <Spinner />
   }
 
   return (
@@ -123,8 +137,12 @@ export const Registration = () => {
         <RegistrationPreview
           data={extractedSkill}
           isOpen={isModalOpen}
-          onEdit={closeModal}
+          onEdit={() => {
+            setRegistrationError(null)
+            closeModal()
+          }}
           onConfirm={handleConfirm} // Нажатие на кнопку 'Готово' и отправка данных
+          error={registrationError}
         />
       )}
 

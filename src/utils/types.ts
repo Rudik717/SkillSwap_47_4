@@ -17,7 +17,7 @@ export type TUser = {
   id: string // "1111"
   name: string // "Иван"
   email: string // "ivan@example.com"
-  password?: string // пароль
+  // password?: string // пароль - убрала - не должен хранить на клиенте
   birthDate?: string // "15.05.1990"
   gender?: 'male' | 'female' | 'unspecified' // "male"
   city?: string // "Санкт-Петербург"
