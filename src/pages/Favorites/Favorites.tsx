@@ -1,8 +1,7 @@
 import { type RootState } from '@/store'
-import { recommendedUsersSelector } from '@/store/users'
 import { Text } from '@/ui-kit'
 import { UsersGrid } from '@/widgets'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
@@ -10,23 +9,24 @@ import styles from './Favorites.module.css'
 
 export const Favorites = () => {
   const navigate = useNavigate()
-  const users = useSelector((state: RootState) => recommendedUsersSelector(state))
 
-  // Заглушки
-  const mockIsLoggedIn = true
-  //const mockFavoriteIds = ['1', '2']
+  const { user } = useSelector((state: RootState) => state.user)
+  const allUsers = useSelector((state: RootState) => state.users.users)
 
-  // Редирект на логин, если юзер не авторизован
+  // Если пользователь не авторизован, редирект на логин
   useEffect(() => {
-    if (!mockIsLoggedIn) navigate('/login')
-  }, [mockIsLoggedIn, navigate])
+    if (!user) {
+      navigate('/login')
+    }
+  }, [user, navigate])
 
-  // Заглушка, чтобы показать как выглядит избранное
-  const favoriteUsers = users.slice(0, 6)
+  // Массив пользователей, которых текущий пользователь лайкнул
+  const userFavorites = user?.favorites || []
 
-  // const favoriteUsers = users.filter((user) =>
-  //   user.skills?.some((skill) => mockFavoriteIds.includes(skill.id))
-  // )
+  const favoriteUsers = useMemo(
+    () => allUsers.filter((u) => userFavorites.includes(u.id)),
+    [allUsers, userFavorites]
+  )
 
   return (
     <div className={styles.pageWrapper}>

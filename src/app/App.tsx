@@ -1,4 +1,5 @@
 import {
+  Favorites,
   Home,
   Login,
   NotFound,
@@ -43,6 +44,14 @@ export const App = () => {
           element={
             <ProtectedRoute>
               <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile/favorites"
+          element={
+            <ProtectedRoute>
+              <Favorites />
             </ProtectedRoute>
           }
         />
