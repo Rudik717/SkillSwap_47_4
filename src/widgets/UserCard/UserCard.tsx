@@ -1,7 +1,8 @@
 import { getAllCategories } from '@/store/categories'
+import { toggleFavorite } from '@/store/user-slice'
 import { Avatar, Badge, Button, Icon, Text } from '@/ui-kit'
-import { type FC, memo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { type FC, memo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './UserCard.module.css'
@@ -9,10 +10,14 @@ import type { TUserCardProps } from './type'
 
 export const UserCard: FC<TUserCardProps> = memo(({ user, hideActions, showAbout }) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const categories = useSelector(getAllCategories)
+  const currentUser = useSelector((state: any) => state.user.user)
+
   const { id, name, city = '', birthDate = '', avatar = '', skills } = user
   const teachSkills = skills.filter((skill) => skill.type === 'teach')
   const learnSkills = skills.filter((skill) => skill.type === 'learn')
-  const categories = useSelector(getAllCategories)
 
   const MAX_VISIBLE = 1
   const textColor = 'var(--text)'
@@ -22,10 +27,12 @@ export const UserCard: FC<TUserCardProps> = memo(({ user, hideActions, showAbout
   const displayedLearnSkills = learnSkills.slice(0, MAX_VISIBLE)
   const remainingLearnCount = learnSkills.length - MAX_VISIBLE
 
-  const [like, setLike] = useState<boolean>(false)
+  // проверяем, есть ли юзер в избранном текущего пользователя
+  const like = currentUser?.favorites?.includes(id) ?? false
 
-  const toggleLike = () => {
-    setLike(!like)
+  const toggleLikeHandler = () => {
+    if (!currentUser) return
+    dispatch(toggleFavorite(id))
   }
 
   const calculateAge = (birthDate?: string) => {
@@ -79,8 +86,11 @@ export const UserCard: FC<TUserCardProps> = memo(({ user, hideActions, showAbout
               hideActions ? styles.hidden : ''
             }`}
           >
-            <button className={styles['user-card__like-button']} onClick={toggleLike}>
-              <Icon name={like ? 'like-filled' : 'like'} color={textColor} />
+            <button
+              className={`${styles['user-card__like-button']} ${like ? styles.liked : ''}`}
+              onClick={toggleLikeHandler}
+            >
+              <Icon name={like ? 'like-filled' : 'like'} />
             </button>
           </div>
           <div className={styles['user-card__info_title']}>
