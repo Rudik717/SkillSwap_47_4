@@ -1,4 +1,5 @@
 import {
+  About,
   Favorites,
   Home,
   Login,
@@ -36,11 +37,12 @@ export const App = () => {
       <Route path="/" element={<AppLayout />}>
         <Route path="*" element={<NotFound />} />
         <Route index element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="server-error" element={<ServerError />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/server-error" element={<ServerError />} />
         <Route path="/register" element={<Registration />} />
         <Route
-          path="/profile/user-data"
+          path="/profile"
           element={
             <ProtectedRoute>
               <ProfilePage />

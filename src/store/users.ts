@@ -46,6 +46,7 @@ const usersSlice = createSlice({
 
 export const getUsersState = (state: RootState) => state.users
 export const getAllUsers = (state: RootState) => state.users.users
+
 export const getUser = (state: RootState, id?: string) => {
   const { loading } = state.users
   const user = state.users.users?.find((user) => user.id === id)
@@ -53,10 +54,10 @@ export const getUser = (state: RootState, id?: string) => {
 }
 
 export const popularUsersSelector = createSelector(getUsersState, (state) => {
-  const { users } = state
+  const users = state.users
 
   return users
-    .toSorted((a, b) => {
+    .toSorted((a: TUser, b: TUser) => {
       const aLikes = a?.likes ?? 0
       const bLikes = b?.likes ?? 0
       return aLikes - bLikes
@@ -65,10 +66,10 @@ export const popularUsersSelector = createSelector(getUsersState, (state) => {
 })
 
 export const newUsersSelector = createSelector(getUsersState, (state) => {
-  const { users } = state
+  const users = state.users
 
   return users
-    .toSorted((a, b) => {
+    .toSorted((a: TUser, b: TUser) => {
       const aCreatedAt = new Date(a?.createdAt).getTime()
       const bCreatedAt = new Date(b?.createdAt).getTime()
       return aCreatedAt - bCreatedAt
@@ -77,8 +78,7 @@ export const newUsersSelector = createSelector(getUsersState, (state) => {
 })
 
 export const recommendedUsersSelector = createSelector(getUsersState, (state) => {
-  const { users } = state
-
+  const users = state.users
   return users.slice(0, 9)
 })
 
@@ -154,6 +154,16 @@ export const filteredUsersSelector = createSelector(
         return inName || inCity || inAbout || inSkills
       })
     }
+
+    // Сортировка по заданному признаку
+    const { by, direction } = filter.sort
+
+    filtered = filtered.toSorted((a: TUser, b: TUser) => {
+      const aVal = by === 'likes' ? (a.likes ?? 0) : new Date(a.createdAt).getTime()
+      const bVal = by === 'likes' ? (b.likes ?? 0) : new Date(b.createdAt).getTime()
+
+      return direction === 'asc' ? aVal - bVal : bVal - aVal
+    })
 
     return filtered
   }
