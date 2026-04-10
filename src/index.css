@@ -83,6 +83,8 @@
   --stepper-accent-color: rgb(171 210 122);
   --stepper-disabled-color: rgb(228 232 223 / 100%);
   --register-accent-color: rgb(80 136 38);
+  --empty-avatar-color: #6d8272;
+  --empty-avatar-bg: #f5f5f5;
 
   font: 18px / 145% var(--sans);
   font-synthesis: none;
@@ -101,6 +103,8 @@
     --bg: #16171d;
     --bg-gallery-overlay: rgb(0 0 0 / 50%);
     --color-gallery-img-wrap-empty: #1e1f25cf;
+    --empty-avatar-color: #a6baa6;
+    --empty-avatar-bg: #282c32cf;
   }
 
   #social .button-icon {

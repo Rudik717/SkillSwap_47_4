@@ -5,8 +5,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
-import type { TRegisterData } from '@utils/types'
-import type { TUser } from '@utils/types'
+import type { TNotification, TRegisterData, TUser } from '@utils/types'
 
 export type TUserState = {
   user: TUser | null
@@ -30,6 +29,17 @@ export const saveFavorites = (userId: string, favorites: string[]) => {
 // Загружаем favorites при старте приложения
 export const loadFavorites = (userId: string): string[] => {
   const stored = localStorage.getItem(`favorites_${userId}`)
+  return stored ? JSON.parse(stored) : []
+}
+
+// Сохраняем requests в localStorage
+export const saveRequests = (userId: string, requests: string[]) => {
+  localStorage.setItem(`requests_${userId}`, JSON.stringify(requests))
+}
+
+// Загружаем requests при старте приложения
+export const loadRequests = (userId: string): string[] => {
+  const stored = localStorage.getItem(`requests_${userId}`)
   return stored ? JSON.parse(stored) : []
 }
 
@@ -98,9 +108,23 @@ export const userSlice = createSlice({
     authChecked: (state) => {
       state.isAuthChecked = true
     },
+    updateUserNotifications: (state, action: PayloadAction<TNotification[]>) => {
+      if (state.user) {
+        state.user.notifications = action.payload
+      }
+    },
+    markNotificationAsRead: (state, action: PayloadAction<string>) => {
+      if (state.user?.notifications) {
+        const notification = state.user.notifications.find((n) => n.id === action.payload)
+        if (notification) {
+          notification.isRead = true
+        }
+      }
+    },
     setUser: (state, action: PayloadAction<TUser>) => {
       state.user = action.payload
       state.user.favorites = loadFavorites(action.payload.id)
+      state.user.requests = loadRequests(action.payload.id)
     },
     toggleFavorite: (state, action: PayloadAction<string>) => {
       if (!state.user) return
@@ -181,5 +205,11 @@ export const userSlice = createSlice({
   },
 })
 
-export const { authChecked, setUser, toggleFavorite } = userSlice.actions
+export const {
+  authChecked,
+  updateUserNotifications,
+  markNotificationAsRead,
+  setUser,
+  toggleFavorite,
+} = userSlice.actions
 export const userSliceReducer = userSlice.reducer
