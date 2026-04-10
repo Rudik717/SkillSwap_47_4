@@ -6,8 +6,7 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import type { SyntheticEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { Navigate } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 
 import styles from './Login.module.css'
 
@@ -16,6 +15,7 @@ export const Login = () => {
   const { user, loading, error } = useSelector((state: RootState) => state.user)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const location = useLocation()
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault()
@@ -23,7 +23,8 @@ export const Login = () => {
   }
 
   if (user) {
-    return <Navigate to={'/'} />
+    const from = location.state?.from?.pathname || '/'
+    return <Navigate to={from} replace />
   }
 
   return (
