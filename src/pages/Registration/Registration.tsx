@@ -14,11 +14,12 @@ import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export const Registration = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
+  const location = useLocation()
   const { loading } = useSelector((state: RootState) => state.user)
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
   const [step, setStep] = useState<1 | 2 | 3>(1)
@@ -59,12 +60,13 @@ export const Registration = () => {
   })
 
   const { openModal, closeModal, isModalOpen } = useModal()
-  // для ошибки
   const [registrationError, setRegistrationError] = useState<string | null>(null)
+
+  // Получаем from из location.state (если есть)
+  const from = location.state?.from?.pathname || '/'
 
   const handleConfirm = async () => {
     setRegistrationError(null)
-    // Сборка всех данных
     const userData: TRegisterData = {
       ...data,
       skills: data.skills.filter((skill) => {
@@ -116,7 +118,7 @@ export const Registration = () => {
         <Registration3
           data={data}
           setData={setData}
-          nextStep={() => openModal()} // Открывается окно с превью
+          nextStep={() => openModal()}
           prevStep={() => setStep(2)}
         />
       )}
@@ -129,7 +131,7 @@ export const Registration = () => {
             setRegistrationError(null)
             closeModal()
           }}
-          onConfirm={handleConfirm} // Нажатие на кнопку 'Готово' и отправка данных
+          onConfirm={handleConfirm}
           error={registrationError}
         />
       )}
@@ -138,7 +140,7 @@ export const Registration = () => {
         <RegistrationSuccess
           variant="registration"
           onClose={() => setIsSuccessModalOpen(false)}
-          onRedirect={() => navigate('/')}
+          onRedirect={() => navigate(from)}
         />
       )}
     </>

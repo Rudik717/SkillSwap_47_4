@@ -53,7 +53,14 @@ export const App = () => {
           <Route path="favorites" element={<Favorites />} />
         </Route>
 
-        <Route path="/skill/:id" element={<SkillDetails />} />
+        <Route
+          path="/skill/:id"
+          element={
+            <ProtectedRoute>
+              <SkillDetails />
+            </ProtectedRoute>
+          }
+        />
       </Route>
     </Routes>
   )
