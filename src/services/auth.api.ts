@@ -1,4 +1,4 @@
-import type { TRegisterData, TUser } from '@utils/types'
+import type { TNotification, TRegisterData, TUser } from '@utils/types'
 
 import { apiClient } from './axios-instance'
 
@@ -22,6 +22,19 @@ export type TLoginSuccessResponse = {
 }
 
 export type TLoginResponse = TLoginSuccessResponse | TApiErrorResponse
+
+export type TNotificationsSuccessResponse = {
+  success: true
+  notifications: TNotification[]
+}
+
+export type TNotificationsErrorResponse = {
+  success: false
+  message: string
+  code: string
+}
+
+export type TNotificationsResponse = TNotificationsSuccessResponse | TNotificationsErrorResponse
 
 export type TRefreshSuccessResponse = {
   success: true
@@ -74,6 +87,24 @@ export const getUserApi = () =>
     }
     return Promise.reject(response.data)
   })
+
+export const getNotificationsApi = (userId: string) =>
+  apiClient.get<TNotificationsResponse>(`/api/users/${userId}/notifications`).then((response) => {
+    if (response.data.success) {
+      return response.data.notifications
+    }
+    return Promise.reject(response.data)
+  })
+
+export const markAllNotificationsAsReadApi = () =>
+  apiClient
+    .post<{ success: true }>('/api/notifications/mark-read')
+    .then((response) => response.data)
+
+export const clearReadNotificationsApi = () =>
+  apiClient
+    .delete<{ success: true }>('/api/notifications/clear-read')
+    .then((response) => response.data)
 
 export type TRegisterSuccessResponse = {
   success: true

@@ -1,23 +1,24 @@
 .toast {
-  position: fixed;
-  bottom: 24px;
-  left: 24px;
-  z-index: 1000;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
   width: 340px;
-  min-height: 72px;
-  padding: 0 30px 0 24px;
+  height: 72px;
+  pointer-events: auto;
   background-color: rgb(222 235 197 / 100%);
   border-radius: 12px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+  transition: all 0.3s ease;
+}
+
+.toast:hover {
+  box-shadow: 0 6px 16px rgb(0 0 0 / 20%);
+  transform: translateX(-4px);
 }
 
 .content {
   display: flex;
   gap: 8px;
   align-items: center;
+  padding: 30px 24px;
 }
 
 .iconWrapper {
@@ -31,10 +32,7 @@
 }
 
 .text {
-  font-family: Jost, sans-serif;
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 24px;
+  flex: 1;
   color: rgb(37 48 23 / 100%);
   white-space: nowrap;
 }
@@ -46,8 +44,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
   padding: 0;
   color: rgb(37 48 23 / 100%);
   cursor: pointer;

@@ -12,7 +12,11 @@
 }
 
 .emptyAvatar {
+  display: flex;
   flex-shrink: 0;
-  background-color: #8b8989;
+  align-items: center;
+  justify-content: center;
+  color: var(--empty-avatar-color);
+  background-color: var(--empty-avatar-bg);
   border-radius: 50%;
 }

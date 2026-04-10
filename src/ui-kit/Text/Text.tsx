@@ -2,7 +2,7 @@ import React, { type ElementType } from 'react'
 
 import styles from './Text.module.css'
 
-export type TextVariant = 'H1' | 'H2' | 'H3' | 'H4' | 'Body' | 'Caption'
+export type TextVariant = 'H1' | 'H2' | 'H3' | 'H4' | 'Body' | 'Caption' | 'Toast'
 
 interface TextProps {
   children: React.ReactNode
@@ -33,6 +33,8 @@ export const Text = ({
       case 'H4':
         return 'h4'
       case 'Caption':
+        return 'p'
+      case 'Toast':
         return 'p'
       default:
         return 'p'

@@ -113,7 +113,6 @@ export const Default: StoryObj = {
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           triggerRef={buttonRef}
-          notifications={notifications}
         />
       </div>
     )

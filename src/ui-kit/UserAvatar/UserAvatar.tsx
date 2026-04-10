@@ -1,21 +1,26 @@
+import type { RootState } from '@/store'
+import { useSelector } from 'react-redux'
+
 import { Avatar } from '../Avatar/Avatar'
 import { Text } from '../Text/Text'
 import styles from './UserAvatar.module.css'
 
 interface UserAvatarProps {
-  name?: string
-  url?: string
   size?: number
 }
+export const UserAvatar = ({ size = 48 }: UserAvatarProps) => {
+  const { user } = useSelector((state: RootState) => state.user)
 
-export const UserAvatar = ({ name, url, size = 48 }: UserAvatarProps) => {
-  const displayName = name || 'Пользователь'
+  const userName = user?.name || 'Пользователь'
+  const firstLetter = userName.charAt(0).toUpperCase()
+  const avatarUrl = user?.avatar
+
   return (
     <div className={styles.userAvatar}>
       <Text color="black" className={styles.userName}>
-        {displayName}
+        {userName}
       </Text>
-      <Avatar url={url} alt={`${name}'s avatar`} size={size} />
+      <Avatar url={avatarUrl} alt={`${userName}'s avatar`} size={size} fallback={firstLetter} />
     </div>
   )
 }

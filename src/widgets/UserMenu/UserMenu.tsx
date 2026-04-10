@@ -1,5 +1,8 @@
+import type { AppDispatch } from '@/store'
+import { logoutUser } from '@/store/user-slice'
 import { Button, Icon, Text } from '@/ui-kit'
 import React, { type FC } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import { MenuWrapper } from '../MenuWrapper/MenuWrapper'
@@ -8,12 +11,12 @@ import styles from './UserMenu.module.css'
 interface UserMenuProps {
   isOpen: boolean
   onClose: () => void
-  onLogout?: () => void // Опциональный колбэк выхода из аккаунта.
   triggerRef: React.RefObject<HTMLElement | null> // Ссылка на элемент-триггер (кнопку, иконку и т.д.), который открывает меню.
 }
 
-export const UserMenu: FC<UserMenuProps> = ({ isOpen, onClose, onLogout, triggerRef }) => {
+export const UserMenu: FC<UserMenuProps> = ({ isOpen, onClose, triggerRef }) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
 
   const handleProfileClick = () => {
     onClose()
@@ -22,9 +25,7 @@ export const UserMenu: FC<UserMenuProps> = ({ isOpen, onClose, onLogout, trigger
 
   const handleLogoutClick = () => {
     onClose()
-    if (onLogout) {
-      onLogout()
-    }
+    dispatch(logoutUser())
     navigate('/')
   }
 
