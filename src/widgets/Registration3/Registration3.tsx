@@ -10,8 +10,10 @@ import type { RegisterDataSet } from '@/utils'
 import { Stepper } from '@/widgets'
 import { FormLayout } from '@/widgets'
 import { skillFilterOptions } from '@/widgets/FilterPanel/utils'
+import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import { useCallback, useMemo } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 
 import styles from './Registration3.module.css'
@@ -19,6 +21,7 @@ import styles from './Registration3.module.css'
 interface FieldErrors {
   title: string
   description: string
+  images: string
 }
 
 type InputsState = {
@@ -26,7 +29,7 @@ type InputsState = {
   category: string
   subcategory: string
   description?: string
-  images?: string[] | null
+  images?: string[]
 }
 
 export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDataSet) => {
@@ -35,7 +38,7 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
   const options = skillFilterOptions({ categories, subcategories })
 
   // СТЕЙТЫ
-  const [errors, setErrors] = useState<FieldErrors>({ title: '', description: '' })
+  const [errors, setErrors] = useState<FieldErrors>({ title: '', description: '', images: '' })
   const [subcategoryOptions, setSubcategoryOptions] = useState<Option[]>([])
   const [isVerified, setIsVerified] = useState<boolean>(false)
 
@@ -135,6 +138,59 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
     [setInputs]
   )
 
+  // Обработчик для добавления изображении
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files) return
+
+    const MAX_FILE_SIZE = 2 * 1024 * 1024
+
+    // Фильтруем файлы: оставляем только те, что ≤ 2 МБ
+    const validFiles = Array.from(files).filter((file) => file.size <= MAX_FILE_SIZE)
+
+    // Собираем сообщения об ошибках для файлов, которые не прошли фильтр
+    const errorMessages = Array.from(files).filter((file) => file.size > MAX_FILE_SIZE)
+
+    // Показываем ошибки, если есть файлы, не прошедшие проверку
+    if (errorMessages.length > 0) {
+      setErrors((prev) => ({ ...prev, images: 'Размер изображений не должен превышать 2 Мб' }))
+    } else {
+      setErrors((prev) => ({ ...prev, images: '' }))
+    }
+
+    // Если есть валидные файлы, добавляем их в состояние
+    if (validFiles.length > 0) {
+      const newImageUrls = validFiles.map((file) => URL.createObjectURL(file))
+      setInputs((prev) => ({
+        ...prev,
+        images: [...(prev.images || []), ...newImageUrls],
+      }))
+    }
+
+    // Сбрасываем значение инпута, чтобы можно было повторно выбрать файлы
+    e.target.value = ''
+  }
+
+  // Обработчик для удаления изображения
+  const handleRemoveImage = (index: number) => {
+    // Сохраняем URL для освобождения памяти
+    const urlToRevoke = inputs.images?.[index]
+
+    setInputs((prev) => ({
+      ...prev,
+      images: prev.images?.filter((_, i) => i !== index),
+    }))
+
+    // Безопасное освобождение памяти
+    if (urlToRevoke) {
+      try {
+        URL.revokeObjectURL(urlToRevoke)
+      } catch (error) {
+        console.warn('Ошибка при освобождении URL:', error)
+      }
+    }
+  }
+
   const handleCategoryChange = createSelectHandler('category')
   const handleSubcategoryChange = createSelectHandler('subcategory')
 
@@ -151,19 +207,17 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
           subcategory: inputs.subcategory,
           title: inputs.title,
           description: inputs.description,
-          images: [],
+          images: inputs.images,
         }
       } else {
         // Если навыков нет, создаём новый
         updatedSkills.push({
-          // id: '',
-          // userId: data.id,
           type: 'teach',
           category: inputs.category,
           subcategory: inputs.subcategory,
           title: inputs.title,
           description: inputs.description,
-          images: [],
+          images: inputs.images,
         })
       }
 
@@ -229,32 +283,88 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
                   onChange={handleDescriptionChange}
                 />
               </div>
-              <div id="dropArea" className={styles.dropArea}>
-                <Text
-                  variant="Body"
-                  children={'Перетащите или выберете изображение навыка'}
-                  as="span"
-                  className={styles.textSpan}
-                />
-                <div className={styles.imagesContainer}>
-                  <Icon name="gallery-add" stroke="#508826" />
-                  <Text
-                    variant="Body"
-                    children={'Выбрать изображения'}
-                    as="span"
-                    className={styles.textDescription}
-                  />
-                  <input
-                    type="file"
-                    accept=".jpg,.jpeg,.png,image/jpeg,image/png"
-                    multiple
-                    className={styles.imagesInput}
-                  />
-                  {/*Контейнер для загруженного изображения*/}
-                  <div id="previewArea">{/*Сюда будет добавлены img*/}</div>
-                </div>
-                <div></div>
+              <div
+                id="dropArea"
+                className={clsx(styles.dropArea, {
+                  [styles.overflowScroll]: inputs.images && inputs.images.length > 0,
+                  [styles.overflowNone]: !(inputs.images && inputs.images.length > 0),
+                })}
+              >
+                {inputs.images && inputs.images.length > 0 ? (
+                  <>
+                    <div id="previewArea" className={styles.previewContainer}>
+                      {/* Контейнер для загруженных изображений */}
+                      {inputs.images.map((imageUrl, index) => (
+                        <div key={index} className={styles.imagePreview}>
+                          <img
+                            src={imageUrl}
+                            alt={`Preview ${index + 1}`}
+                            className={styles.previewImage}
+                          />
+                          <button
+                            type="button"
+                            className={styles.removeButton}
+                            onClick={() => handleRemoveImage(index)}
+                            aria-label={`Удалить изображение ${index + 1}`}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    <div className={styles.imagesContainer}>
+                      <Icon name="gallery-add" stroke="#508826" />
+                      <Text
+                        variant="Body"
+                        children={'Выбрать изображения'}
+                        as="span"
+                        className={styles.textColor}
+                      />
+                      <input
+                        type="file"
+                        accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                        multiple
+                        className={styles.imagesInput}
+                        onChange={handleImageSelect}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <Text
+                      variant="Body"
+                      children={'Перетащите или выберете изображение навыка'}
+                      as="span"
+                      className={styles.textSpan}
+                    />
+                    <div className={styles.imagesContainer}>
+                      <Icon name="gallery-add" stroke="#508826" />
+                      <Text
+                        variant="Body"
+                        children={'Выбрать изображения'}
+                        as="span"
+                        className={styles.texColor}
+                      />
+                      <input
+                        type="file"
+                        accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                        multiple
+                        className={styles.imagesInput}
+                        onChange={handleImageSelect}
+                      />
+                    </div>
+                  </>
+                )}
               </div>
+              {errors.images && (
+                <Text
+                  variant="Caption"
+                  children={errors.images}
+                  as="span"
+                  className={`${styles.textColor} ${styles.textInfo}`}
+                />
+              )}
+
               <div className={styles.buttons}>
                 <Button variant="secondary" children="Назад" disabled={false} onClick={prevStep} />
                 <Button
