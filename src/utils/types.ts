@@ -58,10 +58,9 @@ export type TSkillFormData = Pick<
 export type TRole = 'all' | 'teach' | 'learn'
 export type TGender = 'any' | 'male' | 'female'
 
-// ТОЛЬКО ДЛЯ РЕГИСТРАЦИИ (экспериентальные данные) //
+// ТИПЫ ДЛЯ РЕГИСТРАЦИИ //
 
-export type TUserData = {
-  id: string
+export type TRegisterData = {
   name: string
   email: string
   password: string // обязательное поле
@@ -69,26 +68,17 @@ export type TUserData = {
   gender?: 'male' | 'female' | 'unspecified' | '' // Добавлена пустая строка (нужно при выборе пола)
   city?: string
   avatar?: string
-  about?: string
   skills: TSkillData[]
-  createdAt: string
-  updatedAt: string
 }
 
 export type TSkillData = {
-  id: string
-  userId: string
   type: 'teach' | 'learn'
   category: string // Тут id, а не имя категории
   subcategory: string // Тут id, а не имя подкатегории
   title?: string // необязательное поле
   description?: string
   images?: string[]
-  createdAt?: string
-  updatedAt?: string
 }
-
-export type TRegisterData = Omit<TUserData, 'about' | 'favorites' | 'likes'>
 
 export type RegisterDataSet = {
   data: TRegisterData

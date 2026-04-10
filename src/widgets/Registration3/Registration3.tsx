@@ -27,8 +27,6 @@ type InputsState = {
   subcategory: string
   description?: string
   images?: string[] | null
-  createdAt?: string
-  updatedAt?: string
 }
 
 export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDataSet) => {
@@ -47,8 +45,6 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
     subcategory: data.skills[1].subcategory,
     description: data.skills[1].description,
     images: data.skills[1].images,
-    createdAt: data.skills[1].createdAt,
-    updatedAt: data.skills[1].updatedAt,
   })
 
   // ПРОИЗВОДНЫЕ ДАННЫЕ
@@ -72,7 +68,7 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
       : []
 
     setSubcategoryOptions(newSubcategoryOptions)
-  }, [inputs.category, data.id])
+  }, [inputs.category])
 
   useEffect(() => {
     setIsVerified(
@@ -90,6 +86,7 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
     errors.description,
     inputs.category,
     inputs.subcategory,
+    options,
   ])
 
   // --- ОБРАБОТЧИКИ СОБЫТИЙ --- //
@@ -155,22 +152,18 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
           title: inputs.title,
           description: inputs.description,
           images: [],
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
         }
       } else {
         // Если навыков нет, создаём новый
         updatedSkills.push({
-          id: '',
-          userId: data.id,
+          // id: '',
+          // userId: data.id,
           type: 'teach',
           category: inputs.category,
           subcategory: inputs.subcategory,
           title: inputs.title,
           description: inputs.description,
           images: [],
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
         })
       }
 
