@@ -37,8 +37,10 @@ const WithFilters = () => {
   const filteredUsers = useSelector(filteredUsersSelector)
   const isFilterActive = useSelector(isFilterActiveSelector)
 
+  const currentUser = useSelector((state: any) => state.user.user)
+
   const count = PAGE_SIZE * page
-  const users = filteredUsers.slice(0, count)
+  const users = filteredUsers.filter((u) => u.id !== currentUser?.id).slice(0, count)
   const hasMore = filteredUsers.length > count
 
   useEffect(() => {
@@ -95,11 +97,17 @@ const WithoutFilters = () => {
   const newUsers = useSelector(newUsersSelector)
   const recommendedUsers = useSelector(recommendedUsersSelector)
 
+  // Фильтр, чтобы текущий юзер не отображался среди других карточек
+  const currentUser = useSelector((state: any) => state.user.user)
+  const filteredPopularUsers = popularUsers.filter((u) => u.id !== currentUser?.id)
+  const filteredNewUsers = newUsers.filter((u) => u.id !== currentUser?.id)
+  const filteredRecommendedUsers = recommendedUsers.filter((u) => u.id !== currentUser?.id)
+
   return (
     <div className={styles.main}>
       <div className={styles.cards}>
         <UsersGrid
-          users={popularUsers}
+          users={filteredPopularUsers}
           title="Популярное"
           button={{
             label: 'Смотреть все',
@@ -110,7 +118,7 @@ const WithoutFilters = () => {
         />
 
         <UsersGrid
-          users={newUsers}
+          users={filteredNewUsers}
           title="Новое"
           button={{
             label: 'Смотреть все',
@@ -120,7 +128,7 @@ const WithoutFilters = () => {
           }}
         />
 
-        <UsersGrid users={recommendedUsers} title="Рекомендуем" />
+        <UsersGrid users={filteredRecommendedUsers} title="Рекомендуем" />
       </div>
     </div>
   )

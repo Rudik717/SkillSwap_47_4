@@ -2,8 +2,8 @@ import { type RootState } from '@/store'
 import { getAllCategories, getAllSubcategories } from '@/store/categories'
 import { getUser, recommendedUsersSelector } from '@/store/users'
 import { Button, Icon, Text } from '@/ui-kit'
-import { Loading, Toast, UserCard, UserGallery, UsersGrid } from '@/widgets'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { Loading, UserCard, UserGallery, UsersGrid } from '@/widgets'
+import { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -12,9 +12,6 @@ import 'swiper/swiper.css'
 
 import styles from './SkillDetails.module.css'
 
-declare const window: Window & typeof globalThis
-declare const navigator: Navigator
-
 const defaultImages = [
   'https://i.pinimg.com/736x/18/13/63/1813631ee45a3612a6d9b4b116567a4b.jpg',
   'https://i.pinimg.com/736x/04/20/c4/0420c4d695e7f04aa9f769ee9dca0878.jpg',
@@ -22,77 +19,22 @@ const defaultImages = [
   'https://i.pinimg.com/1200x/cc/04/78/cc0478ece26a04406fa2e50272d93144.jpg',
 ]
 
-const TOAST_DURATION = 3000
-
-const copyToClipboard = async (text: string): Promise<void> => {
-  if (navigator.clipboard) {
-    await navigator.clipboard.writeText(text)
-    return
-  }
-
-  const textarea = document.createElement('textarea')
-  textarea.value = text
-  textarea.style.position = 'fixed'
-  textarea.style.opacity = '0'
-  document.body.appendChild(textarea)
-  textarea.select()
-
-  try {
-    document.execCommand('copy')
-  } finally {
-    document.body.removeChild(textarea)
-  }
-}
-
 export const SkillDetails = () => {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
 
   const { loading, user } = useSelector((state: RootState) => getUser(state, id))
   const similarUsers = useSelector((state: RootState) => recommendedUsersSelector(state))
+
+  // Фильтр, чтобы текущий юзер не отображался среди других карточек
+  const currentUser = useSelector((state: RootState) => state.user.user)
+  const filteredSimilarUsers = similarUsers.filter((u) => u.id !== currentUser?.id)
+
   const categories = useSelector((state: RootState) => getAllCategories(state))
   const subcategories = useSelector((state: RootState) => getAllSubcategories(state))
 
+  // Ref для управления слайдером похожих предложений
   const similarSwiperRef = useRef<SwiperClass | null>(null)
-
-  const [showShareToast, setShowShareToast] = useState(false)
-  const shareToastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  useEffect(() => {
-    return () => {
-      if (shareToastTimerRef.current) {
-        clearTimeout(shareToastTimerRef.current)
-      }
-    }
-  }, [])
-
-  const handleShareClick = useCallback(async () => {
-    try {
-      await copyToClipboard(window.location.href)
-    } catch {
-      // игнорируем — показываем Toast в любом случае
-    }
-
-    if (shareToastTimerRef.current) {
-      clearTimeout(shareToastTimerRef.current)
-    }
-
-    setShowShareToast(true)
-
-    shareToastTimerRef.current = setTimeout(() => {
-      setShowShareToast(false)
-      shareToastTimerRef.current = null
-    }, TOAST_DURATION)
-  }, [])
-
-  const handleShareToastClose = useCallback(() => {
-    setShowShareToast(false)
-
-    if (shareToastTimerRef.current) {
-      clearTimeout(shareToastTimerRef.current)
-      shareToastTimerRef.current = null
-    }
-  }, [])
 
   if (loading) {
     return <Loading />
@@ -131,7 +73,7 @@ export const SkillDetails = () => {
             <button className={styles.topButton} onClick={() => {}}>
               <Icon name="like" />
             </button>
-            <button className={styles.topButton} onClick={handleShareClick}>
+            <button className={styles.topButton} onClick={() => {}}>
               <Icon name="share" />
             </button>
             <button className={styles.topButton} onClick={() => {}}>
@@ -178,11 +120,11 @@ export const SkillDetails = () => {
           <Swiper
             spaceBetween={24}
             slidesPerView={4}
-            loop={similarUsers.length > 4}
+            loop={filteredSimilarUsers.length > 4}
             onSwiper={(swiper) => (similarSwiperRef.current = swiper)}
             className={styles.similarSwiper}
           >
-            {similarUsers.map((user) => (
+            {filteredSimilarUsers.map((user) => (
               <SwiperSlide key={user.id}>
                 <UsersGrid users={[user]} columns={1} />
               </SwiperSlide>
@@ -196,7 +138,6 @@ export const SkillDetails = () => {
           >
             <Icon name="left-switch" size={16} />
           </button>
-
           <button
             className={`${styles.navButton} ${styles.nextButton}`}
             onClick={handleNext}
@@ -206,12 +147,6 @@ export const SkillDetails = () => {
           </button>
         </div>
       </section>
-
-      <Toast
-        message="Ссылка скопирована"
-        isVisible={showShareToast}
-        onClose={handleShareToastClose}
-      />
     </div>
   )
 }
