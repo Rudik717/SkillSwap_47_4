@@ -32,6 +32,17 @@ export const loadFavorites = (userId: string): string[] => {
   return stored ? JSON.parse(stored) : []
 }
 
+// Сохраняем requests в localStorage
+export const saveRequests = (userId: string, requests: string[]) => {
+  localStorage.setItem(`requests_${userId}`, JSON.stringify(requests))
+}
+
+// Загружаем requests при старте приложения
+export const loadRequests = (userId: string): string[] => {
+  const stored = localStorage.getItem(`requests_${userId}`)
+  return stored ? JSON.parse(stored) : []
+}
+
 //Логин пользователя  - вводит данные - запрос на сервер - получаем юзера
 export const loginUser = createAsyncThunk(
   'user/loginUser',
@@ -113,6 +124,7 @@ export const userSlice = createSlice({
     setUser: (state, action: PayloadAction<TUser>) => {
       state.user = action.payload
       state.user.favorites = loadFavorites(action.payload.id)
+      state.user.requests = loadRequests(action.payload.id)
     },
     toggleFavorite: (state, action: PayloadAction<string>) => {
       if (!state.user) return

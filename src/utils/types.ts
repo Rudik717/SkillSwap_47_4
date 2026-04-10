@@ -28,6 +28,7 @@ export type TUser = {
   updatedAt: string // "2025-03-30T15:20:00Z"
   favorites?: string[] // Массив TSkill.id навыков, добавленных в избранное
   notifications?: TNotification[] // Массив уведомлений
+  requests?: string[] // Массив пользователей, которым отправлен обмен
   likes?: number // Количество лайков (Популярные на главной)
 }
 

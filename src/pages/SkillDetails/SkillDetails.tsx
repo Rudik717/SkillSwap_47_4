@@ -1,8 +1,9 @@
 import { type RootState } from '@/store'
 import { getAllCategories, getAllSubcategories } from '@/store/categories'
+import { loadRequests, saveRequests } from '@/store/user-slice'
 import { getUser, recommendedUsersSelector } from '@/store/users'
 import { Button, Icon, Text } from '@/ui-kit'
-import { Loading, ToastContainer, UserCard, UserGallery, UsersGrid } from '@/widgets'
+import { Loading, RequestSuccess, ToastContainer, UserCard, UserGallery, UsersGrid } from '@/widgets'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
@@ -53,16 +54,18 @@ export const SkillDetails = () => {
   const categories = useSelector((state: RootState) => getAllCategories(state))
   const subcategories = useSelector((state: RootState) => getAllSubcategories(state))
 
+  const currentUser = useSelector((state: RootState) => state.user.user)
+
   const similarSwiperRef = useRef<SwiperClass | null>(null)
 
   const [showShareToast, setShowShareToast] = useState(false)
   const shareToastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+
   useEffect(() => {
     return () => {
-      if (shareToastTimerRef.current) {
-        clearTimeout(shareToastTimerRef.current)
-      }
+      if (shareToastTimerRef.current) clearTimeout(shareToastTimerRef.current)
     }
   }, [])
 
@@ -70,15 +73,12 @@ export const SkillDetails = () => {
     try {
       await copyToClipboard(window.location.href)
     } catch {
-      // игнорируем — показываем Toast в любом случае
+      // ignore
     }
 
-    if (shareToastTimerRef.current) {
-      clearTimeout(shareToastTimerRef.current)
-    }
+    if (shareToastTimerRef.current) clearTimeout(shareToastTimerRef.current)
 
     setShowShareToast(true)
-
     shareToastTimerRef.current = setTimeout(() => {
       setShowShareToast(false)
       shareToastTimerRef.current = null
@@ -87,37 +87,48 @@ export const SkillDetails = () => {
 
   const handleShareToastClose = useCallback(() => {
     setShowShareToast(false)
-
     if (shareToastTimerRef.current) {
       clearTimeout(shareToastTimerRef.current)
       shareToastTimerRef.current = null
     }
   }, [])
 
-  if (loading) {
-    return <Loading />
-  }
-
-  if (!user) {
-    return <Navigate to="/not-found" />
-  }
-
-  // Пока нет авторизации всегда редирект на логин
   const handleOfferClick = () => {
-    // TODO: Проверка на авторизацию юзера и правильный редирект
-    navigate('/login')
+    if (!currentUser) {
+      navigate('/login')
+      return
+    }
+
+    if (!user) return
+
+    const requests = loadRequests(currentUser.id)
+
+    const newRequest = user.id
+
+    requests.push(newRequest)
+    saveRequests(currentUser.id, requests)
+
+    // Открываем модалку вместо тоста
+    setShowSuccessModal(true)
   }
+
+  const handleModalClose = () => {
+    setShowSuccessModal(false)
+    // Здесь можно добавить редирект, если потом понадобится
+    // например: navigate('/my-requests')
+  }
+
+  if (loading) return <Loading />
+
+  if (!user) return <Navigate to="/not-found" />
 
   const skill = user?.skills?.filter((skill) => skill.type === 'teach')?.[0] ?? null
 
-  // Находим объекты категорий по id
   const categoryObj = categories.find((cat) => cat.id === skill?.category)
   const subcategoryObj = subcategories.find((sub) => sub.id === skill?.subcategory)
 
-  // Отображение дефолтных картинок, если не установлены свои
   const skillImages = skill?.images?.length ? skill.images : defaultImages
 
-  // Обработчики навигации слайдера
   const handlePrev = () => similarSwiperRef.current?.slidePrev()
   const handleNext = () => similarSwiperRef.current?.slideNext()
 
