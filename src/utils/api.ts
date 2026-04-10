@@ -1,4 +1,10 @@
-import { type TCategory, type TCity, type TSubcategory, type TUser } from './types'
+import {
+  type TCategory,
+  type TCity,
+  type TNotification,
+  type TSubcategory,
+  type TUser,
+} from './types'
 
 const URL = import.meta.env.VITE_API_URL
 
@@ -49,5 +55,43 @@ export const getUsersApi = () =>
     .then((res) => checkResponse<TUsersResponse>(res))
     .then((data) => {
       if (data?.success) return data.data
+      return Promise.reject(data)
+    })
+
+type TNotificationsResponse = TServerResponse<{
+  data: {
+    notifications: TNotification[]
+  }
+}>
+
+export const getNotificationsApi = (userId: string) =>
+  fetch(`${URL}/users/${userId}/notifications`, {
+    credentials: 'include', // Добавляем cookies для авторизации
+  })
+    .then((res) => checkResponse<TNotificationsResponse>(res))
+    .then((data) => {
+      if (data?.success) return data.data.notifications
+      return Promise.reject(data)
+    })
+
+export const markAllNotificationsAsReadApi = () =>
+  fetch(`${URL}/notifications/mark-read`, {
+    method: 'POST',
+    credentials: 'include',
+  })
+    .then((res) => checkResponse<TServerResponse<{}>>(res))
+    .then((data) => {
+      if (data?.success) return true
+      return Promise.reject(data)
+    })
+
+export const clearReadNotificationsApi = () =>
+  fetch(`${URL}/notifications/clear-read`, {
+    method: 'DELETE',
+    credentials: 'include',
+  })
+    .then((res) => checkResponse<TServerResponse<{}>>(res))
+    .then((data) => {
+      if (data?.success) return true
       return Promise.reject(data)
     })

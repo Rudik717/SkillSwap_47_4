@@ -2,7 +2,7 @@ import { type RootState } from '@/store'
 import { getAllCategories, getAllSubcategories } from '@/store/categories'
 import { getUser, recommendedUsersSelector } from '@/store/users'
 import { Button, Icon, Text } from '@/ui-kit'
-import { Loading, Toast, UserCard, UserGallery, UsersGrid } from '@/widgets'
+import { Loading, ToastContainer, UserCard, UserGallery, UsersGrid } from '@/widgets'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
@@ -121,6 +121,12 @@ export const SkillDetails = () => {
   const handlePrev = () => similarSwiperRef.current?.slidePrev()
   const handleNext = () => similarSwiperRef.current?.slideNext()
 
+  const shareToast = {
+    id: 'share-toast',
+    message: 'Ссылка скопирована',
+    notificationId: 'share',
+  }
+
   return (
     <div className={styles.pageWrapper}>
       <section className={styles.topElement}>
@@ -207,11 +213,13 @@ export const SkillDetails = () => {
         </div>
       </section>
 
-      <Toast
-        message="Ссылка скопирована"
-        isVisible={showShareToast}
-        onClose={handleShareToastClose}
-      />
+      {showShareToast && (
+        <ToastContainer
+          toasts={[shareToast]}
+          onClose={handleShareToastClose}
+          autoHideDuration={3000}
+        />
+      )}
     </div>
   )
 }
