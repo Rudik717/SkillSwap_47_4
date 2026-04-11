@@ -422,4 +422,91 @@ export default defineMock([
       )
     },
   },
+  {
+    url: '/api/auth/user',
+    method: 'PATCH',
+    response: (req, res) => {
+      const authHeader = req.headers.authorization
+      const accessToken = authHeader?.replace('Bearer ', '')
+      const { name, birthDate, gender, city, about, avatar } = req.body
+
+      if (!accessToken) {
+        res.statusCode = 401
+        res.end(
+          JSON.stringify({
+            success: false,
+            message: 'No token',
+            code: 'NO_TOKEN',
+          })
+        )
+        return
+      }
+
+      try {
+        // проверяем не истек ли токен - достаю вторую часть токену между точками
+        const payload = JSON.parse(base64Decode(accessToken.split('.')[1]))
+        if (payload.exp * 1000 < Date.now()) {
+          res.statusCode = 401
+          res.setHeader('Content-Type', 'application/json')
+          res.end(
+            JSON.stringify({
+              success: false,
+              message: 'Token expired',
+              code: 'TOKEN_EXPIRED',
+            })
+          )
+          return
+        }
+
+        // достаю юзера из токена - проверяю есть ли он в нашей БД
+        const userIndex = users.findIndex((user) => user.id === payload.userId)
+        // юзер не найден
+        if (userIndex === -1) {
+          res.statusCode = 401
+          res.setHeader('Content-Type', 'application/json')
+          res.end(
+            JSON.stringify({
+              success: false,
+              message: 'User not found',
+              code: 'USER_NOT_FOUND',
+            })
+          )
+          return
+        }
+
+        const transformCity = cities.find((itemCity) => itemCity.id === city)?.name || city || ''
+
+        const updatedUser = {
+          ...users[userIndex],
+          name: name ?? users[userIndex].name,
+          birthDate: birthDate ?? users[userIndex].birthDate,
+          gender: gender ?? users[userIndex].gender,
+          city: transformCity ?? users[userIndex].city,
+          about: about ?? users[userIndex].about,
+          avatar: avatar ?? users[userIndex].avatar,
+          updatedAt: new Date().toISOString(),
+        }
+
+        users[userIndex] = updatedUser
+
+        res.statusCode = 200
+        res.setHeader('Content-Type', 'application/json')
+        res.end(
+          JSON.stringify({
+            success: true,
+            user: updatedUser,
+          })
+        )
+      } catch {
+        res.statusCode = 401
+        res.end(
+          JSON.stringify({
+            success: false,
+            message: 'Invalid token',
+            code: 'INVALID_TOKEN',
+          })
+        )
+      }
+    },
+  },
 ])

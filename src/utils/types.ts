@@ -119,3 +119,12 @@ export type TToast = {
   message: string
   notificationId: string
 }
+
+export type TUpdateData = {
+  name?: string
+  birthDate?: string
+  gender?: 'male' | 'female' | 'unspecified'
+  city?: string
+  avatar?: string
+  about?: string
+}

@@ -1,10 +1,17 @@
-import { getUserApi, loginUserApi, logoutUserApi, registerUserApi } from '@/services/auth.api'
+import {
+  getUserApi,
+  loginUserApi,
+  logoutUserApi,
+  registerUserApi,
+  updateUserApi,
+} from '@/services/auth.api'
 import type { TLoginData } from '@/services/auth.api'
 import { deleteAccessToken, getAccessToken, setAccessToken } from '@/services/token-manager'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
+import type { TUpdateData } from '@utils/types'
 import type { TNotification, TRegisterData, TUser } from '@utils/types'
 
 export type TUserState = {
@@ -71,6 +78,21 @@ export const registerUser = createAsyncThunk(
       const errorData = (err as AxiosError)?.response?.data
       // Передаём их в rejected с помощью rejectWithValue
       return rejectWithValue(errorData || { message: 'Ошибка входа' })
+    }
+  }
+)
+
+// Обновление данных пользователя  - вводит данные - запрос на сервер - получаем юзера
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async (data: TUpdateData, { rejectWithValue }) => {
+    try {
+      const response = await updateUserApi(data)
+      return response.user
+    } catch (err) {
+      const errorData = (err as AxiosError)?.response?.data
+      // Передаём их в rejected с помощью rejectWithValue
+      return rejectWithValue(errorData || { message: 'Ошибка обновления' })
     }
   }
 )
@@ -171,6 +193,20 @@ export const userSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action: PayloadAction<TUser>) => {
         state.user = action.payload
         state.isAuthChecked = true
+        state.loading = false
+      })
+      //updateUser
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.loading = false
+        const errorData = action.payload as { message?: string }
+        state.error = errorData?.message || 'Ошибка обновления данных'
+      })
+      .addCase(updateUser.fulfilled, (state, action: PayloadAction<TUser>) => {
+        state.user = action.payload
         state.loading = false
       })
       //logoutUser
