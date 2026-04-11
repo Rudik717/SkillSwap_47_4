@@ -99,24 +99,48 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
   }, [inputs.category])
 
   useEffect(() => {
+    setData((prev) => {
+      const updatedSkills = [...prev.skills]
+
+      if (updatedSkills.length > 0) {
+        updatedSkills[0] = {
+          ...updatedSkills[0],
+          category: inputs.category,
+          subcategory: inputs.subcategory,
+        }
+      } else {
+        updatedSkills.push({
+          type: 'learn',
+          category: inputs.category,
+          subcategory: inputs.subcategory,
+        })
+      }
+
+      return {
+        ...prev,
+        skills: updatedSkills,
+      }
+    })
+  }, [inputs.category, inputs.subcategory])
+
+  useEffect(() => {
     setIsVerified(
-      inputs.name !== '' &&
+      data.name !== '' &&
         !errors.name &&
-        inputs.birthDate !== null &&
-        inputs.city !== '' &&
-        inputs.gender !== '' &&
-        inputs.category !== '' &&
-        inputs.subcategory !== ''
+        data.birthDate !== null &&
+        data.city !== '' &&
+        data.gender !== '' &&
+        data.skills[0].category !== '' &&
+        data.skills[0].subcategory !== ''
     )
   }, [
-    inputs.name,
+    data.name,
     errors.name,
-    inputs.birthDate,
-    inputs.city,
-    inputs.gender,
-    inputs.category,
-    inputs.subcategory,
-    options,
+    data.birthDate,
+    data.city,
+    data.gender,
+    data.skills[0].category,
+    data.skills[0].subcategory,
   ])
 
   //ОБРАБОТЧИКИ СОБЫТИЙ
@@ -130,6 +154,11 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
     const file = e.target.files?.[0]
     if (file) {
       const url = URL.createObjectURL(file)
+
+      setData((prev) => ({
+        ...prev,
+        avatar: url,
+      }))
       setInputs((prev) => ({ ...prev, avatar: url }))
     }
   }
@@ -144,9 +173,14 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
         setErrors((prev) => ({ ...prev, name: 'Введите ваше имя' }))
       } else setErrors((prev) => ({ ...prev, name: '' }))
 
+      setData((prev) => ({
+        ...prev,
+        name: value,
+      }))
+
       setInputs((prev) => ({ ...prev, name: value }))
     },
-    [setErrors, setInputs]
+    [setErrors, setInputs, setData]
   )
 
   const minDate = new Date('1900-01-01')
@@ -155,61 +189,51 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
   // Обработчик для даты рождения
   const handleDateChange = useCallback(
     (date: Date | null) => {
+      setData((prev) => ({
+        ...prev,
+        birthDate: date,
+      }))
+
       setInputs((prev) => ({ ...prev, birthDate: date }))
     },
-    [setInputs]
+    [setData, setInputs]
   )
 
   // Универсальный обработчик для select
   const createSelectHandler = useCallback(
     (fieldName: string) => (option: Option | Option[] | null) => {
       const selectedOption = Array.isArray(option) ? option[0] : option
+      const value = selectedOption?.value || ''
 
-      if (!selectedOption) {
-        setInputs((prev) => ({ ...prev, [fieldName]: '' }))
-        return
+      setData((prev) => ({
+        ...prev,
+        [fieldName]: value,
+      }))
+
+      setInputs((prev) => ({ ...prev, [fieldName]: value }))
+
+      // Если это категория, обновляем подкатегории
+      if (fieldName === 'category') {
+        const selectedCategory = options.find((item) => item.id === value)
+        const newSubcategoryOptions: Option[] = selectedCategory
+          ? selectedCategory.items.map((item) => ({
+              value: item.id,
+              label: item.label,
+            }))
+          : []
+
+        setSubcategoryOptions(newSubcategoryOptions)
       }
-      setInputs((prev) => ({ ...prev, [fieldName]: selectedOption.value }))
     },
-    [setInputs]
+    [setData, setInputs, options]
   )
+
   const handleGenderChange = createSelectHandler('gender')
   const handleCityChange = createSelectHandler('city')
   const handleCategoryChange = createSelectHandler('category')
   const handleSubcategoryChange = createSelectHandler('subcategory')
 
   const handleNextStep = () => {
-    setData((prev) => {
-      // Создаём новый массив навыков
-      const updatedSkills = [...prev.skills]
-
-      if (updatedSkills.length > 0) {
-        // Обновляем первый навык
-        updatedSkills[0] = {
-          ...updatedSkills[0],
-          category: inputs.category,
-          subcategory: inputs.subcategory,
-        }
-      } else {
-        // Если навыков нет, создаём новый
-        updatedSkills.push({
-          type: 'learn',
-          category: inputs.category,
-          subcategory: inputs.subcategory,
-        })
-      }
-
-      return {
-        ...prev,
-        avatar: inputs.avatar,
-        name: inputs.name,
-        birthDate: inputs.birthDate,
-        city: inputs.city,
-        gender: inputs.gender,
-        skills: updatedSkills,
-      }
-    })
-
     if (isVerified) {
       nextStep()
     }

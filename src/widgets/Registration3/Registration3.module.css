@@ -21,6 +21,10 @@
   border-radius: 12px;
 }
 
+.dropAreaError {
+  border-color: var(--color-error);
+}
+
 .overflowScroll {
   overflow-y: scroll;
 }
@@ -38,8 +42,9 @@
   color: var(--register-accent-color);
 }
 
-.textInfo {
+.textError {
   margin-top: -15px;
+  color: var(--color-error);
 }
 
 .imagesContainer {

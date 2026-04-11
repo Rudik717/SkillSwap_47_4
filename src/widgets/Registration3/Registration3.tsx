@@ -29,7 +29,8 @@ type InputsState = {
   category: string
   subcategory: string
   description?: string
-  images?: string[]
+  images?: string[] // URL для отображения в UI
+  imageFiles: File[] // оригинальные файлы для расчёта размера
 }
 
 export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDataSet) => {
@@ -48,6 +49,7 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
     subcategory: data.skills[1].subcategory,
     description: data.skills[1].description,
     images: data.skills[1].images,
+    imageFiles: [],
   })
 
   // ПРОИЗВОДНЫЕ ДАННЫЕ
@@ -73,128 +75,7 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
     setSubcategoryOptions(newSubcategoryOptions)
   }, [inputs.category])
 
-  useEffect(() => {
-    setIsVerified(
-      inputs.title !== '' &&
-        !errors.title &&
-        inputs.description !== '' &&
-        !errors.description &&
-        inputs.category !== '' &&
-        inputs.subcategory !== ''
-    )
-  }, [
-    inputs.title,
-    errors.title,
-    inputs.description,
-    errors.description,
-    inputs.category,
-    inputs.subcategory,
-    options,
-  ])
-
-  // --- ОБРАБОТЧИКИ СОБЫТИЙ --- //
-  // Обработчик для названия навыка
-  const handleTitleChange = useCallback(
-    (value: string) => {
-      if (value.length < 3) {
-        setErrors((prev) => ({ ...prev, title: 'Название навыка должно быть не менее 3 символов' }))
-      } else if (value.length > 50) {
-        setErrors((prev) => ({
-          ...prev,
-          title: 'Название навыка должно быть не более 50 символов',
-        }))
-      } else setErrors((prev) => ({ ...prev, title: '' }))
-
-      setInputs((prev) => ({ ...prev, title: value }))
-    },
-    [setErrors, setInputs]
-  )
-
-  // Обработчик для описания навыка
-  const handleDescriptionChange = useCallback(
-    (value: string) => {
-      if (value.length > 500) {
-        setErrors((prev) => ({
-          ...prev,
-          description: ' Описание не должно превышать 500 символов',
-        }))
-      } else setErrors((prev) => ({ ...prev, description: '' }))
-      setInputs((prev) => ({ ...prev, description: value }))
-    },
-    [setErrors, setInputs]
-  )
-
-  // Универсальный обработчик для select
-  const createSelectHandler = useCallback(
-    (fieldName: string) => (option: Option | Option[] | null) => {
-      const selectedOption = Array.isArray(option) ? option[0] : option
-
-      if (!selectedOption) {
-        setInputs((prev) => ({ ...prev, [fieldName]: '' }))
-        return
-      }
-      setInputs((prev) => ({ ...prev, [fieldName]: selectedOption.value }))
-    },
-    [setInputs]
-  )
-
-  // Обработчик для добавления изображении
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (!files) return
-
-    const MAX_FILE_SIZE = 2 * 1024 * 1024
-
-    // Фильтруем файлы: оставляем только те, что ≤ 2 МБ
-    const validFiles = Array.from(files).filter((file) => file.size <= MAX_FILE_SIZE)
-
-    // Собираем сообщения об ошибках для файлов, которые не прошли фильтр
-    const errorMessages = Array.from(files).filter((file) => file.size > MAX_FILE_SIZE)
-
-    // Показываем ошибки, если есть файлы, не прошедшие проверку
-    if (errorMessages.length > 0) {
-      setErrors((prev) => ({ ...prev, images: 'Размер изображений не должен превышать 2 Мб' }))
-    } else {
-      setErrors((prev) => ({ ...prev, images: '' }))
-    }
-
-    // Если есть валидные файлы, добавляем их в состояние
-    if (validFiles.length > 0) {
-      const newImageUrls = validFiles.map((file) => URL.createObjectURL(file))
-      setInputs((prev) => ({
-        ...prev,
-        images: [...(prev.images || []), ...newImageUrls],
-      }))
-    }
-
-    // Сбрасываем значение инпута, чтобы можно было повторно выбрать файлы
-    e.target.value = ''
-  }
-
-  // Обработчик для удаления изображения
-  const handleRemoveImage = (index: number) => {
-    // Сохраняем URL для освобождения памяти
-    const urlToRevoke = inputs.images?.[index]
-
-    setInputs((prev) => ({
-      ...prev,
-      images: prev.images?.filter((_, i) => i !== index),
-    }))
-
-    // Безопасное освобождение памяти
-    if (urlToRevoke) {
-      try {
-        URL.revokeObjectURL(urlToRevoke)
-      } catch (error) {
-        console.warn('Ошибка при освобождении URL:', error)
-      }
-    }
-  }
-
-  const handleCategoryChange = createSelectHandler('category')
-  const handleSubcategoryChange = createSelectHandler('subcategory')
-
-  const handleNextStep = () => {
+  /* useEffect(() => {
     setData((prev) => {
       // Создаём новый массив навыков
       const updatedSkills = [...prev.skills]
@@ -226,7 +107,211 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
         skills: updatedSkills,
       }
     })
+  }, [
+    inputs.category,
+    inputs.subcategory,
+    inputs.title,
+    inputs.description,
+    inputs.images
+  ])*/
 
+  useEffect(() => {
+    setIsVerified(
+      data.skills[1]?.title !== '' &&
+        !errors.title &&
+        data.skills[1]?.description !== '' &&
+        !errors.description &&
+        data.skills[1]?.category !== '' &&
+        data.skills[1]?.subcategory !== ''
+    )
+  }, [data.skills, errors.title, errors.description])
+
+  // --- ОБРАБОТЧИКИ СОБЫТИЙ --- //
+  // Обработчик для названия навыка
+  const handleTitleChange = useCallback(
+    (value: string) => {
+      if (value.length < 3) {
+        setErrors((prev) => ({ ...prev, title: 'Название навыка должно быть не менее 3 символов' }))
+      } else if (value.length > 50) {
+        setErrors((prev) => ({
+          ...prev,
+          title: 'Название навыка должно быть не более 50 символов',
+        }))
+      } else setErrors((prev) => ({ ...prev, title: '' }))
+
+      // Немедленное сохранение в data
+      setData((prev) => ({
+        ...prev,
+        skills: prev.skills.map((skill, idx) => (idx === 1 ? { ...skill, title: value } : skill)),
+      }))
+
+      setInputs((prev) => ({ ...prev, title: value }))
+    },
+    [setErrors, setData, setInputs]
+  )
+
+  // Обработчик для описания навыка
+  const handleDescriptionChange = useCallback(
+    (value: string) => {
+      if (value.length > 500) {
+        setErrors((prev) => ({
+          ...prev,
+          description: ' Описание не должно превышать 500 символов',
+        }))
+      } else setErrors((prev) => ({ ...prev, description: '' }))
+
+      // Немедленное сохранение в data
+      setData((prev) => ({
+        ...prev,
+        skills: prev.skills.map((skill, idx) =>
+          idx === 1 ? { ...skill, description: value } : skill
+        ),
+      }))
+
+      setInputs((prev) => ({ ...prev, description: value }))
+    },
+    [setErrors, setInputs]
+  )
+
+  // Универсальный обработчик для select
+  const createSelectHandler = useCallback(
+    (fieldName: string) => (option: Option | Option[] | null) => {
+      const selectedOption = Array.isArray(option) ? option[0] : option
+      const value = selectedOption?.value || ''
+
+      // Обновляем data сразу
+      setData((prev) => ({
+        ...prev,
+        skills: prev.skills.map((skill, idx) =>
+          idx === 1 ? { ...skill, [fieldName]: value } : skill
+        ),
+      }))
+
+      // Обновляем inputs для UI
+      setInputs((prev) => ({ ...prev, [fieldName]: value }))
+
+      // Если это категория, обновляем подкатегории
+      if (fieldName === 'category') {
+        const selectedCategory = options.find((item) => item.id === value)
+        const newSubcategoryOptions: Option[] = selectedCategory
+          ? selectedCategory.items.map((item) => ({
+              value: item.id,
+              label: item.label,
+            }))
+          : []
+        setSubcategoryOptions(newSubcategoryOptions)
+      }
+    },
+    [setData, setInputs, options]
+  )
+
+  // Обработчик для добавления изображении
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files) return
+
+    const MAX_TOTAL_SIZE = 2 * 1024 * 1024
+
+    // 1. Получаем существующие файлы и их общий размер
+    const existingFiles = inputs.imageFiles || []
+    const existingTotalSize = existingFiles.reduce((total, file) => total + file.size, 0)
+
+    // 2. Получаем новые файлы
+    const newFiles = Array.from(files)
+
+    // 3. Считаем размер новых файлов
+    const newFilesTotalSize = newFiles.reduce((total, file) => total + file.size, 0)
+
+    // 4. Общий размер: существующие + новые
+    const totalSize = existingTotalSize + newFilesTotalSize
+
+    if (totalSize > MAX_TOTAL_SIZE) {
+      setErrors((prev) => ({
+        ...prev,
+        images: `Общий размер всех изображений не должен превышать 2 Мб`,
+      }))
+      e.target.value = ''
+      return
+    }
+
+    // 5. Фильтруем новые файлы: каждый меньше или равен 2 Мб
+    const validNewFiles = newFiles.filter((file) => file.size <= MAX_TOTAL_SIZE)
+    const invalidNewFiles = newFiles.filter((file) => file.size > MAX_TOTAL_SIZE)
+
+    if (invalidNewFiles.length > 0) {
+      setErrors((prev) => ({
+        ...prev,
+        images: 'Размер отдельных изображений не должен превышать 2 Мб',
+      }))
+    } else {
+      setErrors((prev) => ({ ...prev, images: '' }))
+    }
+
+    // 6. Если есть валидные файлы, добавляем их
+    if (validNewFiles.length > 0) {
+      const newImageUrls = validNewFiles.map((file) => URL.createObjectURL(file))
+
+      // Обновляем оба массива: URL и файлы
+      setInputs((prev) => ({
+        ...prev,
+        images: [...(prev.images || []), ...newImageUrls],
+        imageFiles: [...existingFiles, ...validNewFiles],
+      }))
+
+      // Обновляем data
+      setData((prev) => ({
+        ...prev,
+        skills: prev.skills.map((skill, idx) =>
+          idx === 1
+            ? {
+                ...skill,
+                images: [...(skill.images || []), ...newImageUrls],
+              }
+            : skill
+        ),
+      }))
+    }
+
+    e.target.value = ''
+  }
+
+  // Обработчик для удаления изображения
+  const handleRemoveImage = (index: number) => {
+    // Сохраняем URL для освобождения памяти
+    const urlToRevoke = inputs.images?.[index]
+
+    // Обновляем data сразу
+    setData((prev) => ({
+      ...prev,
+      skills: prev.skills.map((skill, idx) =>
+        idx === 1
+          ? {
+              ...skill,
+              images: skill.images?.filter((_, i) => i !== index),
+            }
+          : skill
+      ),
+    }))
+
+    setInputs((prev) => ({
+      ...prev,
+      images: prev.images?.filter((_, i) => i !== index),
+    }))
+
+    // Безопасное освобождение памяти
+    if (urlToRevoke) {
+      try {
+        URL.revokeObjectURL(urlToRevoke)
+      } catch (error) {
+        console.warn('Ошибка при освобождении URL:', error)
+      }
+    }
+  }
+
+  const handleCategoryChange = createSelectHandler('category')
+  const handleSubcategoryChange = createSelectHandler('subcategory')
+
+  const handleNextStep = () => {
     if (isVerified) {
       nextStep()
     }
@@ -288,6 +373,7 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
                 className={clsx(styles.dropArea, {
                   [styles.overflowScroll]: inputs.images && inputs.images.length > 0,
                   [styles.overflowNone]: !(inputs.images && inputs.images.length > 0),
+                  [styles.dropAreaError]: errors.images,
                 })}
               >
                 {inputs.images && inputs.images.length > 0 ? (
@@ -361,7 +447,7 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
                   variant="Caption"
                   children={errors.images}
                   as="span"
-                  className={`${styles.textColor} ${styles.textInfo}`}
+                  className={styles.textError}
                 />
               )}
 
