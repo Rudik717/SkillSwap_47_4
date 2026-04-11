@@ -1,5 +1,5 @@
 import { useInfiniteScroll } from '@/hooks'
-import type { AppDispatch } from '@/store'
+import type { AppDispatch, RootState } from '@/store'
 import { getFilterState, isFilterActiveSelector, setSort } from '@/store/filter'
 import {
   filteredUsersSelector,
@@ -33,14 +33,16 @@ const WithFilters = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const dispatch = useDispatch<AppDispatch>()
+
+  const currentUser = useSelector((state: RootState) => state.user.user)
   const filter = useSelector(getFilterState)
-  const filteredUsers = useSelector(filteredUsersSelector)
+  const filteredUsers = useSelector((state: RootState) =>
+    filteredUsersSelector(state, currentUser?.id)
+  )
   const isFilterActive = useSelector(isFilterActiveSelector)
 
-  const currentUser = useSelector((state: any) => state.user.user)
-
   const count = PAGE_SIZE * page
-  const users = filteredUsers.filter((u) => u.id !== currentUser?.id).slice(0, count)
+  const users = filteredUsers.slice(0, count)
   const hasMore = filteredUsers.length > count
 
   useEffect(() => {
@@ -93,21 +95,21 @@ const WithFilters = () => {
 
 const WithoutFilters = () => {
   const dispatch = useDispatch<AppDispatch>()
-  const popularUsers = useSelector(popularUsersSelector)
-  const newUsers = useSelector(newUsersSelector)
-  const recommendedUsers = useSelector(recommendedUsersSelector)
 
-  // Фильтр, чтобы текущий юзер не отображался среди других карточек
-  const currentUser = useSelector((state: any) => state.user.user)
-  const filteredPopularUsers = popularUsers.filter((u) => u.id !== currentUser?.id)
-  const filteredNewUsers = newUsers.filter((u) => u.id !== currentUser?.id)
-  const filteredRecommendedUsers = recommendedUsers.filter((u) => u.id !== currentUser?.id)
+  const currentUser = useSelector((state: RootState) => state.user.user)
+  const popularUsers = useSelector((state: RootState) =>
+    popularUsersSelector(state, currentUser?.id)
+  )
+  const newUsers = useSelector((state: RootState) => newUsersSelector(state, currentUser?.id))
+  const recommendedUsers = useSelector((state: RootState) =>
+    recommendedUsersSelector(state, currentUser?.id)
+  )
 
   return (
     <div className={styles.main}>
       <div className={styles.cards}>
         <UsersGrid
-          users={filteredPopularUsers}
+          users={popularUsers}
           title="Популярное"
           button={{
             label: 'Смотреть все',
@@ -118,7 +120,7 @@ const WithoutFilters = () => {
         />
 
         <UsersGrid
-          users={filteredNewUsers}
+          users={newUsers}
           title="Новое"
           button={{
             label: 'Смотреть все',
@@ -128,7 +130,7 @@ const WithoutFilters = () => {
           }}
         />
 
-        <UsersGrid users={filteredRecommendedUsers} title="Рекомендуем" />
+        <UsersGrid users={recommendedUsers} title="Рекомендуем" />
       </div>
     </div>
   )
