@@ -14,11 +14,13 @@ import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export const Registration = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from?.pathname || '/'
   const { loading } = useSelector((state: RootState) => state.user)
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
   const [step, setStep] = useState<1 | 2 | 3>(1)
@@ -138,7 +140,7 @@ export const Registration = () => {
         <RegistrationSuccess
           variant="registration"
           onClose={() => setIsSuccessModalOpen(false)}
-          onRedirect={() => navigate('/')}
+          onRedirect={() => navigate(from, { replace: true })}
         />
       )}
     </>

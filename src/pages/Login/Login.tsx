@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import type { SyntheticEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Navigate, useLocation } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 
 import styles from './Login.module.css'
 
@@ -16,6 +16,8 @@ export const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const location = useLocation()
+  const navigate = useNavigate()
+  const from = location.state?.from || '/'
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault()
@@ -25,6 +27,10 @@ export const Login = () => {
   if (user) {
     const from = location.state?.from?.pathname || '/'
     return <Navigate to={from} replace />
+  }
+
+  const handleRegisterClick = () => {
+    navigate('/register', { state: { from } })
   }
 
   return (
@@ -70,9 +76,9 @@ export const Login = () => {
               <div className={styles.button}>
                 <Button disabled={loading}>{loading ? 'Загрузка...' : 'Войти'}</Button>
               </div>
-              <Link to="/register" className={styles.register}>
+              <div className={styles.link} onClick={handleRegisterClick}>
                 <Text color="var(--skill-box-text-color)">Зарегистрироваться</Text>
-              </Link>
+              </div>
             </div>
           </>
         }

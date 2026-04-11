@@ -13,7 +13,7 @@ import {
 } from '@/widgets'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { SwiperClass } from 'swiper/react'
 import 'swiper/swiper.css'
@@ -54,6 +54,7 @@ const copyToClipboard = async (text: string): Promise<void> => {
 
 export const SkillDetails = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const dispatch = useDispatch()
 
   const { id } = useParams<{ id: string }>()
@@ -112,7 +113,7 @@ export const SkillDetails = () => {
 
   const handleOfferClick = () => {
     if (!currentUser) {
-      navigate('/login')
+      navigate('/login', { state: { from: { pathname: location.pathname } } })
       return
     }
 
