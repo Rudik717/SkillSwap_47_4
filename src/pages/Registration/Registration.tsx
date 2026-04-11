@@ -140,7 +140,7 @@ export const Registration = () => {
         <RegistrationSuccess
           variant="registration"
           onClose={() => setIsSuccessModalOpen(false)}
-          onRedirect={() => navigate(from)}
+          onRedirect={() => navigate(from, { replace: true })}
         />
       )}
     </>

@@ -19,7 +19,7 @@ export const ProtectedRoute = ({ onlyUnAuth = false, children }: ProtectedRouteP
 
   if (!onlyUnAuth && !user) {
     //  если маршрут для авторизованного пользователя, но пользователь неавторизован, то делаем редирект
-    return <Navigate replace to="/register" state={{ from: location }} /> // в поле from объекта location.state записываем информацию о URL
+    return <Navigate replace to="/login" state={{ from: location }} /> // в поле from объекта location.state записываем информацию о URL
   }
 
   if (onlyUnAuth && user) {
