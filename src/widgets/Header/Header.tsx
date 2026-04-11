@@ -165,6 +165,7 @@ export const Header: FC<THeaderProps> = ({ variant = 'unauth' }) => {
                     ref={avatarRef}
                     aria-label="Меню пользователя"
                     aria-expanded={isUserMenuOpen}
+                    className={styles.userAvatar}
                   >
                     <UserAvatar />
                   </div>
