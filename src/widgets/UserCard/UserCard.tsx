@@ -1,3 +1,4 @@
+import type { RootState } from '@/store'
 import { getAllCategories } from '@/store/categories'
 import { toggleFavorite } from '@/store/user-slice'
 import { Avatar, Badge, Button, Icon, Text } from '@/ui-kit'
@@ -13,7 +14,7 @@ export const UserCard: FC<TUserCardProps> = memo(({ user, hideActions, showAbout
   const dispatch = useDispatch()
 
   const categories = useSelector(getAllCategories)
-  const currentUser = useSelector((state: any) => state.user.user)
+  const currentUser = useSelector((state: RootState) => state.user.user)
 
   const { id, name, city = '', birthDate = '', avatar = '', skills } = user
   const teachSkills = skills.filter((skill) => skill.type === 'teach')
