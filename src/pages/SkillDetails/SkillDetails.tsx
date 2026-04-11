@@ -1,7 +1,7 @@
 import { type RootState } from '@/store'
 import { getAllCategories, getAllSubcategories } from '@/store/categories'
-import { loadRequests, saveRequests } from '@/store/user-slice'
-import { getUser, recommendedUsersSelector } from '@/store/users'
+import { loadRequests, saveRequests, toggleFavorite } from '@/store/user-slice'
+import { getUser, similarUsersSelector } from '@/store/users'
 import { Button, Icon, Text } from '@/ui-kit'
 import {
   Loading,
@@ -12,7 +12,7 @@ import {
   UsersGrid,
 } from '@/widgets'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { SwiperClass } from 'swiper/react'
@@ -54,13 +54,15 @@ const copyToClipboard = async (text: string): Promise<void> => {
 
 export const SkillDetails = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
   const { id } = useParams<{ id: string }>()
 
   const { loading, user } = useSelector((state: RootState) => getUser(state, id))
 
   const currentUser = useSelector((state: RootState) => state.user.user)
   const similarUsers = useSelector((state: RootState) =>
-    recommendedUsersSelector(state, currentUser?.id)
+    similarUsersSelector(state, currentUser?.id, user?.id)
   )
 
   const categories = useSelector((state: RootState) => getAllCategories(state))
@@ -79,6 +81,10 @@ export const SkillDetails = () => {
       if (shareToastTimerRef.current) clearTimeout(shareToastTimerRef.current)
     }
   }, [])
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }, [id])
 
   const handleShareClick = useCallback(async () => {
     try {
@@ -133,6 +139,14 @@ export const SkillDetails = () => {
 
   if (!user) return <Navigate to="/not-found" />
 
+  // проверяем, есть ли юзер в избранном текущего пользователя
+  const like = currentUser?.favorites?.includes(user.id) ?? false
+
+  const handleLikeClick = () => {
+    if (!currentUser || !user) return
+    dispatch(toggleFavorite(user.id))
+  }
+
   const skill = user?.skills?.filter((skill) => skill.type === 'teach')?.[0] ?? null
 
   const categoryObj = categories.find((cat) => cat.id === skill?.category)
@@ -156,8 +170,11 @@ export const SkillDetails = () => {
 
         <div className={styles.detailsWrapper}>
           <div className={styles.topButtons}>
-            <button className={styles.topButton} onClick={() => {}}>
-              <Icon name="like" />
+            <button
+              className={`${styles.topButton} ${like ? styles.liked : ''}`}
+              onClick={handleLikeClick}
+            >
+              <Icon name={like ? 'like-filled' : 'like'} />
             </button>
             <button className={styles.topButton} onClick={handleShareClick}>
               <Icon name="share" />
