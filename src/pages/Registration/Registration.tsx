@@ -68,7 +68,6 @@ export const Registration = () => {
     }
     try {
       await dispatch(registerUser(userData)).unwrap()
-      //console.log(userData)
       setIsSuccessModalOpen(true)
       closeModal()
     } catch (error) {

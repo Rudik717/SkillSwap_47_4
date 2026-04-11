@@ -84,10 +84,7 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
 
   // ЭФФЕКТЫ
   useEffect(() => {
-    // Находим категорию по id
     const selectedCategory = options.find((item) => item.id === inputs.category)
-
-    // Получаем массив подкатегорий в формате Option
     const newSubcategoryOptions: Option[] = selectedCategory
       ? selectedCategory.items.map((item) => ({
           value: item.id,

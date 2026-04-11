@@ -75,46 +75,6 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
     setSubcategoryOptions(newSubcategoryOptions)
   }, [inputs.category])
 
-  /* useEffect(() => {
-    setData((prev) => {
-      // Создаём новый массив навыков
-      const updatedSkills = [...prev.skills]
-
-      if (updatedSkills.length > 0) {
-        // Обновляем первый навык
-        updatedSkills[1] = {
-          ...updatedSkills[1],
-          category: inputs.category,
-          subcategory: inputs.subcategory,
-          title: inputs.title,
-          description: inputs.description,
-          images: inputs.images,
-        }
-      } else {
-        // Если навыков нет, создаём новый
-        updatedSkills.push({
-          type: 'teach',
-          category: inputs.category,
-          subcategory: inputs.subcategory,
-          title: inputs.title,
-          description: inputs.description,
-          images: inputs.images,
-        })
-      }
-
-      return {
-        ...prev,
-        skills: updatedSkills,
-      }
-    })
-  }, [
-    inputs.category,
-    inputs.subcategory,
-    inputs.title,
-    inputs.description,
-    inputs.images
-  ])*/
-
   useEffect(() => {
     setIsVerified(
       data.skills[1]?.title !== '' &&
@@ -139,7 +99,6 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
         }))
       } else setErrors((prev) => ({ ...prev, title: '' }))
 
-      // Немедленное сохранение в data
       setData((prev) => ({
         ...prev,
         skills: prev.skills.map((skill, idx) => (idx === 1 ? { ...skill, title: value } : skill)),
@@ -160,7 +119,6 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
         }))
       } else setErrors((prev) => ({ ...prev, description: '' }))
 
-      // Немедленное сохранение в data
       setData((prev) => ({
         ...prev,
         skills: prev.skills.map((skill, idx) =>
@@ -179,7 +137,6 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
       const selectedOption = Array.isArray(option) ? option[0] : option
       const value = selectedOption?.value || ''
 
-      // Обновляем data сразу
       setData((prev) => ({
         ...prev,
         skills: prev.skills.map((skill, idx) =>
@@ -187,10 +144,8 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
         ),
       }))
 
-      // Обновляем inputs для UI
       setInputs((prev) => ({ ...prev, [fieldName]: value }))
 
-      // Если это категория, обновляем подкатегории
       if (fieldName === 'category') {
         const selectedCategory = options.find((item) => item.id === value)
         const newSubcategoryOptions: Option[] = selectedCategory
@@ -211,18 +166,10 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
     if (!files) return
 
     const MAX_TOTAL_SIZE = 2 * 1024 * 1024
-
-    // 1. Получаем существующие файлы и их общий размер
     const existingFiles = inputs.imageFiles || []
     const existingTotalSize = existingFiles.reduce((total, file) => total + file.size, 0)
-
-    // 2. Получаем новые файлы
     const newFiles = Array.from(files)
-
-    // 3. Считаем размер новых файлов
     const newFilesTotalSize = newFiles.reduce((total, file) => total + file.size, 0)
-
-    // 4. Общий размер: существующие + новые
     const totalSize = existingTotalSize + newFilesTotalSize
 
     if (totalSize > MAX_TOTAL_SIZE) {
@@ -234,7 +181,6 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
       return
     }
 
-    // 5. Фильтруем новые файлы: каждый меньше или равен 2 Мб
     const validNewFiles = newFiles.filter((file) => file.size <= MAX_TOTAL_SIZE)
     const invalidNewFiles = newFiles.filter((file) => file.size > MAX_TOTAL_SIZE)
 
@@ -247,18 +193,15 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
       setErrors((prev) => ({ ...prev, images: '' }))
     }
 
-    // 6. Если есть валидные файлы, добавляем их
     if (validNewFiles.length > 0) {
       const newImageUrls = validNewFiles.map((file) => URL.createObjectURL(file))
 
-      // Обновляем оба массива: URL и файлы
       setInputs((prev) => ({
         ...prev,
         images: [...(prev.images || []), ...newImageUrls],
         imageFiles: [...existingFiles, ...validNewFiles],
       }))
 
-      // Обновляем data
       setData((prev) => ({
         ...prev,
         skills: prev.skills.map((skill, idx) =>
@@ -277,10 +220,8 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
 
   // Обработчик для удаления изображения
   const handleRemoveImage = (index: number) => {
-    // Сохраняем URL для освобождения памяти
     const urlToRevoke = inputs.images?.[index]
 
-    // Обновляем data сразу
     setData((prev) => ({
       ...prev,
       skills: prev.skills.map((skill, idx) =>
@@ -298,7 +239,6 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
       images: prev.images?.filter((_, i) => i !== index),
     }))
 
-    // Безопасное освобождение памяти
     if (urlToRevoke) {
       try {
         URL.revokeObjectURL(urlToRevoke)
@@ -387,14 +327,12 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
                             alt={`Preview ${index + 1}`}
                             className={styles.previewImage}
                           />
-                          <button
-                            type="button"
+                          <Button
                             className={styles.removeButton}
                             onClick={() => handleRemoveImage(index)}
                             aria-label={`Удалить изображение ${index + 1}`}
-                          >
-                            ×
-                          </button>
+                            children={'×'}
+                          />
                         </div>
                       ))}
                     </div>
