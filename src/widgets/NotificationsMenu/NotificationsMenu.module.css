@@ -7,7 +7,7 @@
 }
 
 .container {
-  max-height: 640px;
+  max-height: 70vh;
   overflow-y: auto;
 }
 
