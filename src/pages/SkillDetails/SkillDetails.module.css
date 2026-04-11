@@ -39,6 +39,10 @@
   cursor: pointer;
 }
 
+.topButton.liked {
+  color: #abd27a;
+}
+
 .skillDetails {
   display: flex;
   flex-direction: row;

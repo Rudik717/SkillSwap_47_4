@@ -13,7 +13,7 @@ interface ToastContainerProps {
 export const ToastContainer = ({
   toasts,
   onClose,
-  autoHideDuration = 5000,
+  autoHideDuration = 10000,
 }: ToastContainerProps) => {
   if (toasts.length === 0) return null
 

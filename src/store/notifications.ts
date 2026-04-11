@@ -4,7 +4,7 @@ import {
   getNotificationsApi,
   markAllNotificationsAsReadApi,
 } from '@/utils/api'
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 import type { RootState } from './root'
@@ -36,7 +36,7 @@ export const fetchNotifications = createAsyncThunk(
       if (!notification.isRead) {
         const state = getState() as RootState
         const hasToast = state.notifications.activeToasts.some(
-          (toast) => toast.notificationId === `${notification.user}_${notification.id}`
+          (toast: TToast) => toast.notificationId === `${notification.user}_${notification.id}`
         )
         if (!hasToast) {
           setTimeout(() => {
@@ -69,7 +69,8 @@ export const markAllAsRead = createAsyncThunk(
       }
       return true
     } catch (error) {
-      return rejectWithValue(error.message)
+      const errorMessage = error instanceof Error ? error.message : 'Произошла ошибка'
+      return rejectWithValue(errorMessage)
     }
   }
 )
@@ -93,7 +94,8 @@ export const clearReadNotifications = createAsyncThunk(
 
       return true
     } catch (error) {
-      return rejectWithValue(error.message)
+      const errorMessage = error instanceof Error ? error.message : 'Произошла ошибка'
+      return rejectWithValue(errorMessage)
     }
   }
 )
@@ -113,10 +115,6 @@ const notificationsSlice = createSlice({
         message,
         notificationId: notification.id,
       })
-
-      setTimeout(() => {
-        state.activeToasts = state.activeToasts.filter((t) => t.id !== toastId)
-      }, 5000)
     },
     removeToast: (state, action: PayloadAction<string>) => {
       state.activeToasts = state.activeToasts.filter((toast) => toast.id !== action.payload)
@@ -143,13 +141,22 @@ const notificationsSlice = createSlice({
 
 export const { addToast, removeToast, clearAllToasts } = notificationsSlice.actions
 
-export const selectNotifications = (state: RootState) => state.user.user?.notifications || []
-export const selectHasUnread = (state: RootState) =>
-  state.user.user?.notifications?.some((n) => !n.isRead) || false
-export const selectUnreadNotifications = (state: RootState) =>
-  state.user.user?.notifications?.filter((n) => !n.isRead) || []
-export const selectReadNotifications = (state: RootState) =>
-  state.user.user?.notifications?.filter((n) => n.isRead) || []
+const selectUserNotifications = (state: RootState) => state.user.user?.notifications || []
+export const selectNotifications = selectUserNotifications
+
+export const selectHasUnread = createSelector([selectUserNotifications], (notifications) =>
+  notifications.some((n) => !n.isRead)
+)
+
+export const selectUnreadNotifications = createSelector(
+  [selectUserNotifications],
+  (notifications) => notifications.filter((n) => !n.isRead)
+)
+
+export const selectReadNotifications = createSelector([selectUserNotifications], (notifications) =>
+  notifications.filter((n) => n.isRead)
+)
+
 export const selectActiveToasts = (state: RootState) => state.notifications.activeToasts
 
 export const notificationsReducer = notificationsSlice.reducer
