@@ -1,4 +1,4 @@
-import type { TNotification, TRegisterData, TUser } from '@utils/types'
+import type { TNotification, TRegisterData, TUpdateData, TUser } from '@utils/types'
 
 import { apiClient } from './axios-instance'
 
@@ -116,6 +116,21 @@ export type TRegisterResponse = TRegisterSuccessResponse | TApiErrorResponse
 
 export const registerUserApi = (data: TRegisterData) =>
   apiClient.post<TRegisterResponse>('/auth/register', data).then((response) => {
+    if (response.data.success) {
+      return response.data
+    }
+    return Promise.reject(response.data)
+  })
+
+export type TUpdateSuccessResponse = {
+  success: true
+  user: TUser
+}
+
+export type TUpdateResponse = TUpdateSuccessResponse | TApiErrorResponse
+
+export const updateUserApi = (data: TUpdateData) =>
+  apiClient.patch<TUpdateResponse>('/auth/user', data).then((response) => {
     if (response.data.success) {
       return response.data
     }
