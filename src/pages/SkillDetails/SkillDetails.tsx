@@ -1,7 +1,7 @@
 import { type RootState } from '@/store'
 import { getAllCategories, getAllSubcategories } from '@/store/categories'
 import { loadRequests, saveRequests, toggleFavorite } from '@/store/user-slice'
-import { getUser, recommendedUsersSelector } from '@/store/users'
+import { getUser, similarUsersSelector } from '@/store/users'
 import { Button, Icon, Text } from '@/ui-kit'
 import {
   Loading,
@@ -62,7 +62,7 @@ export const SkillDetails = () => {
 
   const currentUser = useSelector((state: RootState) => state.user.user)
   const similarUsers = useSelector((state: RootState) =>
-    recommendedUsersSelector(state, currentUser?.id)
+    similarUsersSelector(state, currentUser?.id, user?.id)
   )
 
   const categories = useSelector((state: RootState) => getAllCategories(state))

@@ -89,6 +89,7 @@ export const newUsersSelector = createSelector(
   }
 )
 
+// Исключаем из рекомендуемых залогиненного юзера
 export const recommendedUsersSelector = createSelector(
   getUsersState,
   (_: RootState, currentUserId?: string) => currentUserId,
@@ -96,6 +97,16 @@ export const recommendedUsersSelector = createSelector(
     const users = excludeCurrentUser(state.users, currentUserId)
 
     return users.slice(0, 9)
+  }
+)
+
+// Исключаем из "Похожих предложений" залогиненного юзера и текущего просматриваего
+export const similarUsersSelector = createSelector(
+  recommendedUsersSelector,
+  (_: RootState, __?: string, excludeUserId?: string) => excludeUserId,
+  (users, excludeUserId) => {
+    if (!excludeUserId) return users
+    return users.filter((u) => u.id !== excludeUserId)
   }
 )
 
