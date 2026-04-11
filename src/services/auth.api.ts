@@ -90,3 +90,16 @@ export const registerUserApi = (data: TRegisterData) =>
     }
     return Promise.reject(response.data)
   })
+
+export type TCheckEmailSuccessResponse = {
+  success: true
+}
+export type TCheckEmailResponse = TCheckEmailSuccessResponse | TApiErrorResponse
+
+export const checkEmailApi = (email: string) =>
+  apiClient.post<TCheckEmailResponse>('/auth/check-email', { email }).then((response) => {
+    if (response.data.success) {
+      return true
+    }
+    return Promise.reject(response.data)
+  })
