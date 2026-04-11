@@ -82,6 +82,10 @@ export const SkillDetails = () => {
     }
   }, [])
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }, [id])
+
   const handleShareClick = useCallback(async () => {
     try {
       await copyToClipboard(window.location.href)
