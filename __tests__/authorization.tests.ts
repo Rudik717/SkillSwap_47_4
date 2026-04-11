@@ -3,6 +3,7 @@ import { getUserWithToken, loginUser, logoutUser, userSlice } from '@/store/user
 import type { TUser } from '@/utils'
 import { describe, expect, it, jest } from '@jest/globals'
 
+// Мокаем зависимости, которые вызывают ошибку с import.meta
 jest.mock('@/services/axios-instance', () => ({
   __esModule: true,
   default: {
