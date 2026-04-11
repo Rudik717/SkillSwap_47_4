@@ -53,41 +53,59 @@ export const getUser = (state: RootState, id?: string) => {
   return { loading, user }
 }
 
-export const popularUsersSelector = createSelector(getUsersState, (state) => {
-  const users = state.users
+// Фильтр для исключения из подборок текущего залогиненного юзера
+const excludeCurrentUser = (users: TUser[], currentUserId?: string) =>
+  currentUserId ? users.filter((u) => u.id !== currentUserId) : users
 
-  return users
-    .toSorted((a: TUser, b: TUser) => {
-      const aLikes = a?.likes ?? 0
-      const bLikes = b?.likes ?? 0
-      return aLikes - bLikes
-    })
-    .slice(0, 3)
-})
+export const popularUsersSelector = createSelector(
+  getUsersState,
+  (_: RootState, currentUserId?: string) => currentUserId,
+  (state, currentUserId) => {
+    const users = excludeCurrentUser(state.users, currentUserId)
 
-export const newUsersSelector = createSelector(getUsersState, (state) => {
-  const users = state.users
+    return users
+      .toSorted((a: TUser, b: TUser) => {
+        const aLikes = a?.likes ?? 0
+        const bLikes = b?.likes ?? 0
+        return aLikes - bLikes
+      })
+      .slice(0, 3)
+  }
+)
 
-  return users
-    .toSorted((a: TUser, b: TUser) => {
-      const aCreatedAt = new Date(a?.createdAt).getTime()
-      const bCreatedAt = new Date(b?.createdAt).getTime()
-      return aCreatedAt - bCreatedAt
-    })
-    .slice(0, 3)
-})
+export const newUsersSelector = createSelector(
+  getUsersState,
+  (_: RootState, currentUserId?: string) => currentUserId,
+  (state, currentUserId) => {
+    const users = excludeCurrentUser(state.users, currentUserId)
 
-export const recommendedUsersSelector = createSelector(getUsersState, (state) => {
-  const users = state.users
-  return users.slice(0, 9)
-})
+    return users
+      .toSorted((a: TUser, b: TUser) => {
+        const aCreatedAt = new Date(a?.createdAt).getTime()
+        const bCreatedAt = new Date(b?.createdAt).getTime()
+        return aCreatedAt - bCreatedAt
+      })
+      .slice(0, 3)
+  }
+)
+
+export const recommendedUsersSelector = createSelector(
+  getUsersState,
+  (_: RootState, currentUserId?: string) => currentUserId,
+  (state, currentUserId) => {
+    const users = excludeCurrentUser(state.users, currentUserId)
+
+    return users.slice(0, 9)
+  }
+)
 
 export const filteredUsersSelector = createSelector(
   getUsersState,
+  (_: RootState, currentUserId?: string) => currentUserId,
   getFilterState,
   getAllCities,
-  (usersState, filter, cities) => {
-    let filtered = usersState.users
+  (usersState, currentUserId, filter, cities) => {
+    let filtered = excludeCurrentUser(usersState.users, currentUserId)
 
     if (filter.gender !== 'any') {
       filtered = filtered.filter((user) => user.gender && user.gender === filter.gender)

@@ -57,11 +57,11 @@ export const SkillDetails = () => {
   const { id } = useParams<{ id: string }>()
 
   const { loading, user } = useSelector((state: RootState) => getUser(state, id))
-  const similarUsers = useSelector((state: RootState) => recommendedUsersSelector(state))
 
-  // Фильтр, чтобы текущий юзер не отображался среди других карточек
   const currentUser = useSelector((state: RootState) => state.user.user)
-  const filteredSimilarUsers = similarUsers.filter((u) => u.id !== currentUser?.id)
+  const similarUsers = useSelector((state: RootState) =>
+    recommendedUsersSelector(state, currentUser?.id)
+  )
 
   const categories = useSelector((state: RootState) => getAllCategories(state))
   const subcategories = useSelector((state: RootState) => getAllSubcategories(state))
@@ -206,11 +206,11 @@ export const SkillDetails = () => {
           <Swiper
             spaceBetween={24}
             slidesPerView={4}
-            loop={filteredSimilarUsers.length > 4}
+            loop={similarUsers.length > 4}
             onSwiper={(swiper) => (similarSwiperRef.current = swiper)}
             className={styles.similarSwiper}
           >
-            {filteredSimilarUsers.map((user) => (
+            {similarUsers.map((user) => (
               <SwiperSlide key={user.id}>
                 <UsersGrid users={[user]} columns={1} />
               </SwiperSlide>
