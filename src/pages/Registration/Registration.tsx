@@ -25,7 +25,6 @@ export const Registration = () => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
   const [step, setStep] = useState<1 | 2 | 3>(1)
   const [data, setData] = useState<TRegisterData>({
-    id: '',
     name: '',
     email: '',
     password: '',
@@ -35,29 +34,19 @@ export const Registration = () => {
     avatar: '',
     skills: [
       {
-        id: '',
-        userId: '',
         type: 'learn',
         category: '',
         subcategory: '',
-        createdAt: '',
-        updatedAt: '',
       },
       {
-        id: '',
-        userId: '',
         type: 'teach',
         category: '',
         subcategory: '',
         title: '',
         description: '',
         images: [],
-        createdAt: '',
-        updatedAt: '',
       },
     ],
-    createdAt: '',
-    updatedAt: '',
   })
 
   const { openModal, closeModal, isModalOpen } = useModal()

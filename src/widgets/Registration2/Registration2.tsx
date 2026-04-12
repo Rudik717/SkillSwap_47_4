@@ -6,6 +6,7 @@ import { Button } from '@/ui-kit'
 import { Icon } from '@/ui-kit'
 import { Select } from '@/ui-kit'
 import { DateInput } from '@/ui-kit'
+import { Avatar } from '@/ui-kit'
 import type { Option } from '@/ui-kit/Select/Select'
 import type { RegisterDataSet } from '@/utils'
 import { Stepper } from '@/widgets'
@@ -14,6 +15,8 @@ import { skillFilterOptions } from '@/widgets/FilterPanel/utils'
 import { useEffect, useState } from 'react'
 import { useCallback } from 'react'
 import { useMemo } from 'react'
+import { useRef } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 
 import styles from './Registration2.module.css'
@@ -37,8 +40,6 @@ type InputsState = {
   gender?: 'male' | 'female' | 'unspecified' | ''
   category: string
   subcategory: string
-  createdAt?: string
-  updatedAt?: string
 }
 
 export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDataSet) => {
@@ -53,15 +54,13 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
   const [isVerified, setIsVerified] = useState<boolean>(false)
 
   const [inputs, setInputs] = useState<InputsState>({
-    avatar: data.avatar, //Аватарку пока не сделала
+    avatar: data.avatar,
     name: data.name,
     birthDate: data.birthDate,
     city: data.city,
     gender: data.gender,
     category: data.skills[0].category,
     subcategory: data.skills[0].subcategory,
-    createdAt: data.skills[0].createdAt,
-    updatedAt: data.skills[0].updatedAt,
   })
 
   // ПРОИЗВОДНЫЕ ДАННЫЕ
@@ -85,10 +84,7 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
 
   // ЭФФЕКТЫ
   useEffect(() => {
-    // Находим категорию по id
     const selectedCategory = options.find((item) => item.id === inputs.category)
-
-    // Получаем массив подкатегорий в формате Option
     const newSubcategoryOptions: Option[] = selectedCategory
       ? selectedCategory.items.map((item) => ({
           value: item.id,
@@ -97,29 +93,72 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
       : []
 
     setSubcategoryOptions(newSubcategoryOptions)
-  }, [inputs.category, data.id])
+  }, [inputs.category])
+
+  useEffect(() => {
+    setData((prev) => {
+      const updatedSkills = [...prev.skills]
+
+      if (updatedSkills.length > 0) {
+        updatedSkills[0] = {
+          ...updatedSkills[0],
+          category: inputs.category,
+          subcategory: inputs.subcategory,
+        }
+      } else {
+        updatedSkills.push({
+          type: 'learn',
+          category: inputs.category,
+          subcategory: inputs.subcategory,
+        })
+      }
+
+      return {
+        ...prev,
+        skills: updatedSkills,
+      }
+    })
+  }, [inputs.category, inputs.subcategory])
 
   useEffect(() => {
     setIsVerified(
-      inputs.name !== '' &&
+      data.name !== '' &&
         !errors.name &&
-        inputs.birthDate !== null &&
-        inputs.city !== '' &&
-        inputs.gender !== '' &&
-        inputs.category !== '' &&
-        inputs.subcategory !== ''
+        data.birthDate !== null &&
+        data.city !== '' &&
+        data.gender !== '' &&
+        data.skills[0].category !== '' &&
+        data.skills[0].subcategory !== ''
     )
   }, [
-    inputs.name,
+    data.name,
     errors.name,
-    inputs.birthDate,
-    inputs.city,
-    inputs.gender,
-    inputs.category,
-    inputs.subcategory,
+    data.birthDate,
+    data.city,
+    data.gender,
+    data.skills[0].category,
+    data.skills[0].subcategory,
   ])
 
   //ОБРАБОТЧИКИ СОБЫТИЙ
+  // Обработчик для добавления аватара пользователя
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click()
+  }
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const url = URL.createObjectURL(file)
+
+      setData((prev) => ({
+        ...prev,
+        avatar: url,
+      }))
+      setInputs((prev) => ({ ...prev, avatar: url }))
+    }
+  }
 
   // Обработчик для поля name
   const handlTextChange = useCallback(
@@ -131,9 +170,14 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
         setErrors((prev) => ({ ...prev, name: 'Введите ваше имя' }))
       } else setErrors((prev) => ({ ...prev, name: '' }))
 
+      setData((prev) => ({
+        ...prev,
+        name: value,
+      }))
+
       setInputs((prev) => ({ ...prev, name: value }))
     },
-    [setErrors, setInputs]
+    [setErrors, setInputs, setData]
   )
 
   const minDate = new Date('1900-01-01')
@@ -142,67 +186,51 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
   // Обработчик для даты рождения
   const handleDateChange = useCallback(
     (date: Date | null) => {
+      setData((prev) => ({
+        ...prev,
+        birthDate: date,
+      }))
+
       setInputs((prev) => ({ ...prev, birthDate: date }))
     },
-    [setInputs]
+    [setData, setInputs]
   )
 
   // Универсальный обработчик для select
   const createSelectHandler = useCallback(
     (fieldName: string) => (option: Option | Option[] | null) => {
       const selectedOption = Array.isArray(option) ? option[0] : option
+      const value = selectedOption?.value || ''
 
-      if (!selectedOption) {
-        setInputs((prev) => ({ ...prev, [fieldName]: '' }))
-        return
+      setData((prev) => ({
+        ...prev,
+        [fieldName]: value,
+      }))
+
+      setInputs((prev) => ({ ...prev, [fieldName]: value }))
+
+      // Если это категория, обновляем подкатегории
+      if (fieldName === 'category') {
+        const selectedCategory = options.find((item) => item.id === value)
+        const newSubcategoryOptions: Option[] = selectedCategory
+          ? selectedCategory.items.map((item) => ({
+              value: item.id,
+              label: item.label,
+            }))
+          : []
+
+        setSubcategoryOptions(newSubcategoryOptions)
       }
-      setInputs((prev) => ({ ...prev, [fieldName]: selectedOption.value }))
     },
-    [setInputs]
+    [setData, setInputs, options]
   )
+
   const handleGenderChange = createSelectHandler('gender')
   const handleCityChange = createSelectHandler('city')
   const handleCategoryChange = createSelectHandler('category')
   const handleSubcategoryChange = createSelectHandler('subcategory')
 
   const handleNextStep = () => {
-    setData((prev) => {
-      // Создаём новый массив навыков
-      const updatedSkills = [...prev.skills]
-
-      if (updatedSkills.length > 0) {
-        // Обновляем первый навык
-        updatedSkills[0] = {
-          ...updatedSkills[0],
-          category: inputs.category,
-          subcategory: inputs.subcategory,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        }
-      } else {
-        // Если навыков нет, создаём новый
-        updatedSkills.push({
-          id: '',
-          userId: data.id,
-          type: 'learn',
-          category: inputs.category,
-          subcategory: inputs.subcategory,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        })
-      }
-
-      return {
-        ...prev,
-        avatar: inputs.avatar,
-        name: inputs.name,
-        birthDate: inputs.birthDate,
-        city: inputs.city,
-        gender: inputs.gender,
-        skills: updatedSkills,
-      }
-    })
-
     if (isVerified) {
       nextStep()
     }
@@ -215,14 +243,26 @@ export const Registration2 = ({ data, setData, nextStep, prevStep }: RegisterDat
         children={
           <>
             <div className={styles.container}>
-              <div className={styles.avatarContainer}>
+              <div className={styles.avatarContainer} onClick={handleAvatarClick}>
                 <div className={styles.avatarIcon}>
-                  <Icon name="user-circle" size={54} />
-                  <div className={styles.iconAddPosition}>
-                    <Icon name="add" size={16} />
-                  </div>
+                  {inputs.avatar ? (
+                    <Avatar url={inputs.avatar} size={72} />
+                  ) : (
+                    <>
+                      <Icon name="user-circle" size={54} />
+                      <div className={styles.iconAddPosition}>
+                        <Icon name="add" size={16} />
+                      </div>
+                    </>
+                  )}
                 </div>
-                <input type="file" accept="image/jpeg, image/png" className={styles.avatarInput} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  className={styles.avatarInput}
+                  onChange={handleAvatarChange}
+                  ref={fileInputRef}
+                />
               </div>
               <TextInput
                 name="name"
