@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import { useCallback, useState } from 'react'
 import type { SyntheticEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 
 import styles from './Login.module.css'
 
@@ -18,8 +18,6 @@ export const Login = () => {
   const [emailError, setEmailError] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const location = useLocation()
-  const navigate = useNavigate()
-  const from = location.state?.from || '/'
 
   //Регулярное выражение для email input (вариант приближён к RFC 5322)
   const emailRegex =
@@ -49,10 +47,6 @@ export const Login = () => {
   if (user) {
     const from = location.state?.from?.pathname || '/'
     return <Navigate to={from} replace />
-  }
-
-  const handleRegisterClick = () => {
-    navigate('/register', { state: { from } })
   }
 
   return (
@@ -99,9 +93,9 @@ export const Login = () => {
               <div className={styles.button}>
                 <Button disabled={loading}>{loading ? 'Загрузка...' : 'Войти'}</Button>
               </div>
-              <div className={styles.link} onClick={handleRegisterClick}>
+              <Link to="/register" className={styles.register}>
                 <Text color="var(--skill-box-text-color)">Зарегистрироваться</Text>
-              </div>
+              </Link>
             </div>
           </>
         }
