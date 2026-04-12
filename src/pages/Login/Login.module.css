@@ -53,10 +53,6 @@
   background: var(--bg-footer);
 }
 
-.link {
-  cursor: pointer;
-}
-
-.link:hover {
-  opacity: 0.8;
+.register {
+  text-decoration: none;
 }
