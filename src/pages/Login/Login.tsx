@@ -3,7 +3,7 @@ import { loginUser } from '@/store/user-slice'
 import { Button, Icon, Text, TextInput } from '@/ui-kit'
 import { FormLayout } from '@/widgets'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import type { SyntheticEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
@@ -15,14 +15,36 @@ export const Login = () => {
   const { user, loading, error } = useSelector((state: RootState) => state.user)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [emailError, setEmailError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const location = useLocation()
   const navigate = useNavigate()
   const from = location.state?.from || '/'
+
+  //Регулярное выражение для email input (вариант приближён к RFC 5322)
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault()
     dispatch(loginUser({ email, password }))
   }
+
+  const handleEmailChange = useCallback(
+    (value: string) => {
+      setEmail(value)
+      const isInvalidFormat = !emailRegex.test(value)
+      setEmailError(isInvalidFormat)
+
+      if (isInvalidFormat) {
+        setErrorMessage('Введите корректный email')
+        return
+      }
+
+      setErrorMessage('')
+    },
+    [setEmailError, setEmail, emailRegex, setErrorMessage]
+  )
 
   if (user) {
     const from = location.state?.from?.pathname || '/'
@@ -34,7 +56,7 @@ export const Login = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} noValidate>
       <FormLayout
         title={<Text variant="H2">Вход</Text>}
         children={
@@ -59,8 +81,9 @@ export const Login = () => {
                 name={'email'}
                 type={'email'}
                 placeholder="Введите email"
+                error={emailError ? errorMessage : ''}
                 value={email}
-                onChange={(value) => setEmail(value)}
+                onChange={(value) => handleEmailChange(value)}
               />
               <TextInput
                 label="Пароль"
