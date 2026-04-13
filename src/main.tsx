@@ -8,6 +8,15 @@ import { App } from './app/App.tsx'
 import './index.css'
 import { store } from './store/root.ts'
 
+// Регистрация сервис-воркера для работы в офлайн-режиме
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch((error) => {
+      console.error('Ошибка регистрации Service Worker:', error)
+    })
+  })
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
