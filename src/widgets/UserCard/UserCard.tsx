@@ -29,6 +29,8 @@ export const UserCard: FC<TUserCardProps> = memo(({ user, hideActions, showAbout
   const displayedLearnSkills = learnSkills.slice(0, MAX_VISIBLE)
   const remainingLearnCount = learnSkills.length - MAX_VISIBLE
 
+  const firstLetter = name.charAt(0).toUpperCase()
+
   // проверяем, есть ли юзер в избранном текущего пользователя
   const like = currentUser?.favorites?.includes(id) ?? false
 
@@ -81,7 +83,7 @@ export const UserCard: FC<TUserCardProps> = memo(({ user, hideActions, showAbout
   return (
     <article className={styles['user-card']}>
       <div className={styles['user-card__header']}>
-        <Avatar url={avatar} alt={`Аватар ${name}`}></Avatar>
+        <Avatar url={avatar} alt={`Аватар ${name}`} fallback={firstLetter}></Avatar>
         <div className={styles['user-card__info']}>
           <div
             className={`${styles['user-card__like-button-wrapper']} ${
