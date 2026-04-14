@@ -1,3 +1,5 @@
+/* global window */
+import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import {
   About,
   Home,
@@ -24,6 +26,7 @@ import { AppLayout } from './AppLayout'
 
 export const App = () => {
   const dispatch = useDispatch<AppDispatch>()
+  const isOnline = useOnlineStatus()
 
   useEffect(() => {
     initSession()
@@ -31,6 +34,16 @@ export const App = () => {
     dispatch(getCities())
     dispatch(getUsers())
   }, [dispatch])
+
+  if (!isOnline) {
+    return (
+      <div style={{ textAlign: 'center', marginTop: '50px' }}>
+        <h1>🌐 Нет интернета</h1>
+        <p>Проверьте подключение и обновите страницу</p>
+        <button onClick={() => window.location.reload()}>Обновить</button>
+      </div>
+    )
+  }
 
   return (
     <Routes>
