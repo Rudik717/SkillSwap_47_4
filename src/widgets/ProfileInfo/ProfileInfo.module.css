@@ -18,6 +18,12 @@
   max-width: 460px;
 }
 
+.error {
+  margin-bottom: 10px;
+  color: var(--text-error);
+  text-align: center;
+}
+
 .field {
   width: 100%;
 }

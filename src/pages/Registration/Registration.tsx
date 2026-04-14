@@ -14,16 +14,17 @@ import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export const Registration = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from?.pathname || '/'
   const { loading } = useSelector((state: RootState) => state.user)
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
   const [step, setStep] = useState<1 | 2 | 3>(1)
   const [data, setData] = useState<TRegisterData>({
-    id: '',
     name: '',
     email: '',
     password: '',
@@ -33,29 +34,19 @@ export const Registration = () => {
     avatar: '',
     skills: [
       {
-        id: '',
-        userId: '',
         type: 'learn',
         category: '',
         subcategory: '',
-        createdAt: '',
-        updatedAt: '',
       },
       {
-        id: '',
-        userId: '',
         type: 'teach',
         category: '',
         subcategory: '',
         title: '',
         description: '',
         images: [],
-        createdAt: '',
-        updatedAt: '',
       },
     ],
-    createdAt: '',
-    updatedAt: '',
   })
 
   const { openModal, closeModal, isModalOpen } = useModal()
@@ -138,7 +129,7 @@ export const Registration = () => {
         <RegistrationSuccess
           variant="registration"
           onClose={() => setIsSuccessModalOpen(false)}
-          onRedirect={() => navigate('/')}
+          onRedirect={() => navigate(from)}
         />
       )}
     </>

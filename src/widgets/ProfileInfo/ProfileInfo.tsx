@@ -1,8 +1,15 @@
+import type { AppDispatch } from '@/store'
+import type { RootState } from '@/store'
+import { addToast } from '@/store/notifications'
+import { updateUser } from '@/store/user-slice'
 import { Avatar, Button, DateInput, Icon, Select, Text, TextArea, TextInput } from '@/ui-kit'
 import type { Option } from '@/ui-kit/Select/Select'
 import type { TCity, TUser } from '@/utils'
 import React from 'react'
 import { useEffect, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useOutletContext } from 'react-router-dom'
 
 import styles from './ProfileInfo.module.css'
 
@@ -11,9 +18,12 @@ interface ProfileInfoProps {
   user?: TUser | null
 }
 
-export const ProfileInfo = ({ cities, user }: ProfileInfoProps) => {
+export const ProfileInfo = () => {
+  const { user, cities } = useOutletContext<ProfileInfoProps>()
   const cityOptions: Option[] = cities.map((c) => ({ label: c.name, value: c.id }))
 
+  const loading = useSelector((state: RootState) => state.user.loading)
+  const error = useSelector((state: RootState) => state.user.error)
   // Опции для селекта выбора пола
   const genderOptions: Option[] = [
     { label: 'Не указан', value: 'unspecified' },
@@ -27,7 +37,7 @@ export const ProfileInfo = ({ cities, user }: ProfileInfoProps) => {
   const [birthDate, setBirthDate] = useState<Date | null>(
     user?.birthDate ? new Date(user.birthDate) : null
   )
-  const [gender, setGender] = useState(user?.gender ?? '')
+  const [gender, setGender] = useState(user?.gender ?? 'unspecified')
   const [city, setCity] = useState<string>('')
   const [about, setAbout] = useState(user?.about ?? '')
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(user?.avatar)
@@ -51,27 +61,65 @@ export const ProfileInfo = ({ cities, user }: ProfileInfoProps) => {
     fileInputRef.current?.click()
   }
 
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [avatarBase64, setAvatarBase64] = useState<string | undefined>(user?.avatar)
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       const url = URL.createObjectURL(file)
       setAvatarUrl(url)
+      const base64 = await fileToBase64(file)
+      setAvatarBase64(base64)
       setIsEdited(true)
     }
   }
 
-  // Заглушка для сохранения формы
-  const handleSave = () => {
-    console.log('Сохраняем данные профиля:', {
-      email,
-      name,
-      birthDate,
-      gender,
-      city,
-      about,
-      avatarUrl,
+  // преобразуем в base64
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = (error) => reject(error)
     })
-    setIsEdited(false)
+  }
+
+  const dispatch = useDispatch<AppDispatch>()
+
+  const handleSave = async () => {
+    const formData = {
+      name,
+      birthDate: birthDate?.toISOString(),
+      gender,
+      city: city,
+      about,
+      avatar: avatarBase64,
+    }
+    try {
+      await dispatch(updateUser(formData)).unwrap()
+      dispatch(
+        addToast({
+          id: Date.now().toString(),
+          user: '',
+          text: 'Данные сохранены',
+          date: new Date().toISOString(),
+          isRead: false,
+          link: '',
+        })
+      )
+      setIsEdited(false)
+    } catch {
+      dispatch(
+        addToast({
+          id: Date.now().toString(),
+          user: '',
+          text: 'Ошибка сохранения',
+          date: new Date().toISOString(),
+          isRead: false,
+          link: '',
+        })
+      )
+    }
   }
 
   return (
@@ -83,11 +131,12 @@ export const ProfileInfo = ({ cities, user }: ProfileInfoProps) => {
             type="text"
             name="email"
             value={email}
+            disabled
             onChange={(val) => {
               setEmail(val)
               setIsEdited(true)
             }}
-            icon="edit"
+            //icon="edit"
           />
 
           <Text className={styles.changePassword}>Изменить пароль</Text>
@@ -124,8 +173,10 @@ export const ProfileInfo = ({ cities, user }: ProfileInfoProps) => {
               label="Пол"
               value={genderOptions.find((o) => o.value === gender) || null}
               onChange={(option) => {
-                setGender(!option || Array.isArray(option) ? '' : option.value)
-                setIsEdited(true)
+                if (option && !Array.isArray(option)) {
+                  setGender(option.value as 'male' | 'female' | 'unspecified')
+                  setIsEdited(true)
+                }
               }}
               options={genderOptions}
             />
@@ -156,9 +207,9 @@ export const ProfileInfo = ({ cities, user }: ProfileInfoProps) => {
             icon="edit"
           />
         </div>
-
-        <Button onClick={handleSave} disabled={!isEdited}>
-          Сохранить
+        {error && <div className={styles.error}>{error}</div>}
+        <Button onClick={handleSave} disabled={!isEdited || loading}>
+          {loading ? 'Сохранение...' : 'Сохранить'}
         </Button>
       </div>
 

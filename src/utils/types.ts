@@ -27,6 +27,8 @@ export type TUser = {
   createdAt: string // "2025-01-15T10:30:00Z"
   updatedAt: string // "2025-03-30T15:20:00Z"
   favorites?: string[] // Массив TSkill.id навыков, добавленных в избранное
+  notifications?: TNotification[] // Массив уведомлений
+  requests?: string[] // Массив пользователей, которым отправлен обмен
   likes?: number // Количество лайков (Популярные на главной)
 }
 
@@ -56,10 +58,9 @@ export type TSkillFormData = Pick<
 export type TRole = 'all' | 'teach' | 'learn'
 export type TGender = 'any' | 'male' | 'female'
 
-// ТОЛЬКО ДЛЯ РЕГИСТРАЦИИ (экспериентальные данные) //
+// ТИПЫ ДЛЯ РЕГИСТРАЦИИ //
 
-export type TUserData = {
-  id: string
+export type TRegisterData = {
   name: string
   email: string
   password: string // обязательное поле
@@ -67,26 +68,17 @@ export type TUserData = {
   gender?: 'male' | 'female' | 'unspecified' | '' // Добавлена пустая строка (нужно при выборе пола)
   city?: string
   avatar?: string
-  about?: string
   skills: TSkillData[]
-  createdAt: string
-  updatedAt: string
 }
 
 export type TSkillData = {
-  id: string
-  userId: string
   type: 'teach' | 'learn'
   category: string // Тут id, а не имя категории
   subcategory: string // Тут id, а не имя подкатегории
   title?: string // необязательное поле
   description?: string
   images?: string[]
-  createdAt?: string
-  updatedAt?: string
 }
-
-export type TRegisterData = Omit<TUserData, 'about' | 'favorites' | 'likes'>
 
 export type RegisterDataSet = {
   data: TRegisterData
@@ -101,4 +93,28 @@ export type SortDirection = 'asc' | 'desc'
 export type SortState = {
   by: string
   direction: SortDirection
+}
+
+export type TNotification = {
+  id: string
+  user: string
+  text: string
+  date: string
+  isRead: boolean
+  link?: string
+}
+
+export type TToast = {
+  id: string
+  message: string
+  notificationId: string
+}
+
+export type TUpdateData = {
+  name?: string
+  birthDate?: string
+  gender?: 'male' | 'female' | 'unspecified'
+  city?: string
+  avatar?: string
+  about?: string
 }

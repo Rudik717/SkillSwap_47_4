@@ -10,6 +10,8 @@ import { describe, expect, it, jest } from '@jest/globals'
 
 import type { TRegisterData } from '@utils/types'
 
+// Мокаем зависимости, которые вызывают ошибку с import.meta
+
 jest.mock('@/services/axios-instance', () => ({
   __esModule: true,
   default: {
@@ -65,9 +67,6 @@ const mockRegisterData: TRegisterData = {
   city: 'Москва',
   avatar: '',
   skills: [],
-  createdAt: '',
-  updatedAt: '',
-  id: '',
 }
 
 describe('userSlice', () => {

@@ -1,5 +1,5 @@
 import { useInfiniteScroll } from '@/hooks'
-import type { AppDispatch } from '@/store'
+import type { AppDispatch, RootState } from '@/store'
 import { getFilterState, isFilterActiveSelector, setSort } from '@/store/filter'
 import {
   filteredUsersSelector,
@@ -33,8 +33,12 @@ const WithFilters = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const dispatch = useDispatch<AppDispatch>()
+
+  const currentUser = useSelector((state: RootState) => state.user.user)
   const filter = useSelector(getFilterState)
-  const filteredUsers = useSelector(filteredUsersSelector)
+  const filteredUsers = useSelector((state: RootState) =>
+    filteredUsersSelector(state, currentUser?.id)
+  )
   const isFilterActive = useSelector(isFilterActiveSelector)
 
   const count = PAGE_SIZE * page
@@ -91,9 +95,15 @@ const WithFilters = () => {
 
 const WithoutFilters = () => {
   const dispatch = useDispatch<AppDispatch>()
-  const popularUsers = useSelector(popularUsersSelector)
-  const newUsers = useSelector(newUsersSelector)
-  const recommendedUsers = useSelector(recommendedUsersSelector)
+
+  const currentUser = useSelector((state: RootState) => state.user.user)
+  const popularUsers = useSelector((state: RootState) =>
+    popularUsersSelector(state, currentUser?.id)
+  )
+  const newUsers = useSelector((state: RootState) => newUsersSelector(state, currentUser?.id))
+  const recommendedUsers = useSelector((state: RootState) =>
+    recommendedUsersSelector(state, currentUser?.id)
+  )
 
   return (
     <div className={styles.main}>

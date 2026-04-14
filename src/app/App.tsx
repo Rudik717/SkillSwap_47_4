@@ -1,6 +1,5 @@
 import {
   About,
-  Favorites,
   Home,
   Login,
   NotFound,
@@ -15,6 +14,7 @@ import type { AppDispatch } from '@/store'
 import { getCategories } from '@/store/categories'
 import { getCities } from '@/store/cities'
 import { getUsers } from '@/store/users'
+import { Favorites, ProfileInfo } from '@/widgets'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
@@ -48,15 +48,11 @@ export const App = () => {
               <ProfilePage />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/profile/favorites"
-          element={
-            <ProtectedRoute>
-              <Favorites />
-            </ProtectedRoute>
-          }
-        />
+        >
+          <Route index element={<ProfileInfo />} />
+          <Route path="favorites" element={<Favorites />} />
+        </Route>
+
         <Route path="/skill/:id" element={<SkillDetails />} />
       </Route>
     </Routes>

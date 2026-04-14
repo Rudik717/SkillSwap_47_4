@@ -1,12 +1,18 @@
-import { getUserApi, loginUserApi, logoutUserApi, registerUserApi } from '@/services/auth.api'
+import {
+  getUserApi,
+  loginUserApi,
+  logoutUserApi,
+  registerUserApi,
+  updateUserApi,
+} from '@/services/auth.api'
 import type { TLoginData } from '@/services/auth.api'
 import { deleteAccessToken, getAccessToken, setAccessToken } from '@/services/token-manager'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
-import type { TRegisterData } from '@utils/types'
-import type { TUser } from '@utils/types'
+import type { TUpdateData } from '@utils/types'
+import type { TNotification, TRegisterData, TUser } from '@utils/types'
 
 export type TUserState = {
   user: TUser | null
@@ -30,6 +36,17 @@ export const saveFavorites = (userId: string, favorites: string[]) => {
 // Загружаем favorites при старте приложения
 export const loadFavorites = (userId: string): string[] => {
   const stored = localStorage.getItem(`favorites_${userId}`)
+  return stored ? JSON.parse(stored) : []
+}
+
+// Сохраняем requests в localStorage
+export const saveRequests = (userId: string, requests: string[]) => {
+  localStorage.setItem(`requests_${userId}`, JSON.stringify(requests))
+}
+
+// Загружаем requests при старте приложения
+export const loadRequests = (userId: string): string[] => {
+  const stored = localStorage.getItem(`requests_${userId}`)
   return stored ? JSON.parse(stored) : []
 }
 
@@ -61,6 +78,21 @@ export const registerUser = createAsyncThunk(
       const errorData = (err as AxiosError)?.response?.data
       // Передаём их в rejected с помощью rejectWithValue
       return rejectWithValue(errorData || { message: 'Ошибка входа' })
+    }
+  }
+)
+
+// Обновление данных пользователя  - вводит данные - запрос на сервер - получаем юзера
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async (data: TUpdateData, { rejectWithValue }) => {
+    try {
+      const response = await updateUserApi(data)
+      return response.user
+    } catch (err) {
+      const errorData = (err as AxiosError)?.response?.data
+      // Передаём их в rejected с помощью rejectWithValue
+      return rejectWithValue(errorData || { message: 'Ошибка обновления' })
     }
   }
 )
@@ -98,9 +130,23 @@ export const userSlice = createSlice({
     authChecked: (state) => {
       state.isAuthChecked = true
     },
+    updateUserNotifications: (state, action: PayloadAction<TNotification[]>) => {
+      if (state.user) {
+        state.user.notifications = action.payload
+      }
+    },
+    markNotificationAsRead: (state, action: PayloadAction<string>) => {
+      if (state.user?.notifications) {
+        const notification = state.user.notifications.find((n) => n.id === action.payload)
+        if (notification) {
+          notification.isRead = true
+        }
+      }
+    },
     setUser: (state, action: PayloadAction<TUser>) => {
       state.user = action.payload
       state.user.favorites = loadFavorites(action.payload.id)
+      state.user.requests = loadRequests(action.payload.id)
     },
     toggleFavorite: (state, action: PayloadAction<string>) => {
       if (!state.user) return
@@ -149,6 +195,20 @@ export const userSlice = createSlice({
         state.isAuthChecked = true
         state.loading = false
       })
+      //updateUser
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.loading = false
+        const errorData = action.payload as { message?: string }
+        state.error = errorData?.message || 'Ошибка обновления данных'
+      })
+      .addCase(updateUser.fulfilled, (state, action: PayloadAction<TUser>) => {
+        state.user = action.payload
+        state.loading = false
+      })
       //logoutUser
       .addCase(logoutUser.pending, (state) => {
         state.loading = true
@@ -181,5 +241,11 @@ export const userSlice = createSlice({
   },
 })
 
-export const { authChecked, setUser, toggleFavorite } = userSlice.actions
+export const {
+  authChecked,
+  updateUserNotifications,
+  markNotificationAsRead,
+  setUser,
+  toggleFavorite,
+} = userSlice.actions
 export const userSliceReducer = userSlice.reducer

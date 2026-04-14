@@ -51,7 +51,6 @@ export default meta
 export const Default: Story = {
   args: {
     data: {
-      id: '',
       name: '',
       email: '',
       password: '',
@@ -61,20 +60,22 @@ export const Default: Story = {
       avatar: '',
       skills: [
         {
-          id: '',
-          userId: '',
-          type: 'learn', /// будто уже есть данные с предыдущего этапа регистрации
-          category: '1',
-          subcategory: '1-1',
+          type: 'teach',
+          category: '',
+          subcategory: '',
           title: '',
           description: '',
           images: [],
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
+        },
+        {
+          type: 'learn',
+          category: '',
+          subcategory: '',
+          title: '',
+          description: '',
+          images: [],
         },
       ],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
     } as TRegisterData,
   },
   render: (args) => {

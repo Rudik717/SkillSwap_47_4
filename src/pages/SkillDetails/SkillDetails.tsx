@@ -1,16 +1,27 @@
 import { type RootState } from '@/store'
 import { getAllCategories, getAllSubcategories } from '@/store/categories'
-import { getUser, recommendedUsersSelector } from '@/store/users'
+import { loadRequests, saveRequests, toggleFavorite } from '@/store/user-slice'
+import { getUser, similarUsersSelector } from '@/store/users'
 import { Button, Icon, Text } from '@/ui-kit'
-import { Loading, UserCard, UserGallery, UsersGrid } from '@/widgets'
-import { useRef } from 'react'
-import { useSelector } from 'react-redux'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import {
+  Loading,
+  RequestSuccess,
+  ToastContainer,
+  UserCard,
+  UserGallery,
+  UsersGrid,
+} from '@/widgets'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { SwiperClass } from 'swiper/react'
 import 'swiper/swiper.css'
 
 import styles from './SkillDetails.module.css'
+
+declare const window: Window & typeof globalThis
+declare const navigator: Navigator
 
 const defaultImages = [
   'https://i.pinimg.com/736x/18/13/63/1813631ee45a3612a6d9b4b116567a4b.jpg',
@@ -19,44 +30,139 @@ const defaultImages = [
   'https://i.pinimg.com/1200x/cc/04/78/cc0478ece26a04406fa2e50272d93144.jpg',
 ]
 
+const TOAST_DURATION = 3000
+
+const copyToClipboard = async (text: string): Promise<void> => {
+  if (navigator.clipboard) {
+    await navigator.clipboard.writeText(text)
+    return
+  }
+
+  const textarea = document.createElement('textarea')
+  textarea.value = text
+  textarea.style.position = 'fixed'
+  textarea.style.opacity = '0'
+  document.body.appendChild(textarea)
+  textarea.select()
+
+  try {
+    document.execCommand('copy')
+  } finally {
+    document.body.removeChild(textarea)
+  }
+}
+
 export const SkillDetails = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const dispatch = useDispatch()
+
   const { id } = useParams<{ id: string }>()
 
   const { loading, user } = useSelector((state: RootState) => getUser(state, id))
-  const similarUsers = useSelector((state: RootState) => recommendedUsersSelector(state))
+
+  const currentUser = useSelector((state: RootState) => state.user.user)
+  const similarUsers = useSelector((state: RootState) =>
+    similarUsersSelector(state, currentUser?.id, user?.id)
+  )
+
   const categories = useSelector((state: RootState) => getAllCategories(state))
   const subcategories = useSelector((state: RootState) => getAllSubcategories(state))
 
   // Ref для управления слайдером похожих предложений
   const similarSwiperRef = useRef<SwiperClass | null>(null)
 
-  if (loading) {
-    return <Loading />
-  }
+  const [showShareToast, setShowShareToast] = useState(false)
+  const shareToastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  if (!user) {
-    return <Navigate to="/not-found" />
-  }
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
 
-  // Пока нет авторизации всегда редирект на логин
+  useEffect(() => {
+    return () => {
+      if (shareToastTimerRef.current) clearTimeout(shareToastTimerRef.current)
+    }
+  }, [])
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }, [id])
+
+  const handleShareClick = useCallback(async () => {
+    try {
+      await copyToClipboard(window.location.href)
+    } catch {
+      // ignore
+    }
+
+    if (shareToastTimerRef.current) clearTimeout(shareToastTimerRef.current)
+
+    setShowShareToast(true)
+    shareToastTimerRef.current = setTimeout(() => {
+      setShowShareToast(false)
+      shareToastTimerRef.current = null
+    }, TOAST_DURATION)
+  }, [])
+
+  const handleShareToastClose = useCallback(() => {
+    setShowShareToast(false)
+    if (shareToastTimerRef.current) {
+      clearTimeout(shareToastTimerRef.current)
+      shareToastTimerRef.current = null
+    }
+  }, [])
+
   const handleOfferClick = () => {
-    // TODO: Проверка на авторизацию юзера и правильный редирект
-    navigate('/login')
+    if (!currentUser) {
+      navigate('/login', { state: { from: { pathname: location.pathname } } })
+      return
+    }
+
+    if (!user) return
+
+    const requests = loadRequests(currentUser.id)
+
+    const newRequest = user.id
+
+    requests.push(newRequest)
+    saveRequests(currentUser.id, requests)
+
+    // Открываем модалку вместо тоста
+    setShowSuccessModal(true)
+  }
+
+  const handleModalClose = () => {
+    setShowSuccessModal(false)
+    // Здесь можно добавить редирект, если потом понадобится
+    // например: navigate('/my-requests')
+  }
+
+  if (loading) return <Loading />
+
+  if (!user) return <Navigate to="/not-found" />
+
+  // проверяем, есть ли юзер в избранном текущего пользователя
+  const like = currentUser?.favorites?.includes(user.id) ?? false
+
+  const handleLikeClick = () => {
+    if (!currentUser || !user) return
+    dispatch(toggleFavorite(user.id))
   }
 
   const skill = user?.skills?.filter((skill) => skill.type === 'teach')?.[0] ?? null
 
-  // Находим объекты категорий по id
   const categoryObj = categories.find((cat) => cat.id === skill?.category)
   const subcategoryObj = subcategories.find((sub) => sub.id === skill?.subcategory)
 
-  // Отображение дефолтных картинок, если не установлены свои
   const skillImages = skill?.images?.length ? skill.images : defaultImages
 
-  // Обработчики навигации слайдера
   const handlePrev = () => similarSwiperRef.current?.slidePrev()
   const handleNext = () => similarSwiperRef.current?.slideNext()
+
+  const shareToast = {
+    id: 'share-toast',
+    message: 'Ссылка скопирована',
+    notificationId: 'share',
+  }
 
   return (
     <div className={styles.pageWrapper}>
@@ -65,10 +171,13 @@ export const SkillDetails = () => {
 
         <div className={styles.detailsWrapper}>
           <div className={styles.topButtons}>
-            <button className={styles.topButton} onClick={() => {}}>
-              <Icon name="like" />
+            <button
+              className={`${styles.topButton} ${like ? styles.liked : ''}`}
+              onClick={handleLikeClick}
+            >
+              <Icon name={like ? 'like-filled' : 'like'} />
             </button>
-            <button className={styles.topButton} onClick={() => {}}>
+            <button className={styles.topButton} onClick={handleShareClick}>
               <Icon name="share" />
             </button>
             <button className={styles.topButton} onClick={() => {}}>
@@ -133,6 +242,7 @@ export const SkillDetails = () => {
           >
             <Icon name="left-switch" size={16} />
           </button>
+
           <button
             className={`${styles.navButton} ${styles.nextButton}`}
             onClick={handleNext}
@@ -142,6 +252,16 @@ export const SkillDetails = () => {
           </button>
         </div>
       </section>
+
+      {showShareToast && (
+        <ToastContainer
+          toasts={[shareToast]}
+          onClose={handleShareToastClose}
+          autoHideDuration={TOAST_DURATION}
+        />
+      )}
+
+      {showSuccessModal && <RequestSuccess onClose={handleModalClose} onRedirect={() => {}} />}
     </div>
   )
 }

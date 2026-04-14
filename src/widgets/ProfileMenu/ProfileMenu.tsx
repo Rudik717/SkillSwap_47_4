@@ -46,7 +46,7 @@ export const menuItems: ProfileMenuElement[] = [
     id: 'userData',
     label: 'Личные данные',
     icon: 'user',
-    path: '/profile/user-data', // Активный путь
+    path: '/profile', // Активный путь
   },
 ]
 

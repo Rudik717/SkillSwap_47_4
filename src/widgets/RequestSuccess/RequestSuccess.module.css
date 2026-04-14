@@ -1,0 +1,25 @@
+.container {
+  max-width: 436px;
+  text-align: center;
+  background-color: var(--bg);
+}
+
+.iconWrapper {
+  margin: 12.5px;
+}
+
+.title {
+  margin-top: 52px;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.description {
+  margin-bottom: 32px;
+  color: var(--text);
+}
+
+.button {
+  width: 100%;
+  min-width: 436px;
+}

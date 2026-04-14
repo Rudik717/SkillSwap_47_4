@@ -24,6 +24,7 @@ interface SkillFilterProps {
 
 export const SkillFilter = ({ options, onChange, selectedIds }: SkillFilterProps) => {
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set())
+  const [showAllText, setShowAllText] = useState<boolean>(true)
 
   // Функция переключения иконки в зависимости от состояния группы
   const getArrowIcon = (groupId: string) => {
@@ -54,9 +55,11 @@ export const SkillFilter = ({ options, onChange, selectedIds }: SkillFilterProps
 
     if (allExpanded) {
       setExpandedGroups(new Set())
+      setShowAllText(true) // показываем «Все категории»
     } else {
       const allIds = new Set(options.map((group) => group.id))
       setExpandedGroups(allIds)
+      setShowAllText(false) // показываем «Свернуть»
     }
   }
 
@@ -129,7 +132,7 @@ export const SkillFilter = ({ options, onChange, selectedIds }: SkillFilterProps
         )
       })}
       <MenuButton
-        children="Все категории"
+        children={showAllText ? 'Все категории' : 'Свернуть'}
         iconColor="text"
         color="var(--skill-box-text-color)"
         onPress={toggleGlobalExpansion}
