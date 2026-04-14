@@ -16,6 +16,7 @@
 }
 
 .selectWrapper :global(.select__control) {
+  cursor: pointer;
   outline: none;
   background-color: var(--input-bg);
   border: 1px solid var(--border-main);
@@ -42,6 +43,15 @@
 
 :global(.select__control) :global(.select__value-container) {
   padding: 0;
+}
+
+.selectWrapper :global(.select__value-container),
+.selectWrapper :global(.select__indicators) {
+  cursor: pointer;
+}
+
+.selectWrapper :global(input) {
+  cursor: text;
 }
 
 /* Placeholder */
@@ -84,6 +94,7 @@
 
 .selectWrapper :global(.select__indicator) {
   padding: 0;
+  cursor: pointer;
 }
 
 /* Dropdown меню */
@@ -121,7 +132,7 @@
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 4px 0 4px 12px;
+  padding: 4px 20px;
   cursor: pointer;
 }
 

@@ -57,21 +57,27 @@ export const loginUserApi = (data: TLoginData) =>
     return Promise.reject(response.data)
   })
 
+// добавила withCredentials: true на случай, если запрос пойдет на другой домен, чтобы добавлял куки
 export const refreshUserApi = () =>
-  apiClient.post<TRefreshResponse>('/auth/refresh').then((response) => {
-    if (response.data.success) {
-      return response.data
-    }
-    return Promise.reject(response.data)
-  })
+  apiClient
+    .post<TRefreshResponse>('/auth/refresh', null, { withCredentials: true })
+    .then((response) => {
+      if (response.data.success) {
+        return response.data
+      }
+      return Promise.reject(response.data)
+    })
 
+// добавила withCredentials: true на случай, если запрос пойдет на другой домен, чтобы добавлял куки
 export const logoutUserApi = () =>
-  apiClient.post<TLogoutResponse>('/auth/logout').then((response) => {
-    if (response.data.success) {
-      return response.data
-    }
-    return Promise.reject(response.data)
-  })
+  apiClient
+    .post<TLogoutResponse>('/auth/logout', null, { withCredentials: true })
+    .then((response) => {
+      if (response.data.success) {
+        return response.data
+      }
+      return Promise.reject(response.data)
+    })
 
 export type TUserSuccessResponse = {
   success: true
@@ -136,7 +142,6 @@ export const updateUserApi = (data: TUpdateData) =>
     }
     return Promise.reject(response.data)
   })
-      
 
 export type TCheckEmailSuccessResponse = {
   success: true
@@ -149,4 +154,4 @@ export const checkEmailApi = (email: string) =>
       return true
     }
     return Promise.reject(response.data)
-  })   
+  })

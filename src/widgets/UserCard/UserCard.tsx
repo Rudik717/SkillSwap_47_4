@@ -88,12 +88,14 @@ export const UserCard: FC<TUserCardProps> = memo(({ user, hideActions, showAbout
               hideActions ? styles.hidden : ''
             }`}
           >
-            <button
-              className={`${styles['user-card__like-button']} ${like ? styles.liked : ''}`}
-              onClick={toggleLikeHandler}
-            >
-              <Icon name={like ? 'like-filled' : 'like'} />
-            </button>
+            {(!currentUser || currentUser.id !== user.id) && (
+              <button
+                className={`${styles['user-card__like-button']} ${like ? styles.liked : ''}`}
+                onClick={toggleLikeHandler}
+              >
+                <Icon name={like ? 'like-filled' : 'like'} />
+              </button>
+            )}
           </div>
           <div className={styles['user-card__info_title']}>
             <Text variant="H3" style={{ fontWeight: 600, color: textColor }}>

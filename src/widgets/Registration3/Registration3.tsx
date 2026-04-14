@@ -42,6 +42,7 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
   const [errors, setErrors] = useState<FieldErrors>({ title: '', description: '', images: '' })
   const [subcategoryOptions, setSubcategoryOptions] = useState<Option[]>([])
   const [isVerified, setIsVerified] = useState<boolean>(false)
+  const [isDragOver, setIsDragOver] = useState(false)
 
   const [inputs, setInputs] = useState<InputsState>({
     title: data.skills[1].title,
@@ -128,7 +129,7 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
 
       setInputs((prev) => ({ ...prev, description: value }))
     },
-    [setErrors, setInputs]
+    [setErrors, setInputs, setData]
   )
 
   // Универсальный обработчик для select
@@ -160,16 +161,16 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
     [setData, setInputs, options]
   )
 
-  // Обработчик для добавления изображении
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (!files) return
+  const handleCategoryChange = createSelectHandler('category')
+  const handleSubcategoryChange = createSelectHandler('subcategory')
 
+  // Универсальный обработчик для добавления изображений
+  const processImageFiles = (files: FileList | File[]) => {
     const MAX_TOTAL_SIZE = 2 * 1024 * 1024
+    const fileArray = Array.from(files) as File[]
     const existingFiles = inputs.imageFiles || []
     const existingTotalSize = existingFiles.reduce((total, file) => total + file.size, 0)
-    const newFiles = Array.from(files)
-    const newFilesTotalSize = newFiles.reduce((total, file) => total + file.size, 0)
+    const newFilesTotalSize = fileArray.reduce((total, file) => total + file.size, 0)
     const totalSize = existingTotalSize + newFilesTotalSize
 
     if (totalSize > MAX_TOTAL_SIZE) {
@@ -177,17 +178,20 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
         ...prev,
         images: `Общий размер всех изображений не должен превышать 2 Мб`,
       }))
-      e.target.value = ''
       return
     }
 
-    const validNewFiles = newFiles.filter((file) => file.size <= MAX_TOTAL_SIZE)
-    const invalidNewFiles = newFiles.filter((file) => file.size > MAX_TOTAL_SIZE)
+    const validNewFiles = fileArray.filter(
+      (file) => file.size <= MAX_TOTAL_SIZE && file.type.startsWith('image/')
+    )
+    const invalidNewFiles = fileArray.filter(
+      (file) => !file.type.startsWith('image/') || file.size > MAX_TOTAL_SIZE
+    )
 
     if (invalidNewFiles.length > 0) {
       setErrors((prev) => ({
         ...prev,
-        images: 'Размер отдельных изображений не должен превышать 2 Мб',
+        images: 'Некоторые файлы не являются изображениями или превышают 2 Мб',
       }))
     } else {
       setErrors((prev) => ({ ...prev, images: '' }))
@@ -195,7 +199,6 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
 
     if (validNewFiles.length > 0) {
       const newImageUrls = validNewFiles.map((file) => URL.createObjectURL(file))
-
       setInputs((prev) => ({
         ...prev,
         images: [...(prev.images || []), ...newImageUrls],
@@ -214,7 +217,14 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
         ),
       }))
     }
+  }
 
+  // Обработчик для добавления изображения через диалоговое окно
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files) return
+
+    processImageFiles(files)
     e.target.value = ''
   }
 
@@ -248,8 +258,29 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
     }
   }
 
-  const handleCategoryChange = createSelectHandler('category')
-  const handleSubcategoryChange = createSelectHandler('subcategory')
+  // Обработчики для реализации Drag and Drop
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setIsDragOver(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setIsDragOver(false)
+  }
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+  }
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setIsDragOver(false)
+    const files = e.dataTransfer.files
+    if (files.length > 0) {
+      processImageFiles(files)
+    }
+  }
 
   const handleNextStep = () => {
     if (isVerified) {
@@ -312,9 +343,13 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
                 id="dropArea"
                 className={clsx(styles.dropArea, {
                   [styles.overflowScroll]: inputs.images && inputs.images.length > 0,
-                  [styles.overflowNone]: !(inputs.images && inputs.images.length > 0),
                   [styles.dropAreaError]: errors.images,
+                  [styles.dragOver]: isDragOver,
                 })}
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
               >
                 {inputs.images && inputs.images.length > 0 ? (
                   <>
@@ -337,7 +372,7 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
                       ))}
                     </div>
                     <div className={styles.imagesContainer}>
-                      <Icon name="gallery-add" stroke="#508826" />
+                      <Icon name="galary-add-green" />
                       <Text
                         variant="Body"
                         children={'Выбрать изображения'}
@@ -362,13 +397,13 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
                       className={styles.textSpan}
                     />
                     <div className={styles.imagesContainer}>
-                      <Icon name="gallery-add" stroke="#508826" />
+                      <Icon name="galary-add-green" />
                       <Text
                         variant="Body"
                         children={'Выбрать изображения'}
                         color="#508826"
                         as="span"
-                        className={styles.texColor}
+                        className={styles.textColor}
                       />
                       <input
                         type="file"

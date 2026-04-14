@@ -1,9 +1,17 @@
-// __tests__/authorization.tests.ts
-import { getUserWithToken, loginUser, logoutUser, userSlice } from '@/store/user-slice'
+import {
+  getUserWithToken,
+  loginUser,
+  logoutUser,
+  registerUser,
+  userSlice,
+} from '@/store/user-slice'
 import type { TUser } from '@/utils'
 import { describe, expect, it, jest } from '@jest/globals'
 
+import type { TRegisterData } from '@utils/types'
+
 // Мокаем зависимости, которые вызывают ошибку с import.meta
+
 jest.mock('@/services/axios-instance', () => ({
   __esModule: true,
   default: {
@@ -47,6 +55,17 @@ const mockUser: TUser = {
   updatedAt: '2025-03-30T15:20:00Z',
   favorites: [],
   likes: 0,
+  skills: [],
+}
+
+const mockRegisterData: TRegisterData = {
+  email: 'newuser@example.com',
+  password: '123456',
+  name: 'Новый Пользователь',
+  birthDate: new Date('1995-01-01'),
+  gender: 'male' as const,
+  city: 'Москва',
+  avatar: '',
   skills: [],
 }
 
@@ -94,6 +113,59 @@ describe('userSlice', () => {
         loginUser.rejected(new Error('Invalid credentials'), '', { email: '', password: '' })
       )
       expect(state.error).toBe('Ошибка входа')
+      expect(state.isAuthChecked).toBe(true)
+      expect(state.loading).toBe(false)
+    })
+  })
+
+  describe('Тесты registerUser', () => {
+    it('Тест registerUser.pending - устанавливает loading и очищает ошибку', () => {
+      const state = reducer(initialState, registerUser.pending('', mockRegisterData))
+      expect(state.loading).toBe(true)
+      expect(state.error).toBe(null)
+      expect(state.isAuthChecked).toBe(false)
+    })
+
+    it('Тест registerUser.fulfilled - сохраняет пользователя после успешной регистрации', () => {
+      const state = reducer(initialState, registerUser.fulfilled(mockUser, '', mockRegisterData))
+      expect(state.user).toEqual(mockUser)
+      expect(state.isAuthChecked).toBe(true)
+      expect(state.loading).toBe(false)
+      expect(state.error).toBe(null)
+    })
+
+    it('Тест registerUser.rejected - сохраняет ошибку при неудачной регистрации', () => {
+      const state = reducer(
+        initialState,
+        registerUser.rejected(new Error('Email already exists'), '', mockRegisterData)
+      )
+      expect(state.error).toBe('Ошибка регистрации')
+      expect(state.isAuthChecked).toBe(true)
+      expect(state.loading).toBe(false)
+      expect(state.user).toBe(null)
+    })
+
+    it('Тест registerUser.rejected с кастомным сообщением об ошибке', () => {
+      const errorPayload = { message: 'Email already exists' }
+      const action = registerUser.rejected(new Error(), '', mockRegisterData, errorPayload)
+      const state = reducer(initialState, action)
+      expect(state.error).toBe('Email already exists')
+      expect(state.isAuthChecked).toBe(true)
+      expect(state.loading).toBe(false)
+    })
+
+    it('Тест registerUser.fulfilled - заменяет существующего пользователя при повторной регистрации', () => {
+      const existingUser = { ...mockUser, id: '2', email: 'old@example.com' }
+      const newUser = { ...mockUser, id: '3', email: 'new@example.com' }
+
+      let state = reducer(
+        initialState,
+        loginUser.fulfilled(existingUser, '', { email: '', password: '' })
+      )
+      expect(state.user).toEqual(existingUser)
+
+      state = reducer(state, registerUser.fulfilled(newUser, '', mockRegisterData))
+      expect(state.user).toEqual(newUser)
       expect(state.isAuthChecked).toBe(true)
       expect(state.loading).toBe(false)
     })

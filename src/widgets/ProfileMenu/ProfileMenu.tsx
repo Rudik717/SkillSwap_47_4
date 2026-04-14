@@ -40,7 +40,7 @@ export const menuItems: ProfileMenuElement[] = [
     id: 'idea',
     label: 'Мои навыки',
     icon: 'idea',
-    path: '', // Заглушка — нет пути
+    path: '/profile/myskills',
   },
   {
     id: 'userData',
