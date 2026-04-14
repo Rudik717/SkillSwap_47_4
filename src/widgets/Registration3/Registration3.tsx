@@ -401,6 +401,7 @@ export const Registration3 = ({ data, setData, nextStep, prevStep }: RegisterDat
                       <Text
                         variant="Body"
                         children={'Выбрать изображения'}
+                        color="#508826"
                         as="span"
                         className={styles.textColor}
                       />

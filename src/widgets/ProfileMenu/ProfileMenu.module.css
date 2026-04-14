@@ -33,11 +33,11 @@
 }
 
 .sidebarButton_active {
-  background-color: rgb(222 235 197);
+  background-color: var(--profile-edit);
 }
 
 .sidebarButton:hover:not(:disabled) {
-  background-color: rgb(228 232 223);
+  background-color: var(--bg-light);
 }
 
 .disabled {

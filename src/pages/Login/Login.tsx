@@ -91,10 +91,12 @@ export const Login = () => {
             </div>
             <div className={clsx(styles.conteiner, styles.buttonConteiner)}>
               <div className={styles.button}>
-                <Button disabled={loading}>{loading ? 'Загрузка...' : 'Войти'}</Button>
+                <Button className="width: 100%" disabled={loading}>
+                  {loading ? 'Загрузка...' : 'Войти'}
+                </Button>
               </div>
               <Link to="/register" className={styles.register}>
-                <Text color="var(--skill-box-text-color)">Зарегистрироваться</Text>
+                <Text color="var(--accent-color)">Зарегистрироваться</Text>
               </Link>
             </div>
           </>

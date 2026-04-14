@@ -3,7 +3,7 @@
   width: 340px;
   height: 72px;
   pointer-events: auto;
-  background-color: rgb(222 235 197 / 100%);
+  background-color: var(--accent-color-hover);
   border-radius: 12px;
   box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
   transition: all 0.3s ease;
@@ -23,7 +23,7 @@
 
 .iconWrapper {
   display: inline-flex;
-  color: rgb(37 48 23 / 100%);
+  color: var(--text);
 }
 
 .iconWrapper svg {
@@ -33,7 +33,7 @@
 
 .text {
   flex: 1;
-  color: rgb(37 48 23 / 100%);
+  color: var(--text);
   white-space: nowrap;
 }
 
@@ -45,7 +45,7 @@
   align-items: center;
   justify-content: center;
   padding: 0;
-  color: rgb(37 48 23 / 100%);
+  color: var(--text);
   cursor: pointer;
   background: none;
   border: none;
