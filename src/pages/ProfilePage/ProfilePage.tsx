@@ -15,6 +15,7 @@ export const ProfilePage = () => {
   const getSelectedItem = () => {
     const pathname = location.pathname
     if (pathname.endsWith('/favorites')) return 'like'
+    if (pathname.endsWith('/myskills')) return 'idea'
     if (pathname === '/profile') return 'userData'
     return 'userData' // значение по умолчанию
   }
