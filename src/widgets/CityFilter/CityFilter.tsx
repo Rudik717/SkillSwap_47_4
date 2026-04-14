@@ -44,7 +44,7 @@ export const CityFilter = ({ options, selectedValues = [], onClick }: CityFilter
         <MenuButton
           iconName={showAllCityList ? 'arrow-up' : 'arrow-down'}
           onPress={() => setShowAllCityList(!showAllCityList)}
-          color="#508826"
+          color="var(--accent-color)"
           iconColor="black"
         >
           {showAllCityList ? 'Свернуть' : 'Все города'}

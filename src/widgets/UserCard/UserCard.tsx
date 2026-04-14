@@ -22,6 +22,7 @@ export const UserCard: FC<TUserCardProps> = memo(({ user, hideActions, showAbout
 
   const MAX_VISIBLE = 1
   const textColor = 'var(--text)'
+  const captionColor = 'var(--caption-color)'
 
   const displayedTeachSkills = teachSkills.slice(0, MAX_VISIBLE)
   const remainingTeachCount = teachSkills.length - MAX_VISIBLE
@@ -100,7 +101,7 @@ export const UserCard: FC<TUserCardProps> = memo(({ user, hideActions, showAbout
             </Text>
             <Text
               variant="Caption"
-              style={{ color: textColor }}
+              style={{ color: captionColor }}
             >{`${city}, ${getAgeText(birthDate)}`}</Text>
           </div>
         </div>

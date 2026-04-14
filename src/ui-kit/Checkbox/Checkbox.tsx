@@ -1,4 +1,7 @@
 import styles from './Checkbox.module.css'
+import CheckboxDone from '/src/assets/svg/checkbox-done.svg?react'
+import CheckboxEmpty from '/src/assets/svg/checkbox-empty.svg?react'
+import CheckboxRemove from '/src/assets/svg/checkbox-remove.svg?react'
 
 export type CheckboxState = 'unchecked' | 'checked' | 'indeterminate'
 
@@ -10,14 +13,15 @@ interface CheckboxProps {
 }
 
 const icons = {
-  unchecked: '/src/assets/svg/checkbox-empty.svg',
-  checked: '/src/assets/svg/checkbox-done.svg',
-  indeterminate: '/src/assets/svg/checkbox-remove.svg',
+  unchecked: CheckboxEmpty,
+  checked: CheckboxDone,
+  indeterminate: CheckboxRemove,
 }
 
 export const Checkbox = ({ state = 'unchecked', onClick, children }: CheckboxProps) => {
   const isChecked = state === 'checked'
   const isIndeterminate = state === 'indeterminate'
+  const Icon = icons[state]
 
   return (
     <label className={styles.label}>
@@ -30,7 +34,7 @@ export const Checkbox = ({ state = 'unchecked', onClick, children }: CheckboxPro
         }}
         onChange={onClick}
       />
-      <img src={icons[state]} alt="" className={styles.icon} />
+      <Icon className={styles.icon} />
       <span className={styles.text}>{children}</span>
     </label>
   )

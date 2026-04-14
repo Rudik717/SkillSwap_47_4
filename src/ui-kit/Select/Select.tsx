@@ -26,7 +26,7 @@ type SelectProps = {
 // Стрелка вниз
 const CustomDropdownIndicator = (props: any) => (
   <components.DropdownIndicator {...props}>
-    <Icon name="arrow-down" size={24} color="#253017" />
+    <Icon name="arrow-down" size={24} color="var(--text)" />
   </components.DropdownIndicator>
 )
 
@@ -38,7 +38,7 @@ const CustomClearIndicator = (props: any) => {
 
   return (
     <components.ClearIndicator {...props}>
-      <Icon name="cross" size={24} color="#253017" />
+      <Icon name="cross" size={24} color="var(--text)" />
     </components.ClearIndicator>
   )
 }
