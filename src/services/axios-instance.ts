@@ -1,5 +1,6 @@
 // Настроенный экземпляр axios
 import axios from 'axios'
+import type { InternalAxiosRequestConfig } from 'axios'
 
 import { refreshUserApi } from './auth.api'
 import { deleteAccessToken, getAccessToken, setAccessToken } from './token-manager'
@@ -14,15 +15,16 @@ let promiseQueue: Array<{
 
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true,
+  // withCredentials: true, - пропишу только нужным запросам (в нашем проекте итак один домен, поэтому можно без него)
 })
 
 // Request interceptor - перехватывает все запросы (добавляет access token в заголовок Authorization ко всем запросам,
 // если токен существует. Публичные эндпоинты его проигнорируют.
 apiClient.interceptors.request.use(
-  (config) => {
+  (config: InternalAxiosRequestConfig) => {
     const accessToken = getAccessToken()
-    if (accessToken) {
+    // добавляю проверку случая, если headers не инициализирован
+    if (accessToken && config.headers) {
       config.headers.Authorization = `Bearer ${accessToken}`
     }
     return config
@@ -39,7 +41,9 @@ apiClient.interceptors.response.use(
   (response) => response,
   // ошибка - смотрим код - обрабатываем случай 401 (ошибка авторизации)
   async (error) => {
-    if (error.response?.status === 401) {
+    const originalRequest = error.config
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true
       const errorCode = error.response?.data?.code
       // если access токен просто истек
       if (errorCode === 'TOKEN_EXPIRED') {
@@ -50,6 +54,11 @@ apiClient.interceptors.response.use(
             promiseQueue.push({
               resolve: (token: string) => {
                 const queueRequest = error.config
+                // аналогично добавляем обработку undefined
+                if (!queueRequest?.headers) {
+                  reject(error)
+                  return
+                }
                 queueRequest.headers.Authorization = `Bearer ${token}`
                 resolve(apiClient(queueRequest))
               },
@@ -66,10 +75,13 @@ apiClient.interceptors.response.use(
           setAccessToken(accesstoken)
           // повторяем это запрос с новым полученным access токеном
           // достаем запрос из ошибки и добавляем ему в заголовок access токен
-          const originalRequest = error.config
+          // тоже добавляю проверку на undefined
+          if (!originalRequest || !originalRequest.headers) {
+            return Promise.reject(error)
+          }
           originalRequest.headers.Authorization = `Bearer ${accesstoken}`
           // Отправляем этот первым запросом заново и возвращаем результат
-          const firstResult = apiClient(originalRequest)
+          const firstResult = await apiClient(originalRequest)
           // запускаем остальные запросы заново
           promiseQueue.forEach((item) => item.resolve(accesstoken))
           promiseQueue = []
