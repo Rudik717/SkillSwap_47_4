@@ -21,16 +21,27 @@
   border-radius: 12px;
 }
 
+.dropArea::before {
+  /* transform: translate(-50%, -50%); */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.dragOver {
+  background-color: var(--background-color);
+  border-color: var(--accent-color);
+}
+
+.dragOver::before {
+  opacity: 1;
+}
+
 .dropAreaError {
   border-color: var(--color-error);
 }
 
 .overflowScroll {
   overflow-y: scroll;
-}
-
-.overflowNone {
-  overflow-y: none;
 }
 
 .textSpan {
