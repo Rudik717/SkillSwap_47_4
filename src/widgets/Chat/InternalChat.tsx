@@ -56,7 +56,7 @@ export const InternalChat: React.FC = () => {
         ...prev,
         {
           id: Date.now().toString() + '-' + Math.random(),
-          text: 'Интересно... Расскажите подробнее.',
+          text: 'Секунду.',
           sender: 'bot' as const,
           timestamp: Date.now(),
         },
