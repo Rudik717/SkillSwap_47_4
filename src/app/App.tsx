@@ -14,7 +14,7 @@ import type { AppDispatch } from '@/store'
 import { getCategories } from '@/store/categories'
 import { getCities } from '@/store/cities'
 import { getUsers } from '@/store/users'
-import { Favorites, MySkills, ProfileInfo } from '@/widgets'
+import { Favorites, MySkills, ProfileExchanges, ProfileInfo, ProfileRequests } from '@/widgets'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
@@ -51,6 +51,8 @@ export const App = () => {
         >
           <Route index element={<ProfileInfo />} />
           <Route path="favorites" element={<Favorites />} />
+          <Route path="requests" element={<ProfileRequests />} />
+          <Route path="exchanges" element={<ProfileExchanges />} />
           <Route path="myskills" element={<MySkills />} />
         </Route>
 

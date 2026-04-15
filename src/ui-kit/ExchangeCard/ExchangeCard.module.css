@@ -1,0 +1,33 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  padding: 20px;
+  background: var(--bg-menu);
+  border: none;
+  border-radius: 12px;
+}
+
+.skillsBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.partner {
+  font-size: 16px;
+  color: var(--text);
+}
+
+.status {
+  font-size: 16px;
+  color: var(--text);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}

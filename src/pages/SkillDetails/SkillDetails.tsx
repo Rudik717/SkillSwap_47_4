@@ -1,6 +1,7 @@
-import { type RootState } from '@/store'
+import { type AppDispatch, type RootState } from '@/store'
 import { getAllCategories, getAllSubcategories } from '@/store/categories'
-import { loadRequests, saveRequests, toggleFavorite } from '@/store/user-slice'
+import { addExchange } from '@/store/exchanges-slice'
+import { toggleFavorite } from '@/store/user-slice'
 import { getUser, similarUsersSelector } from '@/store/users'
 import { Button, Icon, Text } from '@/ui-kit'
 import {
@@ -55,7 +56,7 @@ const copyToClipboard = async (text: string): Promise<void> => {
 export const SkillDetails = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   const { id } = useParams<{ id: string }>()
 
@@ -64,6 +65,18 @@ export const SkillDetails = () => {
   const currentUser = useSelector((state: RootState) => state.user.user)
   const similarUsers = useSelector((state: RootState) =>
     similarUsersSelector(state, currentUser?.id, user?.id)
+  )
+
+  // Получаем список всех обменов
+  const exchanges = useSelector((state: RootState) => state.exchanges.exchanges)
+
+  // Проверяем, есть ли уже заявка от текущего залогиненного пользователя
+  const alreadyRequested = Boolean(
+    currentUser &&
+    user &&
+    exchanges.some(
+      (ex) => ex.fromUserId === currentUser.id && ex.toUserId === user.id && ex.status === 'pending'
+    )
   )
 
   const categories = useSelector((state: RootState) => getAllCategories(state))
@@ -111,22 +124,33 @@ export const SkillDetails = () => {
     }
   }, [])
 
+  // Навык текущего пользователя, который он предлагает
+  const currentUserSkill = currentUser?.skills?.find((s) => s.type === 'teach')
+  // Навык пользователя, с которым хочет обмен
+  const targetUserSkill = user?.skills?.find((s) => s.type === 'teach')
+
   const handleOfferClick = () => {
+    // Редирект на логин, если пользователь не авторизован
     if (!currentUser) {
       navigate('/login', { state: { from: { pathname: location.pathname } } })
       return
     }
 
     if (!user) return
+    if (alreadyRequested) return
 
-    const requests = loadRequests(currentUser.id)
+    // Создаем заявку на обмен
+    dispatch(
+      addExchange({
+        id: window.crypto.randomUUID(),
+        fromUserId: currentUser.id,
+        toUserId: user.id,
+        fromSkillId: currentUserSkill?.id ?? '',
+        toSkillId: targetUserSkill?.id ?? '',
+        status: 'pending',
+      })
+    )
 
-    const newRequest = user.id
-
-    requests.push(newRequest)
-    saveRequests(currentUser.id, requests)
-
-    // Открываем модалку вместо тоста
     setShowSuccessModal(true)
   }
 
@@ -208,7 +232,9 @@ export const SkillDetails = () => {
               </div>
 
               {(!currentUser || currentUser.id !== user.id) && (
-                <Button onClick={handleOfferClick}>Предложить обмен</Button>
+                <Button onClick={handleOfferClick} disabled={alreadyRequested}>
+                  Предложить обмен
+                </Button>
               )}
             </div>
 
