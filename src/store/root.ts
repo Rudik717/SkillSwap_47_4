@@ -1,7 +1,9 @@
+import { saveExchanges } from '@/utils/exchangesStorage'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
 import { categoriesReducer } from './categories'
 import { citiesReducer } from './cities'
+import { exchangesReducer } from './exchangesSlice'
 import { filterReducer } from './filter'
 import { notificationsReducer } from './notifications'
 import { userSliceReducer } from './user-slice'
@@ -14,11 +16,17 @@ export const rootReducer = combineReducers({
   users: usersReducer,
   user: userSliceReducer,
   notifications: notificationsReducer,
+  exchanges: exchangesReducer,
 })
 
 export const store = configureStore({
   reducer: rootReducer,
   devTools: process.env.NODE_ENV !== 'production',
+})
+
+store.subscribe(() => {
+  const state = store.getState()
+  saveExchanges(state.exchanges.exchanges)
 })
 
 export type AppDispatch = typeof store.dispatch

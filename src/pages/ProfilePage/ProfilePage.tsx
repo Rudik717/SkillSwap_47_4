@@ -16,6 +16,8 @@ export const ProfilePage = () => {
     const pathname = location.pathname
     if (pathname.endsWith('/favorites')) return 'like'
     if (pathname === '/profile') return 'userData'
+    if (pathname.endsWith('/exchanges')) return 'message'
+    if (pathname.endsWith('/requests')) return 'request'
     return 'userData' // значение по умолчанию
   }
 
