@@ -13,6 +13,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
   margin-bottom: 22px;
   text-align: center;
@@ -28,9 +29,8 @@
 
 .textDivider span {
   z-index: 2;
-  flex: 1;
-  margin: 0 10px;
-  content: '';
+  padding: 0 4px;
+  background: var(--bg-footer);
 }
 
 .form {
