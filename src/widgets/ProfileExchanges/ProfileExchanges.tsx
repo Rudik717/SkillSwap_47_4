@@ -1,5 +1,5 @@
 import type { AppDispatch, RootState } from '@/store'
-import { getActiveExchanges, scheduleExchange } from '@/store/exchangesSlice'
+import { getActiveExchanges, scheduleExchange } from '@/store/exchanges-slice'
 import { ExchangeCard, Text } from '@/ui-kit'
 import { useDispatch, useSelector } from 'react-redux'
 

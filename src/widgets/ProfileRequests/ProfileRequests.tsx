@@ -4,7 +4,7 @@ import {
   declineExchange,
   getIncomingRequests,
   getOutgoingRequests,
-} from '@/store/exchangesSlice'
+} from '@/store/exchanges-slice'
 import { RequestCard, Text } from '@/ui-kit'
 import { useDispatch, useSelector } from 'react-redux'
 

@@ -3,7 +3,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
 import { categoriesReducer } from './categories'
 import { citiesReducer } from './cities'
-import { exchangesReducer } from './exchangesSlice'
+import { exchangesReducer } from './exchanges-slice'
 import { filterReducer } from './filter'
 import { notificationsReducer } from './notifications'
 import { userSliceReducer } from './user-slice'

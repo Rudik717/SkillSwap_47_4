@@ -1,6 +1,6 @@
 import { type AppDispatch, type RootState } from '@/store'
 import { getAllCategories, getAllSubcategories } from '@/store/categories'
-import { addExchange } from '@/store/exchangesSlice'
+import { addExchange } from '@/store/exchanges-slice'
 import { toggleFavorite } from '@/store/user-slice'
 import { getUser, similarUsersSelector } from '@/store/users'
 import { Button, Icon, Text } from '@/ui-kit'
