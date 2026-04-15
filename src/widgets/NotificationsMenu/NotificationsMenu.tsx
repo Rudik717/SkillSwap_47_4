@@ -40,6 +40,36 @@ export const NotificationsMenu = ({ isOpen, onClose, triggerRef }: Notifications
       ? 'Перейдите в профиль, чтобы обсудить детали'
       : 'Примите обмен, чтобы обсудить детали'
 
+  function parseRuDate(dateString: string): Date {
+    const [day, month, year] = dateString.split('.')
+    return new Date(Number(year), Number(month) - 1, Number(day))
+  }
+
+  function formatDate(dateString: string): string {
+    const date = parseRuDate(dateString)
+
+    const today = new Date()
+    const yesterday = new Date()
+
+    yesterday.setDate(today.getDate() - 1)
+
+    const normalize = (d: Date) => {
+      const copy = new Date(d)
+      copy.setHours(0, 0, 0, 0)
+      return copy
+    }
+
+    const isSameDay = (d1: Date, d2: Date) => normalize(d1).getTime() === normalize(d2).getTime()
+
+    if (isSameDay(date, today)) return 'сегодня'
+    if (isSameDay(date, yesterday)) return 'вчера'
+
+    return date.toLocaleDateString('ru-RU', {
+      day: 'numeric',
+      month: 'long',
+    })
+  }
+
   return (
     <MenuWrapper isOpen={isOpen} onClose={onClose} triggerRef={triggerRef} position="top-right">
       <div className={styles.menuWrapper}>
@@ -55,17 +85,17 @@ export const NotificationsMenu = ({ isOpen, onClose, triggerRef }: Notifications
               {unreadNotifications.map((n) => (
                 <div key={n.id} className={styles.notificationItem}>
                   <div className={styles.notificationHeader}>
-                    <Icon name="idea" size={20} />
+                    <Icon name="idea" size={40} />
                     <div className={styles.textContainer}>
                       <div className={styles.titleRow}>
                         <Text variant="H4">
                           {n.user} {n.text}
                         </Text>
                         <Text variant="Caption" className={styles.date}>
-                          {n.date}
+                          {formatDate(n.date)}
                         </Text>
                       </div>
-                      <Text variant="Body">{getDescription(n)}</Text>
+                      <Text variant="Caption">{getDescription(n)}</Text>
                     </div>
                   </div>
                   {n.link && (
@@ -95,17 +125,17 @@ export const NotificationsMenu = ({ isOpen, onClose, triggerRef }: Notifications
               {readNotifications.map((n) => (
                 <div key={n.id} className={styles.notificationItem}>
                   <div className={styles.notificationHeader}>
-                    <Icon name="idea" size={20} />
+                    <Icon name="idea" size={40} />
                     <div className={styles.textContainer}>
                       <div className={styles.titleRow}>
                         <Text variant="H4" className={styles.readText}>
                           {n.user} {n.text}
                         </Text>
                         <Text variant="Caption" className={styles.date}>
-                          {n.date}
+                          {formatDate(n.date)}
                         </Text>
                       </div>
-                      <Text variant="Body">{getDescription(n)}</Text>
+                      <Text variant="Caption">{getDescription(n)}</Text>
                     </div>
                   </div>
                 </div>
