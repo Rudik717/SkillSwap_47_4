@@ -97,7 +97,7 @@ export const Login = () => {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <FormLayout
-        title={<Text variant="H2">Войти</Text>}
+        title={<Text variant="H2">Вход</Text>}
         infoBlock={
           <div className={clsx(styles.container, styles.infoBlock)}>
             <Icon name="light-bubble" size={300} />
