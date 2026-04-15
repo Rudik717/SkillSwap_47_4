@@ -38,6 +38,13 @@ export const Header: FC<THeaderProps> = ({ variant = 'unauth' }) => {
   const hasFetchedRef = useRef(false)
   const dispatch = useDispatch<AppDispatch>()
 
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light')
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
   useEffect(() => {
     if (variant === 'auth' && user?.id && !hasFetchedRef.current) {
       dispatch(fetchNotifications(user.id))
@@ -68,6 +75,10 @@ export const Header: FC<THeaderProps> = ({ variant = 'unauth' }) => {
 
   const handleRegister = () => {
     navigate('/register')
+  }
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
   }
 
   return (
@@ -114,8 +125,8 @@ export const Header: FC<THeaderProps> = ({ variant = 'unauth' }) => {
           )}
           {variant === 'unauth' && (
             <>
-              <button className={styles.header__button} onClick={() => {}}>
-                <Icon name="moon" />
+              <button className={styles.header__button} onClick={toggleTheme}>
+                <Icon name={theme === 'light' ? 'moon' : 'sun'} />
               </button>
               <div className={styles.header__anauth}>
                 <Button variant="secondary" onClick={handleLogin}>
@@ -132,8 +143,8 @@ export const Header: FC<THeaderProps> = ({ variant = 'unauth' }) => {
             <>
               <section className={styles.header__auth}>
                 <div className={styles.auth__buttons}>
-                  <button className={styles.header__button} onClick={() => {}}>
-                    <Icon name="moon" />
+                  <button className={styles.header__button} onClick={toggleTheme}>
+                    <Icon name={theme === 'light' ? 'moon' : 'sun'} />
                   </button>
                   <div className={styles.notification__button_container}>
                     <button

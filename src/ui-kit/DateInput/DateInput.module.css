@@ -14,8 +14,8 @@
   height: 48px;
   padding: 0 20px;
   cursor: pointer;
-  background-color: #fff;
-  border: 1px solid #69735d;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-main);
   border-radius: 12px;
 }
 
@@ -24,14 +24,14 @@
   padding: 12px 0;
   font-family: Roboto, sans-serif;
   font-size: 16px;
-  color: #253017;
+  color: var(--text);
   outline: none;
   background: transparent;
   border: none;
 }
 
 .input::placeholder {
-  color: #69735d;
+  color: var(--placeholder);
 }
 
 /* Календарь */
@@ -50,8 +50,8 @@
   width: 280px;
   padding: 16px 28px;
   font-family: Roboto, sans-serif;
-  background-color: #fff;
-  border: 1px solid #69735d;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-main);
   border-radius: 12px;
 }
 
@@ -83,8 +83,9 @@
   padding: 4px 0;
   margin-top: 4px;
   overflow-y: auto;
-  background: #fff;
-  border: 1px solid #69735d;
+  color: var(--text);
+  background: var(--input-bg);
+  border: 1px solid var(--border-main);
   border-radius: 12px;
 }
 
@@ -96,7 +97,7 @@
   height: 40px;
   font-family: Roboto, sans-serif;
   font-size: 16px;
-  color: #253017;
+  color: var(--text);
   cursor: pointer;
   border: none;
 }
@@ -116,11 +117,11 @@
 }
 
 .dropdownItem:hover {
-  background: #e4e8df;
+  background: var(--bg-light);
 }
 
 :global(.selected) {
-  color: #508826;
+  color: var(--accent-color);
 }
 
 /* Дни недели */
@@ -139,7 +140,7 @@
   margin: 0;
   font-size: 12px;
   line-height: 16px;
-  color: #508826;
+  color: var(--accent-color);
   text-transform: capitalize;
 }
 
@@ -155,7 +156,7 @@
   margin: 0;
   font-size: 12px;
   line-height: 32px;
-  color: #253017;
+  color: var(--text);
   text-align: center;
   cursor: pointer;
   border-radius: 100%;
@@ -164,12 +165,12 @@
 :global(.react-datepicker__day--selected) {
   padding: 0;
   margin: 0;
-  background-color: #abd27a;
+  background-color: var(--accent-color);
   border-radius: 100%;
 }
 
 :global(.react-datepicker__day--outside-month) {
-  color: #9ca197;
+  color: var(--disabled-text);
   cursor: default;
   background: transparent;
 }
@@ -179,7 +180,7 @@
 }
 
 :global(.react-datepicker__day:not([aria-disabled='true']):hover) {
-  background: #e4e8df;
+  background: var(--bg-light);
   border-radius: 100%;
 }
 

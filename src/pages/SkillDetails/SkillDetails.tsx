@@ -195,12 +195,14 @@ export const SkillDetails = () => {
 
         <div className={styles.detailsWrapper}>
           <div className={styles.topButtons}>
-            <button
-              className={`${styles.topButton} ${like ? styles.liked : ''}`}
-              onClick={handleLikeClick}
-            >
-              <Icon name={like ? 'like-filled' : 'like'} />
-            </button>
+            {(!currentUser || currentUser.id !== user.id) && (
+              <button
+                className={`${styles.topButton} ${like ? styles.liked : ''}`}
+                onClick={handleLikeClick}
+              >
+                <Icon name={like ? 'like-filled' : 'like'} />
+              </button>
+            )}
             <button className={styles.topButton} onClick={handleShareClick}>
               <Icon name="share" />
             </button>
@@ -229,9 +231,11 @@ export const SkillDetails = () => {
                 </Text>
               </div>
 
-              <Button onClick={handleOfferClick} disabled={alreadyRequested}>
-                Предложить обмен
-              </Button>
+              {(!currentUser || currentUser.id !== user.id) && (
+                <Button onClick={handleOfferClick} disabled={alreadyRequested}>
+                  Предложить обмен
+                </Button>
+              )}
             </div>
 
             <UserGallery images={skillImages} />

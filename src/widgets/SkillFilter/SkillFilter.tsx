@@ -109,7 +109,7 @@ export const SkillFilter = ({ options, onChange, selectedIds }: SkillFilterProps
               {option.items && (
                 <MenuButton
                   iconColor="text"
-                  color="var(--skill-box-text-color)"
+                  color="var(--text)"
                   iconName={getArrowIcon(option.id)}
                   onPress={() => toggleGroupExpansion(option.id)}
                   style={{ display: 'inline' }}
@@ -134,7 +134,7 @@ export const SkillFilter = ({ options, onChange, selectedIds }: SkillFilterProps
       <MenuButton
         children={showAllText ? 'Все категории' : 'Свернуть'}
         iconColor="text"
-        color="var(--skill-box-text-color)"
+        color="var(--accent-color)"
         onPress={toggleGlobalExpansion}
         iconName={arrowIcon}
         style={{ paddingLeft: '0' }}

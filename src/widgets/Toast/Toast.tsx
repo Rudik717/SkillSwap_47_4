@@ -50,7 +50,7 @@ export const Toast = ({ toast, onClose, autoHideDuration }: ToastProps) => {
         </Text>
       </div>
       <button className={styles.closeButton} onClick={handleClose}>
-        <Icon name="cross" color="rgba(37, 48, 23, 1)" />
+        <Icon name="cross" />
       </button>
     </motion.div>
   )

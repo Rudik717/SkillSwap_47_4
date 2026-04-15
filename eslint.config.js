@@ -98,7 +98,12 @@ export default [
     */
 
       // Prettier
-      'prettier/prettier': 'error',
+      'prettier/prettier': [
+        'error',
+        {
+          endOfLine: 'auto',
+        },
+      ],
     },
   },
   // 2. Конфиг для моков (Node.js окружение)

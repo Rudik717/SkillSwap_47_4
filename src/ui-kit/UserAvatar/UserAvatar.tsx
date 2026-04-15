@@ -17,7 +17,7 @@ export const UserAvatar = ({ size = 48 }: UserAvatarProps) => {
 
   return (
     <div className={styles.userAvatar}>
-      <Text color="black" className={styles.userName}>
+      <Text color="var(--text)" className={styles.userName}>
         {userName}
       </Text>
       <Avatar url={avatarUrl} alt={`${userName}'s avatar`} size={size} fallback={firstLetter} />

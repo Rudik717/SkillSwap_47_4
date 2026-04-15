@@ -73,6 +73,16 @@ export const DateInput = ({
       }
     }, [openDropdown])
 
+    const handleChangeMonth = (monthIndex: number) => {
+      changeMonth(monthIndex)
+      setOpenDropdown(null)
+    }
+
+    const handleChangeYear = (year: number) => {
+      changeYear(year)
+      setOpenDropdown(null)
+    }
+
     return (
       <div className={styles.header}>
         <div className={styles.dropdown}>
@@ -90,10 +100,7 @@ export const DateInput = ({
                 <div
                   key={month}
                   className={`${styles.dropdownItem} ${date.getMonth() === index ? 'selected' : ''}`}
-                  onClick={() => {
-                    changeMonth(index)
-                    setOpenDropdown(null)
-                  }}
+                  onClick={() => handleChangeMonth(index)}
                 >
                   {month}
                 </div>
@@ -117,10 +124,7 @@ export const DateInput = ({
                 <div
                   key={year}
                   className={`${styles.dropdownItem} ${date.getFullYear() === year ? 'selected' : ''}`}
-                  onClick={() => {
-                    changeYear(year)
-                    setOpenDropdown(null)
-                  }}
+                  onClick={() => handleChangeYear(year)}
                 >
                   {year}
                 </div>
@@ -151,7 +155,6 @@ export const DateInput = ({
         onFocus={onClick}
         readOnly
       />
-
       <Icon name="calendar" size={24} color={'#253017'} />
     </div>
   ))
@@ -176,7 +179,6 @@ export const DateInput = ({
         >
           Отменить
         </Button>
-
         <Button
           variant="primary"
           onClick={() => {

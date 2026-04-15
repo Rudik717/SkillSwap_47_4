@@ -23,6 +23,7 @@ import Edit from '@/assets/svg/edit.svg?react'
 import EyeSlash from '@/assets/svg/eye-slash.svg?react'
 import Eye from '@/assets/svg/eye.svg?react'
 import FilterSquare from '@/assets/svg/filter-square.svg?react'
+import GalleryAddGreen from '@/assets/svg/gallery-add-green.svg?react'
 import GalleryAdd from '@/assets/svg/gallery-add.svg?react'
 import GalleryEdit from '@/assets/svg/gallery-edit.svg?react'
 import Home from '@/assets/svg/home.svg?react'
@@ -81,6 +82,7 @@ export const icons = {
   'eye-slash': EyeSlash,
   'filter-square': FilterSquare,
   'gallery-add': GalleryAdd,
+  'galary-add-green': GalleryAddGreen,
   'gallery-edit': GalleryEdit,
   google: Google,
   home: Home,

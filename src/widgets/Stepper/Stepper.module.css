@@ -14,7 +14,7 @@
 .step {
   width: 60px;
   height: 4px;
-  background-color: var(--stepper-accent-color);
+  background-color: var(--accent-color);
   border-radius: 8px;
 }
 

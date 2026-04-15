@@ -1,13 +1,13 @@
 .menuWrapper {
-  width: 520px;
-  background: #fff;
+  width: 556px;
+  padding: 60px;
+  background: var(--bg);
   border: 1px solid #e4e8df;
   border-radius: 16px;
   box-shadow: 0 8px 32px rgb(0 0 0 / 8%);
 }
 
 .container {
-  max-height: 70vh;
   overflow-y: auto;
 }
 
@@ -62,8 +62,8 @@
 }
 
 .goButton {
-  margin-top: 8px;
-  margin-left: 32px;
+  max-width: 114px;
+  margin-block: 16px 24px;
 }
 
 .emptyState {
