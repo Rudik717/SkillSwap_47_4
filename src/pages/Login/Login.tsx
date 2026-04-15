@@ -56,11 +56,11 @@ export const Login = () => {
         children={
           <>
             <div className={clsx(styles.conteiner, styles.fieldConteiner)}>
-              <Button variant="auth" iconLeft="google">
+              <Button variant="secondary" iconLeft="google">
                 Продолжить с Google
               </Button>
 
-              <Button variant="auth" iconLeft="apple">
+              <Button variant="secondary" iconLeft="apple">
                 Продолжить с Apple
               </Button>
             </div>
