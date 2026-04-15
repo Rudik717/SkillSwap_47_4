@@ -1,5 +1,5 @@
 import type { AppDispatch, RootState } from '@/store'
-import { loginUser } from '@/store/user-slice'
+import { clearError, loginUser } from '@/store/user-slice'
 import { Button, Icon, Text, TextInput } from '@/ui-kit'
 import { FormLayout } from '@/widgets'
 import clsx from 'clsx'
@@ -16,36 +16,81 @@ export const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [passwordError, setPasswordError] = useState(false)
+  const [emailMessage, setEmailMessage] = useState('')
+  const [passwordMessage, setPasswordMessage] = useState('')
+  const [emailTouched, setEmailTouched] = useState(false)
   const location = useLocation()
 
-  //Регулярное выражение для email input (вариант приближён к RFC 5322)
+  // RFC 5322
   const emailRegex =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/
 
-  const handleSubmit = (e: SyntheticEvent) => {
-    e.preventDefault()
-    dispatch(loginUser({ email, password }))
-  }
+  const clearServerError = useCallback(() => {
+    if (error) dispatch(clearError())
+  }, [error, dispatch])
 
   const handleEmailChange = useCallback(
     (value: string) => {
       setEmail(value)
-      const isInvalidFormat = !emailRegex.test(value)
-      setEmailError(isInvalidFormat)
-
-      if (isInvalidFormat) {
-        setErrorMessage('Введите корректный email')
-        return
+      clearServerError()
+      // Валидируем в реальном времени только после первого submit
+      if (emailTouched) {
+        const isInvalidFormat = !emailRegex.test(value)
+        setEmailError(isInvalidFormat)
+        setEmailMessage(isInvalidFormat ? 'Введите корректный email' : '')
       }
-
-      setErrorMessage('')
     },
-    [setEmailError, setEmail, emailRegex, setErrorMessage]
+    [clearServerError, emailRegex, emailTouched]
   )
 
+  const handlePasswordChange = useCallback(
+    (value: string) => {
+      setPassword(value)
+      clearServerError()
+      if (passwordError) {
+        setPasswordError(false)
+        setPasswordMessage('')
+      }
+    },
+    [clearServerError, passwordError]
+  )
+
+  const handleSubmit = (e: SyntheticEvent) => {
+    e.preventDefault()
+
+    let hasError = false
+
+    if (!email || !emailRegex.test(email)) {
+      setEmailTouched(true)
+      setEmailError(true)
+      setEmailMessage('Введите корректный email')
+      hasError = true
+    }
+
+    if (!password) {
+      setPasswordError(true)
+      setPasswordMessage('Введите пароль')
+      hasError = true
+    }
+
+    if (hasError) return
+
+    dispatch(loginUser({ email, password }))
+  }
+
+  let emailErrorText: string | undefined = emailError ? emailMessage : undefined
+  let passwordErrorText: string | undefined = passwordError ? passwordMessage : undefined
+
+  if (error === 'Email and password are required') {
+    passwordErrorText = 'Введите пароль'
+  } else if (error === 'Invalid email or password') {
+    emailErrorText = 'Неверный email или пароль'
+    passwordErrorText = 'Неверный email или пароль'
+  }
+
   if (user) {
-    const from = location.state?.from?.pathname || '/'
+    const from = location.state?.from?.pathname ?? '/'
     return <Navigate to={from} replace />
   }
 
@@ -53,64 +98,58 @@ export const Login = () => {
     <form onSubmit={handleSubmit} noValidate>
       <FormLayout
         title={<Text variant="H2">Вход</Text>}
-        children={
-          <>
-            <div className={clsx(styles.conteiner, styles.fieldConteiner)}>
-              <Button variant="secondary" iconLeft="google">
-                Продолжить с Google
-              </Button>
-
-              <Button variant="secondary" iconLeft="apple">
-                Продолжить с Apple
-              </Button>
-            </div>
-            <div className={styles.divider}>
-              <div className={styles.hr} />
-              <Text className={styles.or}>или</Text>
-            </div>
-            <div className={clsx(styles.conteiner, styles.fieldConteiner)}>
-              {error && <Text color="red">{error}</Text>}
-              <TextInput
-                label="Email"
-                name={'email'}
-                type={'email'}
-                placeholder="Введите email"
-                error={emailError ? errorMessage : ''}
-                value={email}
-                onChange={(value) => handleEmailChange(value)}
-              />
-              <TextInput
-                label="Пароль"
-                name={'password'}
-                type={'password'}
-                placeholder="Введите ваш пароль"
-                icon={'eye'}
-                onChange={(value) => setPassword(value)}
-                value={password}
-              />
-            </div>
-            <div className={clsx(styles.conteiner, styles.buttonConteiner)}>
-              <div className={styles.button}>
-                <Button className="width: 100%" disabled={loading}>
-                  {loading ? 'Загрузка...' : 'Войти'}
-                </Button>
-              </div>
-              <Link to="/register" className={styles.register}>
-                <Text color="var(--accent-color)">Зарегистрироваться</Text>
-              </Link>
-            </div>
-          </>
-        }
         infoBlock={
-          <div className={clsx(styles.conteiner, styles.infoBlock)}>
+          <div className={clsx(styles.container, styles.infoBlock)}>
             <Icon name="light-bubble" size={300} />
-            <div className={clsx(styles.conteiner, styles.textConteiner)}>
-              <Text variant="H2">С возвращением в SkillSwap!</Text>
-              <Text>Обменивайтесь знаниями и навыками с другими людьми</Text>
+            <div className={clsx(styles.container, styles.textContainer)}>
+              <Text variant="H2">Добро пожаловать в SkillSwap!</Text>
+              <Text>Войдите, чтобы начать обмениваться навыками</Text>
             </div>
           </div>
         }
-      />
+      >
+        <div className={clsx(styles.container, styles.fieldContainer)}>
+          <Button variant="auth" iconLeft="google">
+            Google
+          </Button>
+          <Button variant="auth" iconLeft="apple">
+            Apple
+          </Button>
+        </div>
+        <div className={styles.divider}>
+          <div className={styles.hr} />
+          <Text className={styles.or}>или</Text>
+        </div>
+        <div className={clsx(styles.container, styles.fieldContainer)}>
+          <TextInput
+            label="Email"
+            name="email"
+            type="email"
+            placeholder="Введите ваш email"
+            error={emailErrorText}
+            value={email}
+            onChange={(value) => handleEmailChange(value)}
+          />
+          <TextInput
+            label="Пароль"
+            name="password"
+            type="password"
+            placeholder="Введите ваш пароль"
+            icon="eye"
+            error={passwordErrorText}
+            onChange={(value) => handlePasswordChange(value)}
+            value={password}
+          />
+        </div>
+        <div className={clsx(styles.container, styles.buttonContainer)}>
+          <div className={styles.button}>
+            <Button disabled={loading}>{loading ? '...' : 'Войти'}</Button>
+          </div>
+          <Link to="/register" className={styles.register}>
+            <Text color="var(--accent-color)">Зарегистрироваться</Text>
+          </Link>
+        </div>
+      </FormLayout>
     </form>
   )
 }
