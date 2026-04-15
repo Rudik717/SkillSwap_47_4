@@ -99,16 +99,16 @@ export const Login = () => {
       <FormLayout
         title={<Text variant="H2">Войти</Text>}
         infoBlock={
-          <div className={clsx(styles.conteiner, styles.infoBlock)}>
+          <div className={clsx(styles.container, styles.infoBlock)}>
             <Icon name="light-bubble" size={300} />
-            <div className={clsx(styles.conteiner, styles.textConteiner)}>
+            <div className={clsx(styles.container, styles.textContainer)}>
               <Text variant="H2">Добро пожаловать в SkillSwap!</Text>
               <Text>Войдите, чтобы начать обмениваться навыками</Text>
             </div>
           </div>
         }
       >
-        <div className={clsx(styles.conteiner, styles.fieldConteiner)}>
+        <div className={clsx(styles.container, styles.fieldContainer)}>
           <Button variant="auth" iconLeft="google">
             Google
           </Button>
@@ -120,7 +120,7 @@ export const Login = () => {
           <div className={styles.hr} />
           <Text className={styles.or}>или</Text>
         </div>
-        <div className={clsx(styles.conteiner, styles.fieldConteiner)}>
+        <div className={clsx(styles.container, styles.fieldContainer)}>
           <TextInput
             label="Email"
             name="email"
@@ -141,11 +141,9 @@ export const Login = () => {
             value={password}
           />
         </div>
-        <div className={clsx(styles.conteiner, styles.buttonConteiner)}>
+        <div className={clsx(styles.container, styles.buttonContainer)}>
           <div className={styles.button}>
-            <Button className="width-100" disabled={loading}>
-              {loading ? '...' : 'Войти'}
-            </Button>
+            <Button disabled={loading}>{loading ? '...' : 'Войти'}</Button>
           </div>
           <Link to="/register" className={styles.register}>
             <Text color="var(--accent-color)">Зарегистрироваться</Text>
