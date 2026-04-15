@@ -37,7 +37,7 @@ export const App = () => {
 
   if (!isOnline) {
     return (
-      <div style={{ textAlign: 'center', marginTop: '50px' }}>
+      <div className="offline">
         <h1>🌐 Нет интернета</h1>
         <p>Проверьте подключение и обновите страницу</p>
         <button onClick={() => window.location.reload()}>Обновить</button>
