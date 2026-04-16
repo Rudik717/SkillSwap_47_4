@@ -98,6 +98,7 @@
   from {
     width: 0%;
   }
+
   to {
     width: var(--width, 50%);
   }

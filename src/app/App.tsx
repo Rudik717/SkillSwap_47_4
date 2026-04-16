@@ -1,3 +1,5 @@
+/* global window */
+import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import {
   About,
   Home,
@@ -14,7 +16,7 @@ import type { AppDispatch } from '@/store'
 import { getCategories } from '@/store/categories'
 import { getCities } from '@/store/cities'
 import { getUsers } from '@/store/users'
-import { Favorites, MySkills, ProfileInfo } from '@/widgets'
+import { Favorites, MySkills, ProfileExchanges, ProfileInfo, ProfileRequests } from '@/widgets'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
@@ -24,6 +26,7 @@ import { AppLayout } from './AppLayout'
 
 export const App = () => {
   const dispatch = useDispatch<AppDispatch>()
+  const isOnline = useOnlineStatus()
 
   useEffect(() => {
     initSession()
@@ -31,6 +34,16 @@ export const App = () => {
     dispatch(getCities())
     dispatch(getUsers())
   }, [dispatch])
+
+  if (!isOnline) {
+    return (
+      <div className="offline">
+        <h1>🌐 Нет интернета</h1>
+        <p>Проверьте подключение и обновите страницу</p>
+        <button onClick={() => window.location.reload()}>Обновить</button>
+      </div>
+    )
+  }
 
   return (
     <Routes>
@@ -51,6 +64,8 @@ export const App = () => {
         >
           <Route index element={<ProfileInfo />} />
           <Route path="favorites" element={<Favorites />} />
+          <Route path="requests" element={<ProfileRequests />} />
+          <Route path="exchanges" element={<ProfileExchanges />} />
           <Route path="myskills" element={<MySkills />} />
         </Route>
 

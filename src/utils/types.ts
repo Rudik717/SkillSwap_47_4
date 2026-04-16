@@ -118,3 +118,17 @@ export type TUpdateData = {
   avatar?: string
   about?: string
 }
+
+// Обмен навыками
+export type TExchangeStatus = 'pending' | 'accepted' | 'declined' | 'scheduled' | 'cancelled' // статусы обмена
+
+export type TExchange = {
+  id: string
+  fromUserId: string // кто инициировал обмен
+  toUserId: string // кому предложен обмен
+  fromSkillId: string // навык, который предлагает инициатор
+  toSkillId: string // навык партнера
+  status: TExchangeStatus // статус обмена
+  meetingStart?: string // дата начала встречи
+  meetingEnd?: string // дата окончания встречи
+}
