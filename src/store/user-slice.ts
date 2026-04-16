@@ -7,6 +7,7 @@ import {
 } from '@/services/auth.api'
 import type { TLoginData } from '@/services/auth.api'
 import { deleteAccessToken, getAccessToken, setAccessToken } from '@/services/token-manager'
+import { clearUserNotificationsData } from '@/utils/notificationsStorage'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
@@ -135,14 +136,6 @@ export const userSlice = createSlice({
         state.user.notifications = action.payload
       }
     },
-    markNotificationAsRead: (state, action: PayloadAction<string>) => {
-      if (state.user?.notifications) {
-        const notification = state.user.notifications.find((n) => n.id === action.payload)
-        if (notification) {
-          notification.isRead = true
-        }
-      }
-    },
     setUser: (state, action: PayloadAction<TUser>) => {
       state.user = action.payload
       state.user.favorites = loadFavorites(action.payload.id)
@@ -223,6 +216,9 @@ export const userSlice = createSlice({
         state.error = action.error.message ?? null
       })
       .addCase(logoutUser.fulfilled, (state) => {
+        if (state.user?.id) {
+          clearUserNotificationsData(state.user.id)
+        }
         state.user = null
         state.isAuthChecked = true
         state.loading = false
@@ -244,12 +240,6 @@ export const userSlice = createSlice({
   },
 })
 
-export const {
-  authChecked,
-  updateUserNotifications,
-  markNotificationAsRead,
-  setUser,
-  toggleFavorite,
-  clearError,
-} = userSlice.actions
+export const { authChecked, updateUserNotifications, setUser, toggleFavorite, clearError } =
+  userSlice.actions
 export const userSliceReducer = userSlice.reducer

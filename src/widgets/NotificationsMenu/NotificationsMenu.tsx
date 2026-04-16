@@ -1,4 +1,3 @@
-// NotificationsMenu.tsx - упрощенная версия без внутреннего Toast
 import type { AppDispatch } from '@/store'
 import {
   clearReadNotifications,
