@@ -6,6 +6,7 @@ import {
   getIncomingRequests,
   getOutgoingRequests,
 } from '@/store/exchanges-slice'
+import { fetchNotifications } from '@/store/notifications'
 import { RequestCard, Text } from '@/ui-kit'
 import type { ExchangeAction } from '@/ui-kit/RequestCard/RequestCard'
 import { useDispatch, useSelector } from 'react-redux'
@@ -18,6 +19,7 @@ export const ProfileRequests = () => {
   // Получаем текущего юзера и список всех юзеров
   const userId = useSelector((state: RootState) => state.user.user?.id) ?? ''
   const users = useSelector((state: RootState) => state.users.users)
+  const user = useSelector((state: RootState) => state.user.user)
 
   // Входящие заявки
   const incoming = useSelector((state: RootState) => getIncomingRequests(state, userId))
@@ -30,14 +32,23 @@ export const ProfileRequests = () => {
     switch (type) {
       case 'accept':
         dispatch(acceptExchange(id))
+        if (user?.id) {
+          dispatch(fetchNotifications(user.id))
+        }
         break
 
       case 'decline':
         dispatch(declineExchange(id))
+        if (user?.id) {
+          dispatch(fetchNotifications(user.id))
+        }
         break
 
       case 'cancel':
         dispatch(cancelExchange(id))
+        if (user?.id) {
+          dispatch(fetchNotifications(user.id))
+        }
         break
 
       default:

@@ -12,14 +12,15 @@ import {
 } from '@/pages'
 import { ProtectedRoute } from '@/protected-route'
 import { initSession } from '@/services/session.init'
-import type { AppDispatch } from '@/store'
+import type { AppDispatch, RootState } from '@/store'
 import { getCategories } from '@/store/categories'
 import { getCities } from '@/store/cities'
-import { getUsers } from '@/store/users'
+import { fetchNotifications } from '@/store/notifications'
+import { getAllUsers, getUsers } from '@/store/users'
 import { Favorites, MySkills, ProfileExchanges, ProfileInfo, ProfileRequests } from '@/widgets'
 import { InternalChat } from '@/widgets/Chat/InternalChat'
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
 
 import './App.css'
@@ -27,6 +28,8 @@ import { AppLayout } from './AppLayout'
 
 export const App = () => {
   const dispatch = useDispatch<AppDispatch>()
+  const user = useSelector((state: RootState) => state.user.user)
+  const users = useSelector(getAllUsers)
   const isOnline = useOnlineStatus()
 
   useEffect(() => {
@@ -35,6 +38,12 @@ export const App = () => {
     dispatch(getCities())
     dispatch(getUsers())
   }, [dispatch])
+
+  useEffect(() => {
+    if (user?.id && users.length > 0) {
+      dispatch(fetchNotifications(user.id))
+    }
+  }, [user?.id, users.length, dispatch])
 
   if (!isOnline) {
     return (

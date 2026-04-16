@@ -102,6 +102,8 @@ export type TNotification = {
   date: string
   isRead: boolean
   link?: string
+  exchangeId?: string
+  type?: 'incoming' | 'accepted'
 }
 
 export type TToast = {
