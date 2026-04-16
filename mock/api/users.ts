@@ -19,7 +19,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_1',
           userId: '1',
-          type: 'learn',
+          type: 'teach',
           category: '2',
           subcategory: '25',
           title: 'Курс игры на барабанах',
@@ -37,7 +37,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_72',
           userId: '1',
-          type: 'learn',
+          type: 'teach',
           category: '1',
           subcategory: '2',
           title: 'Контекстная реклама (PPC)',
@@ -55,7 +55,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_54',
           userId: '1',
-          type: 'learn',
+          type: 'teach',
           category: '4',
           subcategory: '31',
           title: 'Как учить JS',
@@ -72,7 +72,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_70',
           userId: '1',
-          type: 'learn',
+          type: 'teach',
           category: '1',
           subcategory: '3',
           title: 'SPIN-продажи',
@@ -89,7 +89,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_2',
           userId: '1',
-          type: 'teach',
+          type: 'learn',
           category: '3',
           subcategory: '11',
           title: 'Испанский для путешествий',
@@ -164,7 +164,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_3',
           userId: '2',
-          type: 'learn',
+          type: 'teach',
           category: '2',
           subcategory: '22',
           title: 'Цифровая иллюстрация',
@@ -182,7 +182,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_4',
           userId: '2',
-          type: 'teach',
+          type: 'learn',
           category: '1',
           subcategory: '1',
           title: 'Менеджмент для дизайнеров',
@@ -241,7 +241,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_5',
           userId: '3',
-          type: 'learn',
+          type: 'teach',
           category: '2',
           subcategory: '23',
           title: 'Студийный свет',
@@ -259,7 +259,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_6',
           userId: '3',
-          type: 'teach',
+          type: 'learn',
           category: '4',
           subcategory: '33',
           title: 'Техники быстрого чтения',
@@ -333,7 +333,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_7',
           userId: '4',
-          type: 'learn',
+          type: 'teach',
           category: '5',
           subcategory: '36',
           title: 'Утренняя медитация',
@@ -351,7 +351,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_74',
           userId: '4',
-          type: 'learn',
+          type: 'teach',
           category: '2',
           subcategory: '29',
           title: 'Создание свечей ручной работы',
@@ -369,7 +369,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_8',
           userId: '4',
-          type: 'teach',
+          type: 'learn',
           category: '2',
           subcategory: '24',
           title: 'Монтаж коротких видео',
@@ -443,7 +443,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_9',
           userId: '5',
-          type: 'learn',
+          type: 'teach',
           category: '1',
           subcategory: '5',
           title: 'Подготовка к интервью',
@@ -461,7 +461,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_75',
           userId: '5',
-          type: 'learn',
+          type: 'teach',
           category: '3',
           subcategory: '12',
           title: 'Немецкий для переезда',
@@ -479,7 +479,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_10',
           userId: '5',
-          type: 'teach',
+          type: 'learn',
           category: '6',
           subcategory: '19',
           title: 'Уход за тропическими растениями',
@@ -553,7 +553,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_11',
           userId: '6',
-          type: 'learn',
+          type: 'teach',
           category: '3',
           subcategory: '10',
           title: 'Разговорный французский',
@@ -571,7 +571,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_76',
           userId: '6',
-          type: 'learn',
+          type: 'teach',
           category: '4',
           subcategory: '30',
           title: 'Эффективная коммуникация',
@@ -589,7 +589,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_73',
           userId: '6',
-          type: 'learn',
+          type: 'teach',
           category: '2',
           subcategory: '26',
           title: 'Ораторское искусство',
@@ -607,7 +607,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_12',
           userId: '6',
-          type: 'teach',
+          type: 'learn',
           category: '5',
           subcategory: '37',
           title: 'Основы нутрициологии',
@@ -681,7 +681,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_13',
           userId: '7',
-          type: 'learn',
+          type: 'teach',
           category: '6',
           subcategory: '17',
           title: 'Личный бюджет',
@@ -699,7 +699,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_14',
           userId: '7',
-          type: 'teach',
+          type: 'learn',
           category: '1',
           subcategory: '4',
           title: 'Продвижение эксперта',
@@ -781,7 +781,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_15',
           userId: '8',
-          type: 'learn',
+          type: 'teach',
           category: '5',
           subcategory: '38',
           title: 'Борьба с тревожностью',
@@ -799,7 +799,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_76',
           userId: '8',
-          type: 'learn',
+          type: 'teach',
           category: '6',
           subcategory: '20',
           title: 'Основы реставрации мебели',
@@ -817,7 +817,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_77',
           userId: '8',
-          type: 'learn',
+          type: 'teach',
           category: '5',
           subcategory: '41',
           title: 'Гигиена сна',
@@ -835,7 +835,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_16',
           userId: '8',
-          type: 'teach',
+          type: 'learn',
           category: '6',
           subcategory: '18',
           title: 'Домашняя кондитерская',
@@ -909,7 +909,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_17',
           userId: '9',
-          type: 'learn',
+          type: 'teach',
           category: '1',
           subcategory: '8',
           title: 'Запуск стартапа',
@@ -927,7 +927,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_78',
           userId: '9',
-          type: 'learn',
+          type: 'teach',
           category: '5',
           subcategory: '39',
           title: 'Практики Mindfulness',
@@ -945,7 +945,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_18',
           userId: '9',
-          type: 'teach',
+          type: 'learn',
           category: '3',
           subcategory: '13',
           title: 'Китайский для бизнеса',
@@ -1003,7 +1003,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_19',
           userId: '10',
-          type: 'learn',
+          type: 'teach',
           category: '4',
           subcategory: '35',
           title: 'Целеполагание',
@@ -1021,7 +1021,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_20',
           userId: '10',
-          type: 'teach',
+          type: 'learn',
           category: '3',
           subcategory: '12',
           title: '12 А1',
@@ -1087,7 +1087,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_21',
           userId: '11',
-          type: 'learn',
+          type: 'teach',
           category: '1',
           subcategory: '1',
           title: 'Лидерство в IT',
@@ -1104,7 +1104,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_22',
           userId: '11',
-          type: 'learn',
+          type: 'teach',
           category: '1',
           subcategory: '7',
           title: 'Agile и Scrum',
@@ -1121,7 +1121,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_23',
           userId: '11',
-          type: 'learn',
+          type: 'teach',
           category: '1',
           subcategory: '3',
           title: 'B2B продажи',
@@ -1138,7 +1138,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_24',
           userId: '11',
-          type: 'teach',
+          type: 'learn',
           category: '3',
           subcategory: '13',
           title: 'Основы мандарина',
@@ -1211,7 +1211,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_25',
           userId: '12',
-          type: 'learn',
+          type: 'teach',
           category: '2',
           subcategory: '22',
           title: 'Скетчинг персонажей',
@@ -1228,7 +1228,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_26',
           userId: '12',
-          type: 'learn',
+          type: 'teach',
           category: '2',
           subcategory: '29',
           title: 'Создание украшений',
@@ -1245,7 +1245,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_27',
           userId: '12',
-          type: 'learn',
+          type: 'teach',
           category: '2',
           subcategory: '28',
           title: 'Ресурсное рисование',
@@ -1262,7 +1262,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_28',
           userId: '12',
-          type: 'teach',
+          type: 'learn',
           category: '1',
           subcategory: '4',
           title: 'Продвижение артиста',
@@ -1343,7 +1343,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_29',
           userId: '13',
-          type: 'learn',
+          type: 'teach',
           category: '5',
           subcategory: '40',
           title: 'Кроссфит дома',
@@ -1360,7 +1360,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_30',
           userId: '13',
-          type: 'learn',
+          type: 'teach',
           category: '5',
           subcategory: '37',
           title: 'Рацион для набора массы',
@@ -1377,7 +1377,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_31',
           userId: '13',
-          type: 'learn',
+          type: 'teach',
           category: '5',
           subcategory: '41',
           title: 'Биохакинг сна',
@@ -1394,7 +1394,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_32',
           userId: '13',
-          type: 'teach',
+          type: 'learn',
           category: '2',
           subcategory: '24',
           title: 'Монтаж Reels',
@@ -1459,7 +1459,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_33',
           userId: '14',
-          type: 'learn',
+          type: 'teach',
           category: '1',
           subcategory: '5',
           title: 'Карьерное консультирование',
@@ -1476,7 +1476,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_34',
           userId: '14',
-          type: 'learn',
+          type: 'teach',
           category: '1',
           subcategory: '6',
           title: 'Эффективность на удаленке',
@@ -1493,7 +1493,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_35',
           userId: '14',
-          type: 'learn',
+          type: 'teach',
           category: '1',
           subcategory: '4',
           title: 'Профиль в LinkedIn',
@@ -1510,7 +1510,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_36',
           userId: '14',
-          type: 'teach',
+          type: 'learn',
           category: '3',
           subcategory: '9',
           title: 'Business English',
@@ -1583,7 +1583,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_37',
           userId: '15',
-          type: 'learn',
+          type: 'teach',
           category: '4',
           subcategory: 'Когнитивные техники',
           title: 'Критическое мышление',
@@ -1600,7 +1600,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_38',
           userId: '15',
-          type: 'learn',
+          type: 'teach',
           category: '4',
           subcategory: 'Личностное развитие',
           title: 'Радикальная честность',
@@ -1617,7 +1617,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_39',
           userId: '15',
-          type: 'learn',
+          type: 'teach',
           category: '5',
           subcategory: '39',
           title: 'Цифровой детокс',
@@ -1634,7 +1634,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_40',
           userId: '15',
-          type: 'teach',
+          type: 'learn',
           category: '2',
           subcategory: '2',
           title: 'Игра на фортепиано',
@@ -1723,7 +1723,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_41',
           userId: '16',
-          type: 'learn',
+          type: 'teach',
           category: '6',
           subcategory: '6',
           title: 'Магическая уборка',
@@ -1733,7 +1733,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_42',
           userId: '16',
-          type: 'learn',
+          type: 'teach',
           category: '6',
           subcategory: 'Хранение вещей',
           title: 'Организация гардероба',
@@ -1750,7 +1750,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_43',
           userId: '16',
-          type: 'learn',
+          type: 'teach',
           category: '6',
           subcategory: '19',
           title: 'Зимний сад в квартире',
@@ -1767,7 +1767,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_44',
           userId: '16',
-          type: 'teach',
+          type: 'learn',
           category: '5',
           subcategory: '36',
           title: 'Йога Нидра',
@@ -1840,7 +1840,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_45',
           userId: '17',
-          type: 'learn',
+          type: 'teach',
           category: '3',
           subcategory: '9',
           title: 'Разговорный клуб',
@@ -1850,7 +1850,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_46',
           userId: '17',
-          type: 'learn',
+          type: 'teach',
           category: '3',
           subcategory: 'Подготовка к экзаменам (IELTS, TOEFL)',
           title: 'IELTS 7.5+',
@@ -1867,7 +1867,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_47',
           userId: '17',
-          type: 'learn',
+          type: 'teach',
           category: '4',
           subcategory: '34',
           title: 'Методика ESL',
@@ -1884,7 +1884,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_48',
           userId: '17',
-          type: 'teach',
+          type: 'learn',
           category: '1',
           subcategory: '6',
           title: 'GTD система',
@@ -1965,7 +1965,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_49',
           userId: '18',
-          type: 'learn',
+          type: 'teach',
           category: '2',
           subcategory: '24',
           title: 'Динамичный монтаж',
@@ -1982,7 +1982,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_50',
           userId: '18',
-          type: 'learn',
+          type: 'teach',
           category: '2',
           subcategory: '27',
           title: 'Сценарии для Reels',
@@ -1999,7 +1999,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_51',
           userId: '18',
-          type: 'learn',
+          type: 'teach',
           category: '1',
           subcategory: '2',
           title: 'SMM стратегия',
@@ -2016,7 +2016,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_52',
           userId: '18',
-          type: 'teach',
+          type: 'learn',
           category: '5',
           subcategory: '38',
           title: 'Самооценка',
@@ -2105,7 +2105,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_53',
           userId: '19',
-          type: 'learn',
+          type: 'teach',
           category: '1',
           subcategory: '7',
           title: 'Управление рисками',
@@ -2122,7 +2122,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_55',
           userId: '19',
-          type: 'learn',
+          type: 'teach',
           category: '1',
           subcategory: 'Резюме и собеседование',
           title: 'Live Coding',
@@ -2139,7 +2139,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_56',
           userId: '19',
-          type: 'teach',
+          type: 'learn',
           category: '2',
           subcategory: '2',
           title: 'Синтезаторы',
@@ -2212,7 +2212,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_57',
           userId: '20',
-          type: 'learn',
+          type: 'teach',
           category: '4',
           subcategory: '34',
           title: 'Дизайн обучения',
@@ -2229,7 +2229,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_58',
           userId: '20',
-          type: 'learn',
+          type: 'teach',
           category: '4',
           subcategory: '35',
           title: 'Executive-35',
@@ -2246,7 +2246,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_59',
           userId: '20',
-          type: 'learn',
+          type: 'teach',
           category: '1',
           subcategory: '1',
           title: 'Работа с конфликтами',
@@ -2263,7 +2263,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_60',
           userId: '20',
-          type: 'teach',
+          type: 'learn',
           category: '3',
           subcategory: '14',
           title: 'Кандзи для начинающих',
@@ -2344,7 +2344,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_61',
           userId: '21',
-          type: 'learn',
+          type: 'teach',
           category: '6',
           subcategory: '18',
           title: 'Паста своими руками',
@@ -2354,7 +2354,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_62',
           userId: '21',
-          type: 'learn',
+          type: 'teach',
           category: '5',
           subcategory: '37',
           title: 'Безглютеновая диета',
@@ -2371,7 +2371,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_63',
           userId: '21',
-          type: 'learn',
+          type: 'teach',
           category: '6',
           subcategory: '6',
           title: 'Кухонный эргономика',
@@ -2388,7 +2388,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_64',
           userId: '21',
-          type: 'teach',
+          type: 'learn',
           category: '1',
           subcategory: '8',
           title: 'Франшиза ресторана',
@@ -2461,7 +2461,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_65',
           userId: '22',
-          type: 'learn',
+          type: 'teach',
           category: '5',
           subcategory: '36',
           title: 'Хатха-йога',
@@ -2478,7 +2478,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_66',
           userId: '22',
-          type: 'learn',
+          type: 'teach',
           category: '5',
           subcategory: '39',
           title: 'Дыхательные техники',
@@ -2495,7 +2495,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_67',
           userId: '22',
-          type: 'learn',
+          type: 'teach',
           category: '5',
           subcategory: '42',
           title: 'Тайм-баланс',
@@ -2512,7 +2512,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_68',
           userId: '22',
-          type: 'teach',
+          type: 'learn',
           category: '2',
           subcategory: '23',
           title: 'Лайтрум профили',
@@ -2585,7 +2585,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_69',
           userId: '23',
-          type: 'learn',
+          type: 'teach',
           category: '6',
           subcategory: '17',
           title: 'Акции и облигации',
@@ -2602,7 +2602,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_71',
           userId: '23',
-          type: 'learn',
+          type: 'teach',
           category: '4',
           subcategory: 'Когнитивные техники',
           title: 'Логические ошибки',
@@ -2619,7 +2619,7 @@ export const data: { users: TUser[] } = {
         {
           id: 'skill_72',
           userId: '23',
-          type: 'teach',
+          type: 'learn',
           category: '3',
           subcategory: '12',
           title: 'Goethe-Zertifikat',
