@@ -61,3 +61,68 @@
   background-color: var(--profile-edit);
   border-radius: 50%;
 }
+
+.avatarColumn {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 70px;
+  align-items: center;
+}
+
+.sageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+
+.progressBar {
+  width: 120px;
+  height: 6px;
+  overflow: hidden;
+  background: #e5e7eb;
+  border-radius: 3px;
+}
+
+.progressSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #f59e0b);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.sageProgress {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.progressInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+}
+
+.progressInfo .sageProgress {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.stepsLeft {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--accent-color);
+}

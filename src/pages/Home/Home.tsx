@@ -1,6 +1,8 @@
 import { useInfiniteScroll } from '@/hooks'
+import { useSageProgress } from '@/hooks/useSageProgress'
 import type { AppDispatch, RootState } from '@/store'
 import { getFilterState, isFilterActiveSelector, setSort } from '@/store/filter'
+import { addToast } from '@/store/notifications'
 import {
   filteredUsersSelector,
   newUsersSelector,
@@ -18,8 +20,36 @@ import styles from './Home.module.css'
 const PAGE_SIZE = 9
 
 export const Home = () => {
+  // меняю реализацию для бейджей, чтобы читалось из store, тк изменилась реализация
+  // хранения заявок на обмены: было в local storage, стало в store
+  const exchanges = useSelector((state: RootState) => state.exchanges.exchanges)
   const isFilterActive = useSelector(isFilterActiveSelector)
+  const user = useSelector((state: RootState) => state.user.user)
+  useSageProgress(user?.id)
+  const dispatch = useDispatch()
 
+  useEffect(() => {
+    if (!user?.id) return
+    // меняю реализацию для бейджей, чтобы читалось из store, тк изменилась реализация
+    // хранения заявок на обмены: было в local storage, стало в store
+    // welcomeShown - флаг - оставляю в local storage, чтобы понимать, было уведомление-приветствие или нет
+    const userExchanges = exchanges.filter((exchange) => exchange.fromUserId === user?.id)
+    const count = userExchanges.length
+    const welcomeShown = localStorage.getItem(`sage_welcome_${user.id}`)
+    if (count === 0 && !welcomeShown) {
+      localStorage.setItem(`sage_welcome_${user.id}`, 'true')
+      dispatch(
+        addToast({
+          id: `sage_welcome_${Date.now()}`,
+          user: '',
+          text: '🌱 Сделай первый ШАГ - начни обмен — твоё дерево Знаний будет расти вместе с тобой! 🚀',
+          date: new Date().toISOString(),
+          isRead: false,
+          link: '/profile',
+        })
+      )
+    }
+  }, [user?.id])
   return (
     <div className={styles.container}>
       <FilterPanel />
@@ -50,7 +80,6 @@ const WithFilters = () => {
   }, [filteredUsers])
 
   const loadMore = () => {
-    console.log(' *** load more')
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)

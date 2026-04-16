@@ -47,6 +47,7 @@
 }
 
 :root {
+  --progress-accent: rgb(16 185 129);
   --sans: 'Jost', system-ui, 'Segoe UI', 'Roboto', sans-serif;
   --heading: 'Jost', system-ui, 'Segoe UI', 'Roboto', sans-serif;
   --mono: ui-monospace, consolas, monospace;
@@ -133,6 +134,7 @@
 }
 
 [data-theme='dark'] {
+  --progress-accent: rgb(52 211 153);
   --text: rgb(225 232 217);
   --caption-color: rgb(155 168 141);
   --disabled-text: rgb(82 89 77);
