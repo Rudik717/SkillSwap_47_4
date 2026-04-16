@@ -15,6 +15,7 @@ import { getCategories } from '@/store/categories'
 import { getCities } from '@/store/cities'
 import { getUsers } from '@/store/users'
 import { Favorites, MySkills, ProfileInfo } from '@/widgets'
+import { InternalChat } from '@/widgets/Chat/InternalChat'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
@@ -33,29 +34,32 @@ export const App = () => {
   }, [dispatch])
 
   return (
-    <Routes>
-      <Route path="/" element={<AppLayout />}>
-        <Route path="*" element={<NotFound />} />
-        <Route index element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/server-error" element={<ServerError />} />
-        <Route path="/register" element={<Registration />} />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<ProfileInfo />} />
-          <Route path="favorites" element={<Favorites />} />
-          <Route path="myskills" element={<MySkills />} />
-        </Route>
+    <>
+      <Routes>
+        <Route path="/" element={<AppLayout />}>
+          <Route path="*" element={<NotFound />} />
+          <Route index element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/server-error" element={<ServerError />} />
+          <Route path="/register" element={<Registration />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<ProfileInfo />} />
+            <Route path="favorites" element={<Favorites />} />
+            <Route path="myskills" element={<MySkills />} />
+          </Route>
 
-        <Route path="/skill/:id" element={<SkillDetails />} />
-      </Route>
-    </Routes>
+          <Route path="/skill/:id" element={<SkillDetails />} />
+        </Route>
+      </Routes>
+      <InternalChat />
+    </>
   )
 }
