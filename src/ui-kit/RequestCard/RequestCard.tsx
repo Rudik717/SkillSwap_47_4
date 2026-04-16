@@ -3,15 +3,16 @@ import type { TExchange, TUser } from '@/utils'
 
 import styles from './RequestCard.module.css'
 
+export type ExchangeAction = 'accept' | 'decline' | 'cancel'
+
 type Props = {
   exchange: TExchange
   users: TUser[]
   currentUserId?: string
-  onAccept: (id: string) => void
-  onDecline: (id: string) => void
+  onAction: (id: string, type: ExchangeAction) => void
 }
 
-export const RequestCard = ({ exchange, users, currentUserId, onAccept, onDecline }: Props) => {
+export const RequestCard = ({ exchange, users, currentUserId, onAction }: Props) => {
   // Получаем участников обмена
   const fromUser = users.find((u) => u.id === exchange.fromUserId)
   const toUser = users.find((u) => u.id === exchange.toUserId)
@@ -51,9 +52,9 @@ export const RequestCard = ({ exchange, users, currentUserId, onAccept, onDeclin
         {/* Входящая заявка */}
         {isIncoming && (
           <>
-            <Button onClick={() => onAccept(exchange.id)}>Принять</Button>
+            <Button onClick={() => onAction(exchange.id, 'accept')}>Принять</Button>
 
-            <Button variant="secondary" onClick={() => onDecline(exchange.id)}>
+            <Button variant="secondary" onClick={() => onAction(exchange.id, 'decline')}>
               Отклонить
             </Button>
           </>
@@ -61,7 +62,7 @@ export const RequestCard = ({ exchange, users, currentUserId, onAccept, onDeclin
 
         {/* Исходящая заявка */}
         {isOutgoing && (
-          <Button variant="secondary" onClick={() => onDecline(exchange.id)}>
+          <Button variant="secondary" onClick={() => onAction(exchange.id, 'cancel')}>
             Отменить заявку
           </Button>
         )}

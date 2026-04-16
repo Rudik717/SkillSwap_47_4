@@ -1,11 +1,13 @@
 import type { AppDispatch, RootState } from '@/store'
 import {
   acceptExchange,
+  cancelExchange,
   declineExchange,
   getIncomingRequests,
   getOutgoingRequests,
 } from '@/store/exchanges-slice'
 import { RequestCard, Text } from '@/ui-kit'
+import type { ExchangeAction } from '@/ui-kit/RequestCard/RequestCard'
 import { useDispatch, useSelector } from 'react-redux'
 
 import styles from './ProfileRequests.module.css'
@@ -22,6 +24,26 @@ export const ProfileRequests = () => {
 
   // Исходящие заявки
   const outgoing = useSelector((state: RootState) => getOutgoingRequests(state, userId))
+
+  // Универсальный обработчик действий
+  const handleAction = (id: string, type: ExchangeAction) => {
+    switch (type) {
+      case 'accept':
+        dispatch(acceptExchange(id))
+        break
+
+      case 'decline':
+        dispatch(declineExchange(id))
+        break
+
+      case 'cancel':
+        dispatch(cancelExchange(id))
+        break
+
+      default:
+        break
+    }
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -41,8 +63,7 @@ export const ProfileRequests = () => {
                   exchange={exchange}
                   users={users}
                   currentUserId={userId}
-                  onAccept={(id) => dispatch(acceptExchange(id))}
-                  onDecline={(id) => dispatch(declineExchange(id))}
+                  onAction={handleAction}
                 />
               ))}
             </div>
@@ -63,8 +84,7 @@ export const ProfileRequests = () => {
                   exchange={exchange}
                   users={users}
                   currentUserId={userId}
-                  onAccept={(id) => dispatch(acceptExchange(id))}
-                  onDecline={(id) => dispatch(declineExchange(id))}
+                  onAction={handleAction}
                 />
               ))}
             </div>
