@@ -52,13 +52,7 @@ export const exchangesSlice = createSlice({
 
     // отмена исходящей заявки инициатором
     cancelExchange(state, action: PayloadAction<string>) {
-      const ex = state.exchanges.find((e) => e.id === action.payload)
-
-      if (!ex) return
-
-      if (ex.status === 'pending' && ex.fromUserId) {
-        ex.status = 'cancelled'
-      }
+      state.exchanges = state.exchanges.filter((ex) => ex.id !== action.payload)
     },
   },
 })
@@ -110,9 +104,4 @@ export const getOutgoingRequests = createSelector(
 // Активные обмены
 export const getActiveExchanges = createSelector(getMyExchanges, (exchanges) =>
   exchanges.filter((ex) => ex.status === 'accepted' || ex.status === 'scheduled')
-)
-
-// История заявок
-export const getRequestHistory = createSelector(getMyExchanges, (exchanges) =>
-  exchanges.filter((ex) => ex.status === 'declined' || ex.status === 'cancelled')
 )
