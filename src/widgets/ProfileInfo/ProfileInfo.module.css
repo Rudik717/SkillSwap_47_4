@@ -61,3 +61,51 @@
   background-color: var(--profile-edit);
   border-radius: 50%;
 }
+
+.avatarColumn {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 70px;
+  align-items: center;
+}
+
+.sageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+}
+
+.progressBar {
+  width: 120px;
+  height: 6px;
+  margin-top: 4px;
+  overflow: hidden;
+  background: #e5e7eb;
+  border-radius: 3px;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #f59e0b);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+  animation: fill-progress 0.5s ease-out;
+}
+
+@keyframes fill-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(--width, 50%);
+  }
+}
+
+.progressSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}

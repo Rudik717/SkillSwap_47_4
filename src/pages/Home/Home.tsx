@@ -1,6 +1,9 @@
 import { useInfiniteScroll } from '@/hooks'
+import { useSageProgress } from '@/hooks/useSageProgress'
 import type { AppDispatch, RootState } from '@/store'
 import { getFilterState, isFilterActiveSelector, setSort } from '@/store/filter'
+import { addToast } from '@/store/notifications'
+import { loadRequests } from '@/store/user-slice'
 import {
   filteredUsersSelector,
   newUsersSelector,
@@ -19,7 +22,28 @@ const PAGE_SIZE = 9
 
 export const Home = () => {
   const isFilterActive = useSelector(isFilterActiveSelector)
+  const user = useSelector((state: RootState) => state.user.user)
+  useSageProgress(user?.id)
+  const dispatch = useDispatch()
 
+  useEffect(() => {
+    if (!user?.id) return
+    const requests = loadRequests(user.id)
+    const welcomeShown = localStorage.getItem(`sage_welcome_${user.id}`)
+    if (requests.length === 0 && !welcomeShown) {
+      localStorage.setItem(`sage_welcome_${user.id}`, 'true')
+      dispatch(
+        addToast({
+          id: `sage_welcome_${Date.now()}`,
+          user: '',
+          text: '🌱 Начни обмен — твоё дерево знаний будет расти вместе с тобой! 🚀',
+          date: new Date().toISOString(),
+          isRead: false,
+          link: '/profile',
+        })
+      )
+    }
+  }, [user?.id])
   return (
     <div className={styles.container}>
       <FilterPanel />

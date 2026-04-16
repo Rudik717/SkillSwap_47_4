@@ -1,3 +1,4 @@
+import { useSageProgress } from '@/hooks/useSageProgress'
 import type { AppDispatch } from '@/store'
 import type { RootState } from '@/store'
 import { addToast } from '@/store/notifications'
@@ -5,7 +6,8 @@ import { updateUser } from '@/store/user-slice'
 import { Avatar, Button, DateInput, Icon, Select, Text, TextArea, TextInput } from '@/ui-kit'
 import type { Option } from '@/ui-kit/Select/Select'
 import type { TCity, TUser } from '@/utils'
-import React from 'react'
+import { SageAvatar } from '@/widgets/SageAvatar/SageAvatar'
+import React, { useMemo } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
@@ -20,6 +22,7 @@ interface ProfileInfoProps {
 
 export const ProfileInfo = () => {
   const { user, cities } = useOutletContext<ProfileInfoProps>()
+  const level = useSageProgress(user?.id)
   const cityOptions: Option[] = cities.map((c) => ({ label: c.name, value: c.id }))
 
   const loading = useSelector((state: RootState) => state.user.loading)
@@ -85,6 +88,15 @@ export const ProfileInfo = () => {
   }
 
   const dispatch = useDispatch<AppDispatch>()
+
+  const requestCount = useMemo(() => {
+    if (!user?.id) return 0
+    try {
+      return JSON.parse(localStorage.getItem(`requests_${user.id}`) || '[]').length
+    } catch {
+      return 0
+    }
+  }, [user?.id])
 
   const handleSave = async () => {
     const formData = {
@@ -212,19 +224,30 @@ export const ProfileInfo = () => {
           {loading ? 'Сохранение...' : 'Сохранить'}
         </Button>
       </div>
-
-      <div className={styles.avatarContainer}>
-        <Avatar url={avatarUrl} size={244} />
-        <div className={styles.avatarEditButton} onClick={handleAvatarClick}>
-          <Icon name="gallery-edit" size={24} color="#253017" />
+      <div className={styles.avatarColumn}>
+        <div className={styles.avatarContainer}>
+          <Avatar url={avatarUrl} size={244} />
+          <div className={styles.avatarEditButton} onClick={handleAvatarClick}>
+            <Icon name="gallery-edit" size={24} color="#253017" />
+          </div>
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            style={{ display: 'none' }}
+            onChange={handleAvatarChange}
+          />
         </div>
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          style={{ display: 'none' }}
-          onChange={handleAvatarChange}
-        />
+        <div className={styles.sageContainer}>
+          <SageAvatar level={level} />
+          <Text variant="Caption">Обменов: {requestCount}/6</Text>
+          <div className={styles.progressBar}>
+            <div
+              className={styles.progressFill}
+              style={{ width: `${Math.min((requestCount / 6) * 100, 100)}%` }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   )

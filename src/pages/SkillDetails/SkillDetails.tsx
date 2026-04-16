@@ -1,8 +1,10 @@
 import { type RootState } from '@/store'
 import { getAllCategories, getAllSubcategories } from '@/store/categories'
+import { addToast } from '@/store/notifications'
 import { loadRequests, saveRequests, toggleFavorite } from '@/store/user-slice'
 import { getUser, similarUsersSelector } from '@/store/users'
 import { Button, Icon, Text } from '@/ui-kit'
+import { checkAndNotifyLevelUp, getLevelByCount } from '@/utils/sageHelpers'
 import {
   Loading,
   RequestSuccess,
@@ -11,6 +13,8 @@ import {
   UserGallery,
   UsersGrid,
 } from '@/widgets'
+import { SageLevel } from '@/widgets/SageAvatar/SageAvatar'
+import type { TSageLevel } from '@/widgets/SageAvatar/type'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
@@ -134,6 +138,34 @@ export const SkillDetails = () => {
     setShowSuccessModal(false)
     // Здесь можно добавить редирект, если потом понадобится
     // например: navigate('/my-requests')
+    // После закрытия модалки проверяем уровень
+    const requests = loadRequests(currentUser?.id || '')
+    const count = requests.length
+    if (count === 1) {
+      const firstRequestKey = `sage_first_request_${currentUser?.id}`
+      const alreadyShown = localStorage.getItem(firstRequestKey)
+      if (!alreadyShown) {
+        localStorage.setItem(firstRequestKey, 'true')
+        dispatch(
+          addToast({
+            id: `sage_first_request_${Date.now()}`,
+            user: '',
+            text: '🎉 Первая заявка отправлена! Остался один шаг до уровня STUDENT!',
+            date: new Date().toISOString(),
+            isRead: false,
+            link: '/profile',
+          })
+        )
+      }
+    }
+    const newLevel = getLevelByCount(requests.length)
+    const currentLevel = Number(
+      localStorage.getItem(`sage_level_${currentUser?.id}`) || SageLevel.BABY
+    )
+
+    if (newLevel > currentLevel) {
+      checkAndNotifyLevelUp(currentUser?.id || '', dispatch, currentLevel as TSageLevel, newLevel)
+    }
   }
 
   if (loading) return <Loading />
