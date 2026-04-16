@@ -23,10 +23,10 @@ export const UserMenu: FC<UserMenuProps> = ({ isOpen, onClose, triggerRef }) => 
     navigate('/profile')
   }
 
-  const handleLogoutClick = () => {
+  const handleLogoutClick = async () => {
     onClose()
-    dispatch(logoutUser())
-    navigate('/')
+    await dispatch(logoutUser())
+    navigate('/', { replace: true })
   }
 
   return (

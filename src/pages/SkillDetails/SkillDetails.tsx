@@ -1,8 +1,11 @@
-import { type RootState } from '@/store'
+import { type AppDispatch, type RootState } from '@/store'
 import { getAllCategories, getAllSubcategories } from '@/store/categories'
-import { loadRequests, saveRequests, toggleFavorite } from '@/store/user-slice'
+import { addExchange } from '@/store/exchanges-slice'
+import { addToast } from '@/store/notifications'
+import { toggleFavorite } from '@/store/user-slice'
 import { getUser, similarUsersSelector } from '@/store/users'
 import { Button, Icon, Text } from '@/ui-kit'
+import { checkAndNotifyLevelUp, getLevelByCount } from '@/utils/sageHelpers'
 import {
   Loading,
   RequestSuccess,
@@ -11,6 +14,8 @@ import {
   UserGallery,
   UsersGrid,
 } from '@/widgets'
+import { SageLevel } from '@/widgets/SageAvatar/SageAvatar'
+import type { TSageLevel } from '@/widgets/SageAvatar/type'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
@@ -55,7 +60,7 @@ const copyToClipboard = async (text: string): Promise<void> => {
 export const SkillDetails = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   const { id } = useParams<{ id: string }>()
 
@@ -64,6 +69,18 @@ export const SkillDetails = () => {
   const currentUser = useSelector((state: RootState) => state.user.user)
   const similarUsers = useSelector((state: RootState) =>
     similarUsersSelector(state, currentUser?.id, user?.id)
+  )
+
+  // Получаем список всех обменов
+  const exchanges = useSelector((state: RootState) => state.exchanges.exchanges)
+
+  // Проверяем, есть ли уже заявка от текущего залогиненного пользователя
+  const alreadyRequested = Boolean(
+    currentUser &&
+    user &&
+    exchanges.some(
+      (ex) => ex.fromUserId === currentUser.id && ex.toUserId === user.id && ex.status === 'pending'
+    )
   )
 
   const categories = useSelector((state: RootState) => getAllCategories(state))
@@ -111,22 +128,33 @@ export const SkillDetails = () => {
     }
   }, [])
 
+  // Навык текущего пользователя, который он предлагает
+  const currentUserSkill = currentUser?.skills?.find((s) => s.type === 'teach')
+  // Навык пользователя, с которым хочет обмен
+  const targetUserSkill = user?.skills?.find((s) => s.type === 'teach')
+
   const handleOfferClick = () => {
+    // Редирект на логин, если пользователь не авторизован
     if (!currentUser) {
       navigate('/login', { state: { from: { pathname: location.pathname } } })
       return
     }
 
     if (!user) return
+    if (alreadyRequested) return
 
-    const requests = loadRequests(currentUser.id)
+    // Создаем заявку на обмен
+    dispatch(
+      addExchange({
+        id: window.crypto.randomUUID(),
+        fromUserId: currentUser.id,
+        toUserId: user.id,
+        fromSkillId: currentUserSkill?.id ?? '',
+        toSkillId: targetUserSkill?.id ?? '',
+        status: 'pending',
+      })
+    )
 
-    const newRequest = user.id
-
-    requests.push(newRequest)
-    saveRequests(currentUser.id, requests)
-
-    // Открываем модалку вместо тоста
     setShowSuccessModal(true)
   }
 
@@ -134,6 +162,42 @@ export const SkillDetails = () => {
     setShowSuccessModal(false)
     // Здесь можно добавить редирект, если потом понадобится
     // например: navigate('/my-requests')
+    // После закрытия модалки проверяем уровень
+
+    // Переделываю на чтение заявок на обмен из store - тк изменилась реализация по их хранению
+    const userExchanges = exchanges.filter((exchange) => exchange.fromUserId === currentUser?.id)
+    const count = userExchanges.length
+    // Если заявок нет — удаляем флаг - добавила логику, те теперь заявки можно отменять
+    // чтобы если уровень уменьшился опять показать это сообщение
+    if (count === 0) {
+      localStorage.removeItem(`sage_first_request_${currentUser?.id}`)
+    }
+    if (count === 1) {
+      // флаг для уведомления - показывалось ли оно для этого пользователя
+      const firstRequestKey = `sage_first_request_${currentUser?.id}`
+      const alreadyShown = localStorage.getItem(firstRequestKey)
+      if (!alreadyShown) {
+        localStorage.setItem(firstRequestKey, 'true')
+        dispatch(
+          addToast({
+            id: `sage_first_request_${Date.now()}`,
+            user: '',
+            text: '🎉 Первая заявка отправлена! Остался один шаг к знаниям до уровня STUDENT!',
+            date: new Date().toISOString(),
+            isRead: false,
+            link: '/profile',
+          })
+        )
+      }
+    }
+    const newLevel = getLevelByCount(count)
+    const currentLevel = Number(
+      localStorage.getItem(`sage_level_${currentUser?.id}`) || SageLevel.BABY
+    )
+
+    if (newLevel > currentLevel) {
+      checkAndNotifyLevelUp(currentUser?.id || '', dispatch, currentLevel as TSageLevel, newLevel)
+    }
   }
 
   if (loading) return <Loading />
@@ -208,7 +272,9 @@ export const SkillDetails = () => {
               </div>
 
               {(!currentUser || currentUser.id !== user.id) && (
-                <Button onClick={handleOfferClick}>Предложить обмен</Button>
+                <Button onClick={handleOfferClick} disabled={alreadyRequested}>
+                  Предложить обмен
+                </Button>
               )}
             </div>
 

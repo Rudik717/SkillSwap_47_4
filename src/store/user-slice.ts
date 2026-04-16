@@ -160,6 +160,9 @@ export const userSlice = createSlice({
 
       saveFavorites(state.user.id, state.user.favorites)
     },
+    clearError: (state) => {
+      state.error = null
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -247,5 +250,6 @@ export const {
   markNotificationAsRead,
   setUser,
   toggleFavorite,
+  clearError,
 } = userSlice.actions
 export const userSliceReducer = userSlice.reducer

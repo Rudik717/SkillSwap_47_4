@@ -22,13 +22,13 @@ export const menuItems: ProfileMenuElement[] = [
     id: 'request',
     label: 'Заявки',
     icon: 'request',
-    path: '',
+    path: '/profile/requests',
   },
   {
     id: 'message',
     label: 'Мои обмены',
     icon: 'message',
-    path: '',
+    path: '/profile/exchanges',
   },
   {
     id: 'like',
