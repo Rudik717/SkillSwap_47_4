@@ -7,6 +7,7 @@ import { Avatar, Button, DateInput, Icon, Select, Text, TextArea, TextInput } fr
 import type { Option } from '@/ui-kit/Select/Select'
 import type { TCity, TUser } from '@/utils'
 import { SageAvatar } from '@/widgets/SageAvatar/SageAvatar'
+import { SageLevel } from '@/widgets/SageAvatar/SageAvatar'
 import React, { useMemo } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -22,6 +23,8 @@ interface ProfileInfoProps {
 
 export const ProfileInfo = () => {
   const { user, cities } = useOutletContext<ProfileInfoProps>()
+
+  const exchanges = useSelector((state: RootState) => state.exchanges.exchanges)
   const level = useSageProgress(user?.id)
   const cityOptions: Option[] = cities.map((c) => ({ label: c.name, value: c.id }))
 
@@ -91,13 +94,24 @@ export const ProfileInfo = () => {
 
   const requestCount = useMemo(() => {
     if (!user?.id) return 0
-    try {
-      return JSON.parse(localStorage.getItem(`requests_${user.id}`) || '[]').length
-    } catch {
-      return 0
-    }
-  }, [user?.id])
 
+    // Переделываю на чтение заявок на обмен из store - тк изменилась реализация по их хранению
+    const userExchanges = exchanges.filter((exchange) => exchange.fromUserId === user.id)
+
+    return userExchanges.length
+  }, [exchanges, user?.id])
+
+  const nextLevelSteps = useMemo(() => {
+    if (level === SageLevel.GURU) return '∞'
+
+    if (requestCount >= 4) return 6
+    if (requestCount >= 2) return 4
+    return 2
+  }, [requestCount, level])
+
+  const stepsLeft = nextLevelSteps === '∞' ? 0 : nextLevelSteps - requestCount
+  const levelNames = ['Новичок', 'Ученик', 'Ментор', 'Гуру', 'Мастер']
+  const nextLevelName = levelNames[level]
   const handleSave = async () => {
     const formData = {
       name,
@@ -240,12 +254,30 @@ export const ProfileInfo = () => {
         </div>
         <div className={styles.sageContainer}>
           <SageAvatar level={level} />
-          <Text variant="Caption">Обменов: {requestCount}/6</Text>
+          {/* Поменяла концепцию в связи с изменением реализации - 
+          теперь у меня концепция "шаги к знаниям", поэтому если пользователь отменит заявку, я не убираю достижение
+          тк шаг к знаниям все равно был сделан - так позволит сохранить мотивацию пользователя и общую концепцию - 
+          дерево знаний растет, когда пользователь делает шаги  */}
+          <div className={styles.progressInfo}>
+            <Text variant="Caption" className={styles.sageProgress}>
+              Всего шагов к знаниям: {requestCount}
+            </Text>
+            {stepsLeft > 0 && (
+              <Text variant="Caption" className={styles.stepsLeft}>
+                До уровня {nextLevelName}: {stepsLeft}
+              </Text>
+            )}
+          </div>
           <div className={styles.progressBar}>
             <div
               className={styles.progressFill}
-              style={{ width: `${Math.min((requestCount / 6) * 100, 100)}%` }}
-            />
+              style={{
+                width:
+                  nextLevelSteps === '∞'
+                    ? '100%'
+                    : `${Math.min((requestCount / Number(nextLevelSteps)) * 100, 100)}%`,
+              }}
+            ></div>
           </div>
         </div>
       </div>

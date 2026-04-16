@@ -2,7 +2,9 @@ import { addToast } from '@/store/notifications'
 import { SageLevel } from '@/widgets/SageAvatar/SageAvatar'
 import type { TSageLevel } from '@/widgets/SageAvatar/type'
 import type { Dispatch } from '@reduxjs/toolkit'
+import confetti from 'canvas-confetti'
 
+// определяет, какой уровень у пользователя
 export const getLevelByCount = (count: number): TSageLevel => {
   if (count >= 6) return SageLevel.GURU
   if (count >= 4) return SageLevel.MENTOR
@@ -10,7 +12,7 @@ export const getLevelByCount = (count: number): TSageLevel => {
   return SageLevel.BABY
 }
 
-// Проверить, нужно ли показывать тост о повышении
+// Проверяет, нужно ли показывать тост о повышении
 export const checkAndNotifyLevelUp = (
   userId: string,
   dispatch: Dispatch,
@@ -18,19 +20,31 @@ export const checkAndNotifyLevelUp = (
   newLevel: TSageLevel
 ) => {
   if (newLevel > currentLevel) {
+    // создаю ключ и сохраняю в localStorage - чтобы понять, что уведомление пользователю уже показывали
     const toastKey = `sage_toast_shown_${userId}_${newLevel}`
     const alreadyShown = localStorage.getItem(toastKey)
 
-    if (alreadyShown) return false
+    if (alreadyShown) return
+
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#3b82f6', '#f59e0b', '#10b981'],
+    })
 
     localStorage.setItem(toastKey, 'true')
     localStorage.setItem(`sage_level_${userId}`, String(newLevel))
+    /* Поменяла концепцию в связи с изменением реализации
+          теперь шаги к знаниям, поэтому если пользователь отменит заявку я не убираю достижение
+          тк шаг к знаниям все равно был сделан - так позволит сохранить мотивацию пользователя и общую концепцию - 
+          дерево знаний растет, когда пользователь делает шаги  */
     const text =
       newLevel === SageLevel.STUDENT
-        ? '🌿 Твоё дерево Знаний проросло! Продолжай расти! 📱'
+        ? '🌿 Твоё дерево Знаний проросло! 2 шага к знаниям сделано! Продолжай расти! 📱'
         : newLevel === SageLevel.MENTOR
-          ? '🌳 Твоё дерево окрепло! Ты ментор знаний! ⌚'
-          : '👑 Твоё дерево стало могучим дубом! Гуру SkillSwap! ✨'
+          ? '🌳 Твоё дерево Знаний окрепло! 4 шага к знаниям сделано! Ты ментор знаний! ⌚'
+          : '👑 Твоё дерево Знаний стало могучим дубом! 6 шагов к знаниям сделано! Ты - Гуру SkillSwap! ✨'
 
     dispatch(
       addToast({
@@ -42,8 +56,5 @@ export const checkAndNotifyLevelUp = (
         link: '/profile',
       })
     )
-    localStorage.setItem(`sage_level_${userId}`, String(newLevel))
-    return true
   }
-  return false
 }

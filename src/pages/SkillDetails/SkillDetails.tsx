@@ -2,7 +2,6 @@ import { type AppDispatch, type RootState } from '@/store'
 import { getAllCategories, getAllSubcategories } from '@/store/categories'
 import { addExchange } from '@/store/exchanges-slice'
 import { addToast } from '@/store/notifications'
-import { loadRequests } from '@/store/user-slice'
 import { toggleFavorite } from '@/store/user-slice'
 import { getUser, similarUsersSelector } from '@/store/users'
 import { Button, Icon, Text } from '@/ui-kit'
@@ -164,9 +163,17 @@ export const SkillDetails = () => {
     // Здесь можно добавить редирект, если потом понадобится
     // например: navigate('/my-requests')
     // После закрытия модалки проверяем уровень
-    const requests = loadRequests(currentUser?.id || '')
-    const count = requests.length
+
+    // Переделываю на чтение заявок на обмен из store - тк изменилась реализация по их хранению
+    const userExchanges = exchanges.filter((exchange) => exchange.fromUserId === currentUser?.id)
+    const count = userExchanges.length
+    // Если заявок нет — удаляем флаг - добавила логику, те теперь заявки можно отменять
+    // чтобы если уровень уменьшился опять показать это сообщение
+    if (count === 0) {
+      localStorage.removeItem(`sage_first_request_${currentUser?.id}`)
+    }
     if (count === 1) {
+      // флаг для уведомления - показывалось ли оно для этого пользователя
       const firstRequestKey = `sage_first_request_${currentUser?.id}`
       const alreadyShown = localStorage.getItem(firstRequestKey)
       if (!alreadyShown) {
@@ -175,7 +182,7 @@ export const SkillDetails = () => {
           addToast({
             id: `sage_first_request_${Date.now()}`,
             user: '',
-            text: '🎉 Первая заявка отправлена! Остался один шаг до уровня STUDENT!',
+            text: '🎉 Первая заявка отправлена! Остался один шаг к знаниям до уровня STUDENT!',
             date: new Date().toISOString(),
             isRead: false,
             link: '/profile',
@@ -183,7 +190,7 @@ export const SkillDetails = () => {
         )
       }
     }
-    const newLevel = getLevelByCount(requests.length)
+    const newLevel = getLevelByCount(count)
     const currentLevel = Number(
       localStorage.getItem(`sage_level_${currentUser?.id}`) || SageLevel.BABY
     )
