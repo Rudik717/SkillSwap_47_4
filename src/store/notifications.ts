@@ -1,6 +1,12 @@
 import type { TExchange, TNotification, TToast, TUser } from '@/utils'
 import { clearReadNotificationsApi, markAllNotificationsAsReadApi } from '@/utils/api'
-import { loadReadStatuses, saveNotifications, saveReadStatuses } from '@/utils/notificationsStorage'
+import {
+  addDeletedNotification,
+  isNotificationDeleted,
+  loadReadStatuses,
+  saveNotifications,
+  saveReadStatuses,
+} from '@/utils/notificationsStorage'
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
@@ -26,8 +32,14 @@ const exchangeToNotification = (
 ): TNotification | null => {
   if (exchange.toUserId === currentUserId && exchange.status === 'pending') {
     const fromUser = users.find((u) => u.id === exchange.fromUserId)
+    const notificationId = `exchange_${exchange.id}_incoming`
+
+    if (isNotificationDeleted(currentUserId, notificationId)) {
+      return null // Уведомление было удалено - не показываем
+    }
+
     return {
-      id: `exchange_${exchange.id}_incoming`,
+      id: notificationId,
       user: fromUser?.name || 'Пользователь',
       text: 'предлагает вам обмен',
       date: new Date().toLocaleDateString('ru-RU'),
@@ -40,6 +52,12 @@ const exchangeToNotification = (
 
   if (exchange.fromUserId === currentUserId && exchange.status === 'accepted') {
     const toUser = users.find((u) => u.id === exchange.toUserId)
+    const notificationId = `exchange_${exchange.id}_accepted`
+
+    if (isNotificationDeleted(currentUserId, notificationId)) {
+      return null // Уведомление было удалено - не показываем
+    }
+
     return {
       id: `exchange_${exchange.id}_accepted`,
       user: toUser?.name || 'Пользователь',
@@ -87,7 +105,6 @@ export const updateNotificationsFromExchanges = createAsyncThunk(
 
     // Загружаем сохраненные статусы прочтения
     const savedReadStatuses = loadReadStatuses(userId)
-
     const notificationsWithState = generatedNotifications.map((notification) => ({
       ...notification,
       isRead: savedReadStatuses[notification.id] || false,
@@ -163,6 +180,12 @@ export const clearReadNotifications = createAsyncThunk(
       if (currentUser?.notifications) {
         const updatedNotifications = currentUser.notifications.filter((n) => !n.isRead)
         dispatch(updateUserNotifications(updatedNotifications))
+        const readNotifications = currentUser.notifications.filter((n) => n.isRead)
+
+        // Добавляем прочитанные в список удалённых
+        readNotifications.forEach((notification) => {
+          addDeletedNotification(userId, notification.id)
+        })
 
         saveNotifications(userId, updatedNotifications)
         saveReadStatuses(userId, updatedNotifications)
