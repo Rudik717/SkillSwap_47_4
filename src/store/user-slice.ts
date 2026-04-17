@@ -7,7 +7,6 @@ import {
 } from '@/services/auth.api'
 import type { TLoginData } from '@/services/auth.api'
 import { deleteAccessToken, getAccessToken, setAccessToken } from '@/services/token-manager'
-import { clearUserNotificationsData } from '@/utils/notificationsStorage'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
@@ -216,9 +215,6 @@ export const userSlice = createSlice({
         state.error = action.error.message ?? null
       })
       .addCase(logoutUser.fulfilled, (state) => {
-        if (state.user?.id) {
-          clearUserNotificationsData(state.user.id)
-        }
         state.user = null
         state.isAuthChecked = true
         state.loading = false

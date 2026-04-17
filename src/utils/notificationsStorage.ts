@@ -38,7 +38,31 @@ export const loadReadStatuses = (userId: string): Record<string, boolean> => {
   }
 }
 
-export const clearUserNotificationsData = (userId: string) => {
-  localStorage.removeItem(`notifications_${userId}`)
-  localStorage.removeItem(`notifications_read_${userId}`)
+export const saveDeletedNotifications = (userId: string, deletedIds: string[]) => {
+  try {
+    localStorage.setItem(`deleted_notifications_${userId}`, JSON.stringify(deletedIds))
+  } catch {
+    // ignore
+  }
+}
+
+export const loadDeletedNotifications = (userId: string): string[] => {
+  try {
+    const data = localStorage.getItem(`deleted_notifications_${userId}`)
+    return data ? JSON.parse(data) : []
+  } catch {
+    return []
+  }
+}
+
+export const addDeletedNotification = (userId: string, notificationId: string) => {
+  const deleted = loadDeletedNotifications(userId)
+  if (!deleted.includes(notificationId)) {
+    saveDeletedNotifications(userId, [...deleted, notificationId])
+  }
+}
+
+export const isNotificationDeleted = (userId: string, notificationId: string): boolean => {
+  const deleted = loadDeletedNotifications(userId)
+  return deleted.includes(notificationId)
 }
