@@ -4,22 +4,23 @@ import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
-import { App } from './app/App'
+import { App } from './app/App.tsx'
 import './index.css'
-import { worker } from './mocks/browser'
-import { store } from './store/root'
+import { store } from './store/root.ts'
 
-async function prepareApp() {
-  if (import.meta.env.VITE_ENABLE_MOCKS === 'true') {
-    await worker.start({
-      onUnhandledRequest: 'bypass',
-      serviceWorker: {
-        url: '/mockServiceWorker.js',
-      },
-      waitUntilReady: true,
-    })
-  }
+// MSW
+async function enableMocking() {
+  const { worker } = await import('./mocks/browser')
 
+  await worker.start({
+    onUnhandledRequest: 'bypass',
+    serviceWorker: {
+      url: '/mockServiceWorker.js',
+    },
+  })
+}
+
+enableMocking().then(() => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <Provider store={store}>
@@ -29,6 +30,4 @@ async function prepareApp() {
       </Provider>
     </StrictMode>
   )
-}
-
-prepareApp()
+})
