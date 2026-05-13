@@ -26,7 +26,7 @@ export default defineMock([
   {
     url: '/api/notifications/mark-read',
     method: 'POST',
-    response: (req, res) => {
+    response: (_req, res) => {
       res.statusCode = 200
       res.setHeader('Content-Type', 'application/json')
       res.end(
@@ -39,7 +39,7 @@ export default defineMock([
   {
     url: '/api/notifications/clear-read',
     method: 'DELETE',
-    response: (req, res) => {
+    response: (_req, res) => {
       res.statusCode = 200
       res.setHeader('Content-Type', 'application/json')
       res.end(
