@@ -10,16 +10,25 @@ import { store } from './store/root.ts'
 
 // MSW
 async function enableMocking() {
-  if (import.meta.env.DEV || import.meta.env.VITE_ENABLE_MOCKS === 'true') {
-    const worker = (await import('./mocks/browser')).worker
-    await worker.start({
-      onUnhandledRequest: 'bypass', // важно, чтобы не ругался на реальные запросы
-    })
-  }
+  // ВАЖНО: dev + флаг
+  const shouldMock = import.meta.env.DEV && import.meta.env.VITE_ENABLE_MOCKS === 'true'
+
+  if (!shouldMock) return
+
+  const { worker } = await import('./mocks/browser')
+
+  await worker.start({
+    onUnhandledRequest: 'bypass',
+  })
 }
 
-enableMocking().then(() => {
-  createRoot(document.getElementById('root')!).render(
+// 🔥 ВАЖНО: сначала MSW, потом React
+async function bootstrap() {
+  await enableMocking()
+
+  const root = createRoot(document.getElementById('root')!)
+
+  root.render(
     <StrictMode>
       <Provider store={store}>
         <BrowserRouter>
@@ -28,4 +37,6 @@ enableMocking().then(() => {
       </Provider>
     </StrictMode>
   )
-})
+}
+
+bootstrap()
