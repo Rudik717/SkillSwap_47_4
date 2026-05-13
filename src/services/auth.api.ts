@@ -2,7 +2,9 @@ import type { TNotification, TRegisterData, TUpdateData, TUser } from '@utils/ty
 
 import { apiClient } from './axios-instance'
 
-// Функции для авторизации (логин, рефреш, логаут)
+// ======================
+// TYPES
+// ======================
 
 export type TApiErrorResponse = {
   success: false
@@ -28,13 +30,7 @@ export type TNotificationsSuccessResponse = {
   notifications: TNotification[]
 }
 
-export type TNotificationsErrorResponse = {
-  success: false
-  message: string
-  code: string
-}
-
-export type TNotificationsResponse = TNotificationsSuccessResponse | TNotificationsErrorResponse
+export type TNotificationsResponse = TNotificationsSuccessResponse | TApiErrorResponse
 
 export type TRefreshSuccessResponse = {
   success: true
@@ -49,33 +45,33 @@ export type TLogoutSuccessResponse = {
 
 export type TLogoutResponse = TLogoutSuccessResponse | TApiErrorResponse
 
+// ======================
+// AUTH API (FIXED -> /api/*)
+// ======================
+
 export const loginUserApi = (data: TLoginData) =>
-  apiClient.post<TLoginResponse>('/auth/login', data).then((response) => {
-    if (response.data.success) {
-      return response.data
-    }
+  apiClient.post<TLoginResponse>('/api/auth/login', data).then((response) => {
+    if (response.data.success) return response.data
     return Promise.reject(response.data)
   })
 
-// добавила withCredentials: true на случай, если запрос пойдет на другой домен, чтобы добавлял куки
 export const refreshUserApi = () =>
   apiClient
-    .post<TRefreshResponse>('/auth/refresh', null, { withCredentials: true })
+    .post<TRefreshResponse>('/api/auth/refresh', null, {
+      withCredentials: true,
+    })
     .then((response) => {
-      if (response.data.success) {
-        return response.data
-      }
+      if (response.data.success) return response.data
       return Promise.reject(response.data)
     })
 
-// добавила withCredentials: true на случай, если запрос пойдет на другой домен, чтобы добавлял куки
 export const logoutUserApi = () =>
   apiClient
-    .post<TLogoutResponse>('/auth/logout', null, { withCredentials: true })
+    .post<TLogoutResponse>('/api/auth/logout', null, {
+      withCredentials: true,
+    })
     .then((response) => {
-      if (response.data.success) {
-        return response.data
-      }
+      if (response.data.success) return response.data
       return Promise.reject(response.data)
     })
 
@@ -87,12 +83,36 @@ export type TUserSuccessResponse = {
 export type TUserResponse = TUserSuccessResponse | TApiErrorResponse
 
 export const getUserApi = () =>
-  apiClient.get<TUserResponse>('/auth/user').then((response) => {
-    if (response.data.success) {
-      return response.data.user
-    }
+  apiClient.get<TUserResponse>('/api/auth/user').then((response) => {
+    if (response.data.success) return response.data.user
     return Promise.reject(response.data)
   })
+
+export const registerUserApi = (data: TRegisterData) =>
+  apiClient.post<TLoginResponse>('/api/auth/register', data).then((response) => {
+    if (response.data.success) return response.data
+    return Promise.reject(response.data)
+  })
+
+export const updateUserApi = (data: TUpdateData) =>
+  apiClient.patch<TUserSuccessResponse>('/api/auth/user', data).then((response) => {
+    if (response.data.success) return response.data
+    return Promise.reject(response.data)
+  })
+
+export const checkEmailApi = (email: string) =>
+  apiClient
+    .post<TApiErrorResponse | { success: true }>('/api/auth/check-email', {
+      email,
+    })
+    .then((response) => {
+      if (response.data.success) return true
+      return Promise.reject(response.data)
+    })
+
+// ======================
+// NOTIFICATIONS
+// ======================
 
 export const getNotificationsApi = (userId: string) =>
   apiClient.get<TNotificationsResponse>(`/api/users/${userId}/notifications`).then((response) => {
@@ -111,47 +131,3 @@ export const clearReadNotificationsApi = () =>
   apiClient
     .delete<{ success: true }>('/api/notifications/clear-read')
     .then((response) => response.data)
-
-export type TRegisterSuccessResponse = {
-  success: true
-  accessToken: string
-  user: TUser
-}
-
-export type TRegisterResponse = TRegisterSuccessResponse | TApiErrorResponse
-
-export const registerUserApi = (data: TRegisterData) =>
-  apiClient.post<TRegisterResponse>('/auth/register', data).then((response) => {
-    if (response.data.success) {
-      return response.data
-    }
-    return Promise.reject(response.data)
-  })
-
-export type TUpdateSuccessResponse = {
-  success: true
-  user: TUser
-}
-
-export type TUpdateResponse = TUpdateSuccessResponse | TApiErrorResponse
-
-export const updateUserApi = (data: TUpdateData) =>
-  apiClient.patch<TUpdateResponse>('/auth/user', data).then((response) => {
-    if (response.data.success) {
-      return response.data
-    }
-    return Promise.reject(response.data)
-  })
-
-export type TCheckEmailSuccessResponse = {
-  success: true
-}
-export type TCheckEmailResponse = TCheckEmailSuccessResponse | TApiErrorResponse
-
-export const checkEmailApi = (email: string) =>
-  apiClient.post<TCheckEmailResponse>('/auth/check-email', { email }).then((response) => {
-    if (response.data.success) {
-      return true
-    }
-    return Promise.reject(response.data)
-  })
