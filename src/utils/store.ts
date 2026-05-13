@@ -4,6 +4,8 @@ import { filterReducer } from '@/store/filter'
 import type { TGender, TRole } from '@/utils'
 import { configureStore } from '@reduxjs/toolkit'
 
+import type { SortDirection } from '@utils/types'
+
 import { data as categoriesData } from '../../mock/api/categories'
 import { data as citiesData } from '../../mock/api/cities'
 
@@ -34,7 +36,7 @@ export const mockStore = configureStore({
       gender: 'female' as TGender,
       cities: [],
       search: '',
-      sort: { by: '', direction: 'desc' },
+      sort: { by: '', direction: 'desc' as SortDirection },
     },
   },
 })
