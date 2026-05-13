@@ -1,4 +1,4 @@
-export const data = {
+export const cities = {
   cities: [
     { id: 'Astrakhan', name: 'Астрахань' },
     { id: 'Barnaul', name: 'Барнаул' },

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 
 import { getUsersApi } from '../utils/api'
-import type { TSkill, TUser } from '../utils/types'
+import type { TUser } from '../utils/types'
 import { getAllCities } from './cities'
 import { getFilterState } from './filter'
 
@@ -23,6 +23,8 @@ const initialState: UsersState = {
 
 export const getUsers = createAsyncThunk<{ users: TUser[] }, void>('users/getAll', getUsersApi)
 
+const safeArray = <T>(arr: T[] | undefined | null): T[] => (Array.isArray(arr) ? arr : [])
+
 const usersSlice = createSlice({
   name: 'users',
   initialState,
@@ -39,37 +41,39 @@ const usersSlice = createSlice({
       })
       .addCase(getUsers.fulfilled, (state, action) => {
         state.loading = false
-        state.users = action.payload.users
+        state.users = safeArray(action.payload.users)
       })
   },
 })
 
 export const getUsersState = (state: RootState) => state.users
-export const getAllUsers = (state: RootState) => state.users.users
+
+export const getAllUsers = (state: RootState) => safeArray(state.users?.users)
 
 export const getUser = (state: RootState, id?: string) => {
-  const { loading } = state.users
-  const user = state.users.users?.find((user) => user.id === id)
-  return { loading, user }
+  const users = safeArray(state.users?.users)
+  const user = users.find((user) => user.id === id)
+
+  return {
+    loading: state.users?.loading ?? false,
+    user,
+  }
 }
 
-// Фильтр для исключения из подборок текущего залогиненного юзера
+// ================= HELPERS =================
+
 const excludeCurrentUser = (users: TUser[], currentUserId?: string) =>
   currentUserId ? users.filter((u) => u.id !== currentUserId) : users
+
+// ================= SELECTORS =================
 
 export const popularUsersSelector = createSelector(
   getUsersState,
   (_: RootState, currentUserId?: string) => currentUserId,
   (state, currentUserId) => {
-    const users = excludeCurrentUser(state.users, currentUserId)
+    const users = excludeCurrentUser(safeArray(state.users), currentUserId)
 
-    return users
-      .toSorted((a: TUser, b: TUser) => {
-        const aLikes = a?.likes ?? 0
-        const bLikes = b?.likes ?? 0
-        return aLikes - bLikes
-      })
-      .slice(0, 3)
+    return [...users].sort((a, b) => (a.likes ?? 0) - (b.likes ?? 0)).slice(0, 3)
   }
 )
 
@@ -77,36 +81,32 @@ export const newUsersSelector = createSelector(
   getUsersState,
   (_: RootState, currentUserId?: string) => currentUserId,
   (state, currentUserId) => {
-    const users = excludeCurrentUser(state.users, currentUserId)
+    const users = excludeCurrentUser(safeArray(state.users), currentUserId)
 
-    return users
-      .toSorted((a: TUser, b: TUser) => {
-        const aCreatedAt = new Date(a?.createdAt).getTime()
-        const bCreatedAt = new Date(b?.createdAt).getTime()
-        return aCreatedAt - bCreatedAt
-      })
+    return [...users]
+      .sort((a, b) => new Date(a.createdAt ?? 0).getTime() - new Date(b.createdAt ?? 0).getTime())
       .slice(0, 3)
   }
 )
 
-// Исключаем из рекомендуемых залогиненного юзера
 export const recommendedUsersSelector = createSelector(
   getUsersState,
   (_: RootState, currentUserId?: string) => currentUserId,
   (state, currentUserId) => {
-    const users = excludeCurrentUser(state.users, currentUserId)
+    const users = excludeCurrentUser(safeArray(state.users), currentUserId)
 
     return users.slice(0, 9)
   }
 )
 
-// Исключаем из "Похожих предложений" залогиненного юзера и текущего просматриваего
 export const similarUsersSelector = createSelector(
   recommendedUsersSelector,
   (_: RootState, __?: string, excludeUserId?: string) => excludeUserId,
   (users, excludeUserId) => {
-    if (!excludeUserId) return users
-    return users.filter((u) => u.id !== excludeUserId)
+    const safe = safeArray(users)
+    if (!excludeUserId) return safe
+
+    return safe.filter((u) => u.id !== excludeUserId)
   }
 )
 
@@ -116,27 +116,29 @@ export const filteredUsersSelector = createSelector(
   getFilterState,
   getAllCities,
   (usersState, currentUserId, filter, cities) => {
-    let filtered = excludeCurrentUser(usersState.users, currentUserId)
+    let filtered = excludeCurrentUser(safeArray(usersState.users), currentUserId)
+    const safeCities = safeArray(cities)
 
     if (filter.gender !== 'any') {
       filtered = filtered.filter((user) => user.gender && user.gender === filter.gender)
     }
 
     if (filter.cities.length) {
-      const filterCityNames = cities
+      const filterCityNames = safeCities
         .filter(({ id }) => filter.cities.includes(id))
         .map(({ name }) => name)
+
       filtered = filtered.filter((user) => user.city && filterCityNames.includes(user.city))
     }
 
     if (filter.role !== 'all') {
       filtered = filtered.filter((user) => {
         if (filter.role === 'teach') {
-          return user.skills?.some((s: TSkill) => s.type === 'teach') ?? false
+          return user.skills?.some((s) => s.type === 'teach') ?? false
         }
 
         if (filter.role === 'learn') {
-          return user.skills?.some((s: TSkill) => s.type === 'learn') ?? false
+          return user.skills?.some((s) => s.type === 'learn') ?? false
         }
 
         return true
@@ -147,15 +149,13 @@ export const filteredUsersSelector = createSelector(
       filtered = filtered.filter((user) => {
         if (filter.role === 'all') {
           return (
-            user.skills?.some((skill: TSkill) =>
-              filter.subcategories.includes(skill.subcategory)
-            ) ?? false
+            user.skills?.some((skill) => filter.subcategories.includes(skill.subcategory)) ?? false
           )
         }
 
         return (
           user.skills?.some(
-            (skill: TSkill) =>
+            (skill) =>
               filter.subcategories.includes(skill.subcategory) && skill.type === filter.role
           ) ?? false
         )
@@ -166,12 +166,12 @@ export const filteredUsersSelector = createSelector(
       const query = filter.search.trim().toLowerCase()
 
       filtered = filtered.filter((user) => {
-        const inName = user.name.toLowerCase().includes(query)
+        const inName = user.name?.toLowerCase().includes(query) ?? false
         const inCity = user.city?.toLowerCase().includes(query) ?? false
         const inAbout = user.about?.toLowerCase().includes(query) ?? false
 
         const inSkills =
-          user.skills?.some((skill: TSkill) => {
+          user.skills?.some((skill) => {
             const titleMatch = skill.title.toLowerCase().includes(query)
             const descMatch = skill.description?.toLowerCase().includes(query) ?? false
             const categoryMatch = skill.category.toLowerCase().includes(query)
@@ -184,12 +184,12 @@ export const filteredUsersSelector = createSelector(
       })
     }
 
-    // Сортировка по заданному признаку
     const { by, direction } = filter.sort
 
-    filtered = filtered.toSorted((a: TUser, b: TUser) => {
-      const aVal = by === 'likes' ? (a.likes ?? 0) : new Date(a.createdAt).getTime()
-      const bVal = by === 'likes' ? (b.likes ?? 0) : new Date(b.createdAt).getTime()
+    filtered = [...filtered].sort((a, b) => {
+      const aVal = by === 'likes' ? (a.likes ?? 0) : new Date(a.createdAt ?? 0).getTime()
+
+      const bVal = by === 'likes' ? (b.likes ?? 0) : new Date(b.createdAt ?? 0).getTime()
 
       return direction === 'asc' ? aVal - bVal : bVal - aVal
     })

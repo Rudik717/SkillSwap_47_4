@@ -6,8 +6,8 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import type { SortDirection } from '@utils/types'
 
-import { data as categoriesData } from '../../mock/api/categories'
-import { data as citiesData } from '../../mock/api/cities'
+import { categories as categoriesData } from '../data/categories'
+import { cities as citiesData } from '../data/cities'
 
 const { categories, subcategories } = categoriesData ?? {}
 const { cities } = citiesData ?? {}

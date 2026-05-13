@@ -1,3 +1,4 @@
+// eslint.config.js
 // For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
 import js from '@eslint/js'
 import typescript from '@typescript-eslint/eslint-plugin'
@@ -11,6 +12,12 @@ import storybook from 'eslint-plugin-storybook'
 
 export default [
   js.configs.recommended,
+
+  // Игнорируем сервис-воркер MSW
+  {
+    ignores: ['public/mockServiceWorker.js'],
+  },
+
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     ignores: ['dist', 'node_modules', 'coverage'],
@@ -59,7 +66,7 @@ export default [
       // Базовые правила
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'no-debugger': 'warn',
-      'no-unused-vars': 'off', // Используем TypeScript версию
+      'no-unused-vars': 'off',
 
       // TypeScript
       '@typescript-eslint/no-unused-vars': [
@@ -74,8 +81,8 @@ export default [
       '@typescript-eslint/explicit-module-boundary-types': 'off',
 
       // React
-      'react/react-in-jsx-scope': 'off', // Не нужно в React 17+
-      'react/prop-types': 'off', // Используем TypeScript
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
       'react/jsx-uses-react': 'off',
       'react/jsx-uses-vars': 'error',
       'react/jsx-no-target-blank': 'error',
@@ -83,19 +90,6 @@ export default [
       // React Hooks
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-
-      /*
-    // Import
-    'import/order': [
-      'error',
-      {
-        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-        'newlines-between': 'always',
-        alphabetize: { order: 'asc', caseInsensitive: true },
-      },
-    ],
-    'import/no-duplicates': 'error',
-    */
 
       // Prettier
       'prettier/prettier': [
@@ -106,7 +100,8 @@ export default [
       ],
     },
   },
-  // 2. Конфиг для моков (Node.js окружение)
+
+  // Конфиг для моков
   {
     files: ['**/__mocks__/**/*.ts', '**/*.mock.ts', '**/mock/**/*.ts'],
     languageOptions: {
@@ -127,6 +122,7 @@ export default [
       'no-undef': 'off',
     },
   },
+
   eslintConfigPrettier,
   ...storybook.configs['flat/recommended'],
 ]

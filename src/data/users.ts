@@ -1,6 +1,6 @@
 import type { TUser } from '@/utils'
 
-export const data: { users: TUser[] } = {
+export const users: { users: TUser[] } = {
   users: [
     {
       id: '1',

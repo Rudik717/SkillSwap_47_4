@@ -19,7 +19,15 @@ const initialState: CategoriesState = {
   error: null,
 }
 
-export const getCategories = createAsyncThunk('categories/getAll', async () => getCategoriesApi())
+const safeArray = <T>(arr: T[] | undefined | null): T[] => (Array.isArray(arr) ? arr : [])
+
+export const getCategories = createAsyncThunk<
+  {
+    categories: TCategory[]
+    subcategories: TSubcategory[]
+  },
+  void
+>('categories/getAll', getCategoriesApi)
 
 const categoriesSlice = createSlice({
   name: 'categories',
@@ -31,20 +39,26 @@ const categoriesSlice = createSlice({
         state.loading = true
         state.error = null
       })
+
       .addCase(getCategories.rejected, (state, action) => {
         state.loading = false
-        state.error = action.error.message || 'Unknown error'
+        state.error = action.error.message ?? 'Unknown error'
       })
+
       .addCase(getCategories.fulfilled, (state, action) => {
         state.loading = false
-        state.categories = action.payload.categories
-        state.subcategories = action.payload.subcategories
+
+        state.categories = safeArray(action.payload?.categories)
+
+        state.subcategories = safeArray(action.payload?.subcategories)
       })
   },
 })
 
 export const getCategoriesState = (state: RootState) => state.categories
-export const getAllCategories = (state: RootState) => state.categories.categories
-export const getAllSubcategories = (state: RootState) => state.categories.subcategories
+
+export const getAllCategories = (state: RootState) => safeArray(state.categories?.categories)
+
+export const getAllSubcategories = (state: RootState) => safeArray(state.categories?.subcategories)
 
 export const categoriesReducer = categoriesSlice.reducer

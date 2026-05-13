@@ -28,8 +28,11 @@ import { AppLayout } from './AppLayout'
 
 export const App = () => {
   const dispatch = useDispatch<AppDispatch>()
+
   const user = useSelector((state: RootState) => state.user.user)
-  const users = useSelector(getAllUsers)
+
+  const users = useSelector(getAllUsers) ?? []
+
   const isOnline = useOnlineStatus()
 
   useEffect(() => {
@@ -65,6 +68,7 @@ export const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/server-error" element={<ServerError />} />
           <Route path="/register" element={<Registration />} />
+
           <Route
             path="/profile"
             element={
@@ -83,6 +87,7 @@ export const App = () => {
           <Route path="/skill/:id" element={<SkillDetails />} />
         </Route>
       </Routes>
+
       <InternalChat />
     </>
   )

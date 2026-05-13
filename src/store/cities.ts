@@ -17,7 +17,9 @@ const initialState: CitiesState = {
   error: null,
 }
 
-export const getCities = createAsyncThunk('cities/getAll', async () => getCitiesApi())
+const safeArray = <T>(arr: T[] | undefined | null): T[] => (Array.isArray(arr) ? arr : [])
+
+export const getCities = createAsyncThunk<{ cities: TCity[] }, void>('cities/getAll', getCitiesApi)
 
 const citiesSlice = createSlice({
   name: 'cities',
@@ -29,18 +31,21 @@ const citiesSlice = createSlice({
         state.loading = true
         state.error = null
       })
+
       .addCase(getCities.rejected, (state, action) => {
         state.loading = false
-        state.error = action.error.message || 'Unknown error'
+        state.error = action.error.message ?? 'Unknown error'
       })
+
       .addCase(getCities.fulfilled, (state, action) => {
         state.loading = false
-        state.cities = action.payload.cities
+        state.cities = safeArray(action.payload?.cities)
       })
   },
 })
 
 export const getCitiesState = (state: RootState) => state.cities
-export const getAllCities = (state: RootState) => state.cities.cities
+
+export const getAllCities = (state: RootState) => safeArray(state.cities?.cities)
 
 export const citiesReducer = citiesSlice.reducer

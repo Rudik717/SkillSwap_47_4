@@ -8,12 +8,24 @@ import { App } from './app/App.tsx'
 import './index.css'
 import { store } from './store/root.ts'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
-  </StrictMode>
-)
+// MSW
+async function enableMocking() {
+  if (import.meta.env.DEV || import.meta.env.VITE_ENABLE_MOCKS === 'true') {
+    const worker = (await import('./mocks/browser')).worker
+    await worker.start({
+      onUnhandledRequest: 'bypass', // важно, чтобы не ругался на реальные запросы
+    })
+  }
+}
+
+enableMocking().then(() => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </StrictMode>
+  )
+})
