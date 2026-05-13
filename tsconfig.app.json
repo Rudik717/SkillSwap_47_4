@@ -47,9 +47,5 @@
     "./commitlint.config.js",
     "./.prettierrc.js"
   ],
-  "exclude": [
-    "mock",
-    "**/*.mock.ts",
-    "**/*.stories.tsx"
-  ]
+  "exclude": ["mock", "**/*.mock.ts", "**/*.stories.tsx"]
 }
