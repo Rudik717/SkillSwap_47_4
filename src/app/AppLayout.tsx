@@ -10,7 +10,7 @@ export const AppLayout = () => {
   const variant = user ? 'auth' : 'unauth'
   return (
     <>
-      <Header variant={variant} userName={user?.name} avatarUrl={user?.avatar} />
+      <Header variant={variant} />
       <main className={styles.main}>
         <div className={styles.content}>
           <Outlet />
