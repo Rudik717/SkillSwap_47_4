@@ -37,6 +37,7 @@
   },
   "include": [
     "src/**/*",
+    "mock/**/*.ts",
     "jest.config.ts",
     "__tests__/**/*",
     "./eslint.config.js",
@@ -47,5 +48,5 @@
     "./commitlint.config.js",
     "./.prettierrc.js"
   ],
-  "exclude": ["mock", "**/*.mock.ts", "**/*.stories.tsx"]
+  "exclude": ["**/*.stories.tsx"]
 }
